@@ -121,7 +121,7 @@ def build_jar(force_refresh: bool = False) -> Path:
     :param force_refresh: if set to False then does not rebuild if jar already exists
     :return: Path to the build jar file
     """
-    path_jar = Path('target/panbytes-1.0-SNAPSHOT.jar')
+    path_jar = Path('target/panbyte-1.0-SNAPSHOT.jar')
     if path_jar.exists() and not force_refresh:
         return path_jar
 
