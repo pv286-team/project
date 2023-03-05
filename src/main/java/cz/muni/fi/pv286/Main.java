@@ -30,7 +30,7 @@ public class Main {
         char[] buffChars = new char[4096];
         int buffCharsCount;
 
-        // Until then end of file is reached, try to fill up buffer
+        // Until the end of file is reached, try to fill up buffer
         while ((buffCharsCount = stdinReader.read(buffChars)) != -1) {
             // Convert from char (16 bits) to byte (8 bits)
             final List<Byte> bytes = new ArrayList<>();

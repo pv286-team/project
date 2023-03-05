@@ -15,7 +15,7 @@ public class PanbyteRawInput extends PanbyteInput {
 
     @Override
     public void parse(final List<Byte> buffer) throws IOException {
-        // raw bytes are already parsed -> send to ond flush
+        // raw bytes are already parsed -> send to output and flush
         this.parsedBytes.addAll(buffer);
         this.flush();
     }
