@@ -1,5 +1,8 @@
 package cz.muni.fi.pv286;
 
+import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
+import cz.muni.fi.pv286.arguments.ProgramArguments;
+import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
@@ -11,13 +14,33 @@ import java.util.Collections;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        // TODO better IO errors handling
+    public static void main(String[] args) throws Exception {
 
-        // Create default output stream from stdout
-        final OutputStream stdoutWriter = System.out;
-        // Create default input stream from stdin
-        final InputStream stdinReader = System.in;
+        ProgramArguments arguments;
+        try {
+            arguments = new ProgramArguments(args);
+        } catch (InvalidArgumentsException e) {
+            System.out.print(e.getMessage());
+            return;
+        }
+
+        final OutputStream stdoutWriter;
+        final InputStream stdinReader;
+        if (arguments.getInputFileType().equals(FileType.DEFAULT)) {
+            // Create default output stream from stdout
+            stdoutWriter = System.out;
+        } else {
+            System.out.print("Not implemented yet.");
+            return;
+        }
+
+        if (arguments.getInputFileType().equals(FileType.DEFAULT)) {
+            // Create default input stream from stdin
+            stdinReader =  System.in;
+        } else {
+            System.out.print("Not implemented yet.");
+            return;
+        }
 
         // Create default output as raw
         final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
