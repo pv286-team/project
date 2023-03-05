@@ -1,19 +1,19 @@
 package cz.muni.fi.pv286.parser.output;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.util.List;
 
 public abstract class PanbyteOutput {
     // where to stream stringified bytes
-    private final OutputStreamWriter outputWriter;
+    private final OutputStream outputStream;
 
     /**
      * Initialize new output that formats parsed bytes
-     * @param outputWriter where to stream formatted bytes
+     * @param outputStream where to stream formatted bytes
      */
-    public PanbyteOutput(final OutputStreamWriter outputWriter) {
-        this.outputWriter = outputWriter;
+    public PanbyteOutput(final OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
     /**
@@ -22,12 +22,17 @@ public abstract class PanbyteOutput {
      * @throws IOException when output writer fails
      */
     protected void sendOutputData(final List<Byte> buffer) throws IOException {
-        for (Byte b : buffer) {
-            // write all bytes
-            this.outputWriter.write(b);
+        // convert Byte list into primitive byte array
+        final int bufferSize = buffer.size();
+        final byte[] primitiveBuffer = new byte[bufferSize];
+        for (int i = 0; i < bufferSize; i++) {
+            primitiveBuffer[i] = buffer.get(i);
         }
+
+        // send all data to the output
+        this.outputStream.write(primitiveBuffer);
         // flush the writer
-        this.outputWriter.flush();
+        this.outputStream.flush();
     }
 
     /**

@@ -1,7 +1,7 @@
 package cz.muni.fi.pv286.parser.output;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class PanbyteRawOutput extends PanbyteOutput {
 
-    public PanbyteRawOutput(OutputStreamWriter outputWriter) {
-        super(outputWriter);
+    public PanbyteRawOutput(OutputStream outputStream) {
+        super(outputStream);
     }
 
     @Override
