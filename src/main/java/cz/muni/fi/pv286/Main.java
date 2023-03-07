@@ -26,13 +26,13 @@ public class Main {
 
         // Buffer of raw characters from the input
         byte[] buffPrimitive = new byte[4096];
-        int buffCharsCount;
+        int buffPrimitiveReadCount;
 
         // Until the end of file is reached, try to fill up buffer
-        while ((buffCharsCount = stdinReader.read(buffPrimitive)) != -1) {
-            // Convert from char (16 bits) to byte (8 bits)
+        while ((buffPrimitiveReadCount = stdinReader.read(buffPrimitive)) != -1) {
+            // Copy the filled part of the (possibly) partially filled array into a List
             final List<Byte> bytes = new ArrayList<>();
-            for (int i = 0; i < buffCharsCount; i++) {
+            for (int i = 0; i < buffPrimitiveReadCount; i++) {
                 bytes.add(buffPrimitive[i]);
             }
 
