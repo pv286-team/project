@@ -21,7 +21,7 @@ public class ProgramArguments {
     private Boolean help = false;
 
 
-    public ProgramArguments(String[] args) throws Exception {
+    public ProgramArguments(String[] args) throws InvalidArgumentsException {
         ArgumentParser.parseArguments(args, this);
         ArgumentValidator.validateArguments(this);
     }
