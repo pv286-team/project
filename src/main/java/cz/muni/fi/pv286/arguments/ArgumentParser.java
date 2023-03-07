@@ -22,22 +22,22 @@ class ArgumentParser {
         formatMap.put("bits", Format.BITS);
         formatMap.put("array", Format.ARRAY);
         optionMap = new HashMap<>();
-        optionMap.put("big", Option.BIG);
-        optionMap.put("little", Option.LITTLE);
-        optionMap.put("left", Option.LEFT);
-        optionMap.put("right", Option.RIGHT);
+        optionMap.put("big", Option.BIG_ENDIAN);
+        optionMap.put("little", Option.LITTLE_ENDIAN);
+        optionMap.put("left", Option.LEFT_PAD);
+        optionMap.put("right", Option.RIGHT_PAD);
         optionMap.put("0x", Option.HEX);
         optionMap.put("0", Option.DEC);
         optionMap.put("a", Option.CHAR);
-        optionMap.put("{}", Option.CURLY);
-        optionMap.put("}", Option.CURLY);
-        optionMap.put("{", Option.CURLY);
-        optionMap.put("()", Option.REGULAR);
-        optionMap.put("(", Option.REGULAR);
-        optionMap.put(")", Option.REGULAR);
-        optionMap.put("[]", Option.SQUARE);
-        optionMap.put("[", Option.SQUARE);
-        optionMap.put("]", Option.SQUARE);
+        optionMap.put("{}", Option.CURLY_BRACKETS);
+        optionMap.put("}", Option.CURLY_BRACKETS);
+        optionMap.put("{", Option.CURLY_BRACKETS);
+        optionMap.put("()", Option.REGULAR_BRACKETS);
+        optionMap.put("(", Option.REGULAR_BRACKETS);
+        optionMap.put(")", Option.REGULAR_BRACKETS);
+        optionMap.put("[]", Option.SQUARE_BRACKETS);
+        optionMap.put("[", Option.SQUARE_BRACKETS);
+        optionMap.put("]", Option.SQUARE_BRACKETS);
     }
 
     public static void parseArguments(String[] from, ProgramArguments to) throws InvalidArgumentsException {
@@ -146,21 +146,21 @@ class ArgumentParser {
                 break;
             case INT:
                 if (arguments.getInputOption().isEmpty()) {
-                    arguments.addInputOption(Option.BIG);
+                    arguments.addInputOption(Option.BIG_ENDIAN);
                 }
                 if (arguments.getOutputOption().isEmpty()) {
-                    arguments.addOutputOption(Option.BIG);
+                    arguments.addOutputOption(Option.BIG_ENDIAN);
                 }
                 break;
             case BITS:
                 if (arguments.getInputOption().isEmpty()) {
-                    arguments.addInputOption(Option.LEFT);
+                    arguments.addInputOption(Option.LEFT_PAD);
                 }
                 break;
             case ARRAY:
                 /* Prepend default values, if overwritten, the latter is taken */
                 arguments.getOutputOption().add(0, Option.HEX);
-                arguments.getOutputOption().add(0, Option.CURLY);
+                arguments.getOutputOption().add(0, Option.CURLY_BRACKETS);
                 break;
             default:
                 throw new InvalidArgumentsException("Undefined input format");

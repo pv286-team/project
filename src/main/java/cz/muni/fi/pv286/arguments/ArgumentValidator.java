@@ -28,14 +28,14 @@ public class ArgumentValidator {
                 break;
             case INT:
                 Option lastInt = arguments.getInputOption().get(arguments.getInputOption().size() - 1);
-                if (!lastInt.equals(Option.BIG) && !lastInt.equals(Option.LITTLE)) {
+                if (!lastInt.equals(Option.BIG_ENDIAN) && !lastInt.equals(Option.LITTLE_ENDIAN)) {
                     throw new InvalidArgumentsException("Invalid option for integer input format");
                 }
                 arguments.setInputOption(new ArrayList<>(List.of(lastInt)));
                 break;
             case BITS:
                 Option lastBits = arguments.getInputOption().get(arguments.getInputOption().size() - 1);
-                if (!lastBits.equals(Option.LEFT) && !lastBits.equals(Option.RIGHT)) {
+                if (!lastBits.equals(Option.LEFT_PAD) && !lastBits.equals(Option.RIGHT_PAD)) {
                     throw new InvalidArgumentsException("Invalid option for bits input format");
                 }
                 arguments.setInputOption(new ArrayList<>(List.of(lastBits)));
@@ -64,14 +64,14 @@ public class ArgumentValidator {
                 break;
             case INT:
                 Option lastInt = arguments.getOutputOption().get(arguments.getOutputOption().size() - 1);
-                if (!lastInt.equals(Option.BIG) && !lastInt.equals(Option.LITTLE)) {
+                if (!lastInt.equals(Option.BIG_ENDIAN) && !lastInt.equals(Option.LITTLE_ENDIAN)) {
                     throw new InvalidArgumentsException("Invalid option for integer output format");
                 }
                 arguments.setOutputOption(new ArrayList<>(List.of(lastInt)));
                 break;
             case BITS:
                 Option lastBits = arguments.getOutputOption().get(arguments.getOutputOption().size() - 1);
-                if (!lastBits.equals(Option.LEFT) && !lastBits.equals(Option.RIGHT)) {
+                if (!lastBits.equals(Option.LEFT_PAD) && !lastBits.equals(Option.RIGHT_PAD)) {
                     throw new InvalidArgumentsException("Invalid option for bits output format");
                 }
                 arguments.setOutputOption(new ArrayList<>(List.of(lastBits)));
