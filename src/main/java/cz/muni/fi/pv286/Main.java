@@ -26,7 +26,7 @@ public class Main {
 
         final OutputStream stdoutWriter;
         final InputStream stdinReader;
-        if (arguments.getInputFileType().equals(FileType.DEFAULT)) {
+        if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default output stream from stdout
             stdoutWriter = System.out;
         } else {
@@ -34,7 +34,7 @@ public class Main {
             return;
         }
 
-        if (arguments.getInputFileType().equals(FileType.DEFAULT)) {
+        if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default input stream from stdin
             stdinReader =  System.in;
         } else {
