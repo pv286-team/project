@@ -18,12 +18,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        ProgramArguments arguments;
+        ProgramArguments arguments = null;
         try {
             arguments = new ProgramArguments(args);
         } catch (InvalidArgumentsException e) {
             System.out.print(e.getMessage());
-            return;
+            System.exit(1);
         }
 
         final OutputStream stdoutWriter;
