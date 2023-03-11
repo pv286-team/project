@@ -35,4 +35,9 @@ public class PanbyteBitOutput extends PanbyteOutput {
     public void parserFinalize() {
 
     }
+
+    @Override
+    public PanbyteOutput getFresh() {
+        return new PanbyteBitOutput(this.outputStream);
+    }
 }

@@ -59,6 +59,11 @@ public class PanbyteBitInput extends PanbyteInput {
         this.flush();
     }
 
+    @Override
+    public PanbyteInput getFresh() {
+        return new PanbyteBitInput(this.output.getFresh(), padding);
+    }
+
     /**
      * Assert that all left bytes in the unparsed buffer are whitespace
      */
