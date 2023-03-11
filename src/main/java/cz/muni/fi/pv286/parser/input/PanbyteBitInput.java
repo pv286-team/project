@@ -100,7 +100,7 @@ public class PanbyteBitInput extends PanbyteInput {
 
         for (int i = 7; i >= 0; i--) {
             int mask = 1 << i;
-            if (((int) in & mask) != 0) {
+            if (((int) in & (1 << i)) != 0) {
                 if (direction) {
                     out |= mask >> shift;
                 } else {
