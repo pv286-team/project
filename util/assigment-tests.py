@@ -15,6 +15,8 @@ class TestCase(NamedTuple):
 TESTS: List[TestCase] = [
     # bytes
     TestCase(args=['-f', 'bytes', '-t', 'bytes'], data_in=b'test', expected_out=b'test'),
+    TestCase(args=['-f', 'bytes', '-t', 'bytes'], data_in='čauky'.encode('utf8'), expected_out='čauky'.encode('utf8')),  # extended test
+    TestCase(args=['-f', 'bytes', '-t', 'bytes'], data_in=b'test1\ntest2', expected_out=b'test1\ntest2'),  # extended test
     # hex
     # TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74657374', expected_out=b'test'),
     # TestCase(args=['-f', 'bytes', '-t', 'hex'], data_in=b'test', expected_out=b'74657374'),
