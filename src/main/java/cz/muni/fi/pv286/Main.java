@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -69,78 +68,50 @@ public class Main {
         Main.processIO(inputStream, outputStream, input, (byte) '\n');
     }
 
+    /**
+     * Processes all inputs possibly split by delimiter until end of file is reached
+     * For each input a new instance from inputFabricator is created
+     * @param inputStream from where to read input
+     * @param outputStream where to write output
+     * @param inputFabricator model from which fresh inputs are cloned
+     * @param delimiter delimiter to consider
+     */
     private static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte delimiter) throws IOException {
-        // buffer which contains data that were read after delimiter was found
-        // this data is part of the next IO iteration
-        final List<Byte> bufferLeftover = new ArrayList<>();
+        final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
-        while (Main.processIOSingle(inputStream, inputFabricator, delimiter, bufferLeftover)) {
+        // the single IO process returns true when delimiter was hit and there is more data to be read
+        while (Main.processIOSingle(reader, inputFabricator, delimiter)) {
             // flush the delimiter to the output if whole input was not read yet
             outputStream.write(delimiter);
             outputStream.flush();
         }
     }
 
-    private static boolean processIOSingle(final InputStream inputStream, final PanbyteInput inputFabricator, final byte delimiter, final List<Byte> bufferLeftover) throws IOException {
+    /**
+     * Processes a single input (separated by delimiter or end of file), sends it to the input parser and terminates
+     * @param reader input source
+     * @param inputFabricator model from which fresh inputs are cloned
+     * @param delimiter delimiter to consider
+     * @return true if more input is to be read, false otherwise
+     */
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte delimiter) throws IOException {
         final PanbyteInput input = inputFabricator.getFresh();
 
-        // Buffer of raw characters from the input
-        byte[] buffPrimitive = new byte[4096];
-        int buffPrimitiveReadCount;
+        // buffer read bytes so that it can be sent to the input parser at chunks
+        final List<Byte> bufferInternal = new ArrayList<>();
 
-        final List<Byte> bufferInternal = new ArrayList<>(bufferLeftover);
-        bufferLeftover.clear();
-
-        boolean delimiterEncountered = false;
-        boolean endOfFileEncountered = false;
-
-        // Until the end of file or delimiter is reached, try to fill up buffer
-        while (!delimiterEncountered && !endOfFileEncountered) {
-            buffPrimitiveReadCount = inputStream.read(buffPrimitive);
-            if (buffPrimitiveReadCount == -1) {
-                // we cannot end the cycle here
-                // we still may have data inside bufferInternal that needs further parsing
-                endOfFileEncountered = true;
+        boolean delimiterReached = false;
+        Byte readByte;
+        while (!delimiterReached && (readByte = reader.readByte()) != null) {
+            if (readByte != delimiter) {
+                // add all non-delimiter bytes to the buffer for subsequent parsing
+                bufferInternal.add(readByte);
+            } else {
+                delimiterReached = true;
             }
 
-            // process new data only if we are not already at the end of the file
-            if (!endOfFileEncountered) {
-                // copy the filled part of the (possibly) partially filled array into a correct List
-                for (int i = 0; i < buffPrimitiveReadCount; i++) {
-                    byte currByte = buffPrimitive[i];
-
-                    // check if the current input is split with this byte
-                    if (currByte == delimiter) {
-                        delimiterEncountered = true;
-                        if (i == buffPrimitiveReadCount - 1) {
-                            // the delimiter is the last byte of the already read input
-                            // test if the delimiter is also the last byte of whole input
-                            byte[] nextByte = new byte[1];
-                            if (inputStream.read(nextByte) == -1) {
-                                endOfFileEncountered = true;
-                            } else {
-                                // do not forget to add the read byte to the leftovers
-                                bufferLeftover.add(nextByte[0]);
-                            }
-                        }
-
-                        // do not process the delimiter further, skip it from parsing
-                        // continue adding all already read bytes into leftover array
-                        continue;
-                    }
-
-                    if (!delimiterEncountered) {
-                        // no delimiter was found yet, add the current byte to queue for parsing
-                        bufferInternal.add(currByte);
-                    } else {
-                        // delimiter was found already, queue the byte to be parsed by then next input parser
-                        bufferLeftover.add(currByte);
-                    }
-                }
-            }
-
-            // notify input parser about new data and send it unmodifiable list
-            if (bufferInternal.size() > 0) {
+            // if the buffer is larger enough or the end of this input was reached, flush
+            if (bufferInternal.size() % 4096 == 0 || delimiterReached || reader.isAllRead()) {
                 input.parse(Collections.unmodifiableList(bufferInternal));
                 bufferInternal.clear();
             }
@@ -149,7 +120,7 @@ public class Main {
         // notify input parser that we are done
         input.parserFinalize();
 
-        // returns true if delimiter was encountered -> there is more data
-        return !endOfFileEncountered;
+        // returns true if there is more data to be read
+        return !reader.isAllRead();
     }
 }
