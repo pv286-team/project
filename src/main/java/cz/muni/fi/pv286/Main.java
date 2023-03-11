@@ -26,11 +26,11 @@ public class Main {
             System.exit(1);
         }
 
-        final OutputStream stdoutWriter;
-        final InputStream stdinReader;
+        final OutputStream outputStream;
+        final InputStream inputStream;
         if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default output stream from stdout
-            stdoutWriter = System.out;
+            outputStream = System.out;
         } else {
             System.out.print("Not implemented yet.");
             return;
@@ -38,23 +38,45 @@ public class Main {
 
         if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default input stream from stdin
-            stdinReader =  System.in;
+            inputStream =  System.in;
         } else {
             System.out.print("Not implemented yet.");
             return;
         }
 
-        // Create default output as raw
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        // Create default input as raw with output as output
-        final PanbyteInput input = new PanbyteRawInput(output);
+        final PanbyteOutput output;
+        final PanbyteInput input;
+
+        switch (arguments.getOutputFormat()) {
+            case BYTES:
+                output = new PanbyteRawOutput(outputStream);
+                break;
+            default:
+                System.out.print("Not implemented yet.");
+                return;
+        }
+
+        switch (arguments.getInputFormat()) {
+            case BYTES:
+                input = new PanbyteRawInput(output);
+                break;
+            default:
+                System.out.print("Not implemented yet.");
+                return;
+        }
+
+        Main.processIOSingle(inputStream, input);
+    }
+
+    private static void processIOSingle(final InputStream inputStream, final PanbyteInput inputFabricator) throws IOException {
+        final PanbyteInput input = inputFabricator.getFresh();
 
         // Buffer of raw characters from the input
         byte[] buffPrimitive = new byte[4096];
         int buffPrimitiveReadCount;
 
         // Until the end of file is reached, try to fill up buffer
-        while ((buffPrimitiveReadCount = stdinReader.read(buffPrimitive)) != -1) {
+        while ((buffPrimitiveReadCount = inputStream.read(buffPrimitive)) != -1) {
             // Copy the filled part of the (possibly) partially filled array into a List
             final List<Byte> bytes = new ArrayList<>();
             for (int i = 0; i < buffPrimitiveReadCount; i++) {

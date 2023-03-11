@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class PanbyteOutput {
     // where to stream stringified bytes
-    private final OutputStream outputStream;
+    protected final OutputStream outputStream;
 
     /**
      * Initialize new output that formats parsed bytes
@@ -46,4 +46,10 @@ public abstract class PanbyteOutput {
      * To call when all data has been already passed to the stringify function
      */
     public abstract void parserFinalize();
+
+    /**
+     * Requests a fresh copy of a subclass of this object with empty buffers
+     * @return fresh copy of a subclass of this object with empty buffers
+     */
+    public abstract PanbyteOutput getFresh();
 }

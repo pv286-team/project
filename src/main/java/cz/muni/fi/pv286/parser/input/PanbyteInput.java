@@ -12,7 +12,7 @@ import java.util.List;
  */
 public abstract class PanbyteInput {
     // where to send parsed data
-    private final PanbyteOutput output;
+    protected final PanbyteOutput output;
     // internal buffer of already parsed data
     protected ArrayList<Byte> parsedBytes = new ArrayList<>();
 
@@ -49,4 +49,11 @@ public abstract class PanbyteInput {
      * @throws IOException Output write operation failed if parse method also flushes
      */
     public abstract void parse(final List<Byte> buffer) throws IOException;
+
+    /**
+     * Requests a fresh copy of a subclass of this object with empty buffers
+     * Needs to also empty buffers of assigned output
+     * @return fresh copy of a subclass of this object with empty buffers
+     */
+    public abstract PanbyteInput getFresh();
 }
