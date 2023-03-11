@@ -9,11 +9,11 @@ import java.util.List;
 
 public class ProgramArguments {
 
-    private FileType inputFileType = FileType.DEFAULT;
+    private FileType inputFileType = FileType.STANDARD;
     private String inputFileName = "";
     private Format inputFormat = Format.NONE;
     private List<Option> inputOption = new ArrayList<>();
-    private FileType outputFileType = FileType.DEFAULT;
+    private FileType outputFileType = FileType.STANDARD;
     private String outputFileName = "";
     private Format outputFormat = Format.NONE;
     private List<Option> outputOption = new ArrayList<>();
@@ -21,7 +21,7 @@ public class ProgramArguments {
     private Boolean help = false;
 
 
-    public ProgramArguments(String[] args) throws Exception {
+    public ProgramArguments(String[] args) throws InvalidArgumentsException {
         ArgumentParser.parseArguments(args, this);
         ArgumentValidator.validateArguments(this);
     }
