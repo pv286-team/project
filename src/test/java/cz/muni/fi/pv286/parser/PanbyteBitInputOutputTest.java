@@ -1,6 +1,9 @@
-package cz.muni.fi.pv286.parser.input;
+package cz.muni.fi.pv286.parser;
 
 import cz.muni.fi.pv286.arguments.values.Option;
+import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
+import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import org.junit.jupiter.api.Test;
@@ -13,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-class PanbyteBitInputTest {
+class PanbyteBitInputOutputTest {
 
     // TODO: get that functionality directly from main()
     void readInput(InputStream stdinReader, PanbyteInput input) throws IOException {
@@ -74,7 +77,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void OneByte_full() {
+    void INPUT_OneByte_full() {
         String inputString = "01001111";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -93,7 +96,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void OneByteWhiteSpaces_full() {
+    void INPUT_OneByteWhiteSpaces_full() {
         String inputString = "0 100\t111\n1\n";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -112,7 +115,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void FourBits_rightPad() {
+    void INPUT_FourBits_rightPad() {
         String inputString = "0011";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -131,7 +134,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void FiveBits_rightPad_whitespaces() {
+    void INPUT_FiveBits_rightPad_whitespaces() {
         String inputString = "00 11\t0 0";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -150,7 +153,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void OneByte_rightPad() {
+    void INPUT_OneByte_rightPad() {
         String inputString = "01001110";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -169,7 +172,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void OneByte_leftPad1() throws IOException {
+    void INPUT_OneByte_leftPad1() throws IOException {
         String inputString = "0110000";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -184,7 +187,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void OneByte_leftPad2() {
+    void INPUT_OneByte_leftPad2() {
         String inputString = "110001";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -203,7 +206,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void TwoBytes_leftPad1() {
+    void INPUT_TwoBytes_leftPad1() {
         String inputString = "0110001 00110010";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -222,7 +225,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void TwoBytes_leftPad2() {
+    void INPUT_TwoBytes_leftPad2() {
         String inputString = "110001 00110011";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -241,7 +244,7 @@ class PanbyteBitInputTest {
     }
 
     @Test
-    void TwoBytes_full() {
+    void INPUT_TwoBytes_full() {
         String inputString = "01001111 01001011";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -257,5 +260,81 @@ class PanbyteBitInputTest {
 
         String result = stdoutWriter.toString();
         assert(result.equals("OK"));
+    }
+
+    @Test
+    void OUTPUT_OneByte_full() {
+        String inputString = "01001111";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals(inputString));
+    }
+
+    @Test
+    void OUTPUT_TwoBytes_full() {
+        String inputString = "01001111 01001011";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("OK"));
+    }
+
+    @Test
+    void OUTPUT_TwoBytes_leftPad2() {
+        String inputString = "110001 00110011";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("0011000100110011"));
+    }
+
+    @Test
+    void OUTPUT_TwoBytes_leftPad4() {
+        String inputString = "10 11 001100\t11";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("0000101100110011"));
     }
 }
