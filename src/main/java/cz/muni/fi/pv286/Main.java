@@ -65,7 +65,7 @@ public class Main {
                 return;
         }
 
-        Main.processIO(inputStream, outputStream, input, (byte) '\n');
+        Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
     }
 
     /**
@@ -76,7 +76,7 @@ public class Main {
      * @param inputFabricator model from which fresh inputs are cloned
      * @param delimiter delimiter to consider
      */
-    private static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte delimiter) throws IOException {
+    private static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
         final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
         // the single IO process returns true when delimiter was hit and there is more data to be read
@@ -94,20 +94,20 @@ public class Main {
      * @param delimiter delimiter to consider
      * @return true if more input is to be read, false otherwise
      */
-    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte delimiter) throws IOException {
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
         final PanbyteInput input = inputFabricator.getFresh();
 
         // buffer read bytes so that it can be sent to the input parser at chunks
         final List<Byte> bufferInternal = new ArrayList<>();
 
         boolean delimiterReached = false;
-        Byte readByte;
-        while (!delimiterReached && (readByte = reader.readByte()) != null) {
-            if (readByte != delimiter) {
-                // add all non-delimiter bytes to the buffer for subsequent parsing
-                bufferInternal.add(readByte);
-            } else {
+        while (!delimiterReached && !reader.isAllRead()) {
+            if (reader.isNext(delimiter, true)) {
+                // there is delimiter ahead, pop it from the input, ignore it and end this input
                 delimiterReached = true;
+            } else {
+                // there is still at least one byte to read
+                bufferInternal.add(reader.readByte());
             }
 
             // if the buffer is larger enough or the end of this input was reached, flush

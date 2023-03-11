@@ -17,7 +17,7 @@ public class ProgramArguments {
     private String outputFileName = "";
     private Format outputFormat = Format.NONE;
     private List<Option> outputOption = new ArrayList<>();
-    private String delimiter = "";
+    private String delimiter = "\n";
     private Boolean help = false;
 
 
