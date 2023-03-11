@@ -126,4 +126,9 @@ public class PanbyteHexInput extends PanbyteInput {
         // no more bytes
         return null;
     }
+
+    @Override
+    public PanbyteInput getFresh() {
+        return new PanbyteHexInput(this.output.getFresh());
+    }
 }
