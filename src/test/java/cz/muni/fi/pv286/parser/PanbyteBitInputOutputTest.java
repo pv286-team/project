@@ -3,6 +3,7 @@ package cz.muni.fi.pv286.parser;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
@@ -74,6 +75,25 @@ class PanbyteBitInputOutputTest {
 
         String result = stdoutWriter.toString();
         assert(result.equals("OK"));
+    }
+
+    @Test
+    void TestAssignment_04() {
+        String inputString = "OK";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteRawInput(output);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("0100111101001011"));
     }
 
     @Test
@@ -337,4 +357,6 @@ class PanbyteBitInputOutputTest {
         String result = stdoutWriter.toString();
         assert(result.equals("0000101100110011"));
     }
+
+
 }
