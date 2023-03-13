@@ -7,6 +7,9 @@ import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
+import cz.muni.fi.pv286.arguments.values.Option;
+import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
+import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 
@@ -56,6 +59,9 @@ public class Main {
             case HEX:
                 output = new PanbyteHexOutput(outputStream);
                 break;
+            case BITS:
+                output = new PanbyteBitOutput(outputStream);
+                break;
             default:
                 System.out.print("Not implemented yet.");
                 return;
@@ -71,6 +77,11 @@ public class Main {
                 break;
             case HEX:
                 input = new PanbyteHexInput(output);
+                break;
+        case BITS:
+                /* In that place, argument should be checked and valid */
+                Option inputOption = arguments.getInputOption().get(0);
+                input = new PanbyteBitInput(output, inputOption);
                 break;
             default:
                 System.out.print("Not implemented yet.");
