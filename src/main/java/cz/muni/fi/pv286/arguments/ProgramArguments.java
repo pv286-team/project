@@ -18,6 +18,7 @@ public class ProgramArguments {
     private Format outputFormat = Format.NONE;
     private List<Option> outputOption = new ArrayList<>();
     private String delimiter = "\n";
+    private boolean delimiterSet = false;
     private Boolean help = false;
 
 
@@ -98,8 +99,13 @@ public class ProgramArguments {
         return delimiter;
     }
 
+    public boolean isDelimiterSet() {
+        return this.delimiterSet;
+    }
+
     public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
+        this.delimiterSet = true;
     }
 
     public Boolean getHelp() {

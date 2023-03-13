@@ -59,6 +59,10 @@ public class Main {
         switch (arguments.getInputFormat()) {
             case BYTES:
                 input = new PanbyteRawInput(output);
+                if (!arguments.isDelimiterSet()) {
+                    // when delimiter is not explicitly set for this mode, ignore it
+                    arguments.setDelimiter("");
+                }
                 break;
             default:
                 System.out.print("Not implemented yet.");
@@ -102,7 +106,7 @@ public class Main {
 
         boolean delimiterReached = false;
         while (!delimiterReached && !reader.isAllRead()) {
-            if (reader.isNext(delimiter, true)) {
+            if (delimiter.length > 0 && reader.isNext(delimiter, true)) {
                 // there is delimiter ahead, pop it from the input, ignore it and end this input
                 delimiterReached = true;
             } else {
