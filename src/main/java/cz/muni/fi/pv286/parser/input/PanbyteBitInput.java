@@ -15,18 +15,19 @@ public class PanbyteBitInput extends PanbyteInput {
     /** Initialized in constructor as set for faster searching in allowed LOWERCASE characters */
     private final Set<Byte> allowedCharactersSet = new HashSet<>();
     private static final int highestBitIndex = 7;
+    private static final int bits = 8;
 
     /** While reading bits, they might be aligned from left or right
      *  This can be adjusted after reading all bits from input */
     private final ArrayList<Byte> unalignedParsedBytes = new ArrayList<>();
-    private int bitsNumber;
+    private int parsedBitsNumber;
     private final Option padding;
 
 
     public PanbyteBitInput(PanbyteOutput output, Option option) {
         super(output);
         padding = option;
-        this.bitsNumber = 0;
+        this.parsedBitsNumber = 0;
         this.allowedCharactersSet.addAll(Arrays.asList(PanbyteBitInput.allowedCharacters));
     }
 
@@ -35,27 +36,25 @@ public class PanbyteBitInput extends PanbyteInput {
         // append all received bytes to the previously unparsed ones
         this.unparsedBuffer.addAll(buffer);
 
-        Byte readByte;
+        //Byte readByte;
         byte currentByte = 0;
         int numberOfBits = highestBitIndex;
+        byte[] eightBytes;
 
         // read unparsed bits while they are available
-        while ((readByte = this.popUnparsedByte()) != null) {
-            int bitValue = (int) readByte - 48;
-            // add newly added bit to the highest possible position
-            currentByte |= (bitValue << numberOfBits);
-            numberOfBits--;
-            bitsNumber++;
-            if (numberOfBits == -1) {
-                addSingleByte(currentByte);
-                numberOfBits = highestBitIndex;
-                currentByte = 0;
+        while ((eightBytes = this.popUnparsedEightBytes()) != null) {
+            for (byte popped : eightBytes) {
+                int bitValue = (int) popped - (int) '0';
+                // add newly added bit to the highest possible position
+                currentByte |= (bitValue << numberOfBits);
+                numberOfBits--;
+                parsedBitsNumber++;
+                if (numberOfBits == -1) {
+                    addSingleByte(currentByte);
+                    numberOfBits = highestBitIndex;
+                    currentByte = 0;
+                }
             }
-        }
-
-        // if there is less than 8 bits, add them as only one byte
-        if (numberOfBits != 7) {
-             addSingleByte(currentByte);
         }
         // the right padding is the native way how to store bits, no need for aligning
         if (padding == Option.RIGHT_PAD) {
@@ -73,9 +72,22 @@ public class PanbyteBitInput extends PanbyteInput {
      */
     @Override
     public void parserFinalize() throws IOException {
-        // for right padding there should be no more left bytes
-        if (padding == Option.RIGHT_PAD && this.popUnparsedByte() != null) {
-            throw new IllegalArgumentException("More input is expected");
+        // if there are still some unparsed input bytes, their corresponding bits fit into one byte
+        if (!unparsedBuffer.isEmpty()) {
+            Byte popped;
+            int numberOfBits = highestBitIndex;
+            byte currentByte = 0;
+            while ((popped = popUnparsedByte()) != null) {
+                int bitValue = (int) popped - (int) '0';
+                currentByte |= (bitValue << numberOfBits);
+                numberOfBits--;
+                parsedBitsNumber++;
+            }
+            addSingleByte(currentByte);
+        }
+        // for right padding we can directly flush
+        if (padding == Option.RIGHT_PAD) {
+            this.flush();
         }
         // for left padding, we need to read all data from input and then align
         if (padding == Option.LEFT_PAD) {
@@ -95,6 +107,30 @@ public class PanbyteBitInput extends PanbyteInput {
         } else {
             this.parsedBytes.add(current);
         }
+    }
+
+    /**
+     * Read from unparsed buffer 8 bytes representing 8 bits,
+     * if cannot be read, put them back.
+     * @return allowed byte or null if not more are available
+     */
+    private byte[] popUnparsedEightBytes() {
+        int poppedNumber = 0;
+        byte[] bytes = new byte[bits];
+
+        for (int i = 0; i < bits; i++) {
+            Byte popped = popUnparsedByte();
+            if (popped == null) {
+                // there are not 8 bits ready, put them back
+                for (int j = 0; j < poppedNumber; j++) {
+                    this.unparsedBuffer.add(j, bytes[j]);
+                }
+                return null;
+            }
+            poppedNumber++;
+            bytes[i] = popped;
+        }
+        return bytes;
     }
 
     /**
@@ -150,14 +186,14 @@ public class PanbyteBitInput extends PanbyteInput {
      */
     private ArrayList<Byte> alignBytesLeft() {
         ArrayList<Byte> alignedBytes = new ArrayList<>();
-        if (bitsNumber == 0 || bitsNumber % 8 == 0) {
+        if (parsedBitsNumber == 0 || parsedBitsNumber % bits == 0) {
             // We do not have to add padding
             alignedBytes.addAll(unalignedParsedBytes);
             return alignedBytes;
         }
 
         // Get size of the shift and pad the first byte
-        int shift = 8 - (bitsNumber % 8);
+        int shift = 8 - (parsedBitsNumber % bits);
         byte b = unalignedParsedBytes.get(0);
         byte shifted = shift(b, shift, true);
         alignedBytes.add(shifted);
@@ -165,7 +201,7 @@ public class PanbyteBitInput extends PanbyteInput {
         // Then, get second part of the current byte and first part of next byte
         for (int i = 0; i < unalignedParsedBytes.size() - 1; i++) {
             byte currentByte = 0;
-            currentByte |= shift(unalignedParsedBytes.get(i), 8 - shift, false);
+            currentByte |= shift(unalignedParsedBytes.get(i), bits - shift, false);
             currentByte |= shift(unalignedParsedBytes.get(i + 1), shift, true);
             alignedBytes.add(currentByte);
         }
