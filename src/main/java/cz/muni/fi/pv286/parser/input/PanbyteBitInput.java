@@ -41,6 +41,7 @@ public class PanbyteBitInput extends PanbyteInput {
         // read unparsed bits while they are available
         while ((readByte = this.popUnparsedByte()) != null) {
             int bitValue = (int) readByte - 48;
+            // add newly added bit to the highest possible position
             currentByte |= (bitValue << numberOfBits);
             numberOfBits--;
             bitsNumber++;
@@ -51,10 +52,12 @@ public class PanbyteBitInput extends PanbyteInput {
             }
         }
 
+        // if there is less than 8 bits, add them as only one byte
         if (numberOfBits != 7) {
             unalignedParsedBytes.add(currentByte);
         }
 
+        // bit are now RIGHT padded, check & fix it for LEFT padding if needed
         this.parsedBytes.addAll(this.alignBytes(this.padding));
         this.flush();
     }
@@ -77,6 +80,10 @@ public class PanbyteBitInput extends PanbyteInput {
         super.parserFinalize();
     }
 
+    /**
+     * Takes a single allowed unparsed byte if available
+     * @return allowed byte or null if not more are available
+     */
     private Byte popUnparsedByte() {
         while (this.unparsedBuffer.size() > 0) {
             // pop first unparsed byte
@@ -100,9 +107,13 @@ public class PanbyteBitInput extends PanbyteInput {
         return null;
     }
 
+    /**
+     * Takes single input byte, the number of bits to be shifted and direction
+     * @return shifted byte
+     */
     private byte shift(byte in, int shift, boolean direction) {
         byte out = 0;
-
+        // go through all bits in input byte, check where 1 is and insert it shifted to the output byte
         for (int i = 7; i >= 0; i--) {
             int mask = 1 << i;
             if (((int) in & (1 << i)) != 0) {
@@ -116,22 +127,26 @@ public class PanbyteBitInput extends PanbyteInput {
         return out;
     }
 
+    /**
+     * Takes unaligned parsed bit and aligns them according to the intpu option
+     * @return padded bits from left/right
+     */
     private ArrayList<Byte> alignBytes(Option padding) {
         ArrayList<Byte> alignedBytes = new ArrayList<>();
         switch (padding) {
             case LEFT_PAD: {
                 if (bitsNumber == 0 || bitsNumber % 8 == 0) {
-                    /* We do not have to add padding*/
+                    // We do not have to add padding
                     alignedBytes.addAll(unalignedParsedBytes);
                     break;
                 }
-                /* Get size of the shift and pad the first byte */
+                // Get size of the shift and pad the first byte
                 int shift = 8 - (bitsNumber % 8);
                 byte b = unalignedParsedBytes.get(0);
                 byte shifted = shift(b, shift, true);
                 alignedBytes.add(shifted);
 
-                /* Then, get second part of the current byte and first part of next byte */
+                // Then, get second part of the current byte and first part of next byte
                 for (int i = 0; i < unalignedParsedBytes.size() - 1; i++) {
                     byte currentByte = 0;
                     currentByte |= shift(unalignedParsedBytes.get(i), 8 - shift, false);
@@ -141,7 +156,7 @@ public class PanbyteBitInput extends PanbyteInput {
                 break;
             }
             case RIGHT_PAD:
-                /* Right padding is already done */
+                // Right padding is already done
                 alignedBytes.addAll(unalignedParsedBytes);
                 break;
             default:
