@@ -41,7 +41,7 @@ public class PanbyteBitInput extends PanbyteInput {
         int numberOfBits = highestBitIndex;
         byte[] eightBytes;
 
-        // read unparsed bits while they are available
+        // read from unparsed bytes by 8
         while ((eightBytes = this.popUnparsedEightBytes()) != null) {
             for (byte popped : eightBytes) {
                 int bitValue = (int) popped - (int) '0';
@@ -50,13 +50,14 @@ public class PanbyteBitInput extends PanbyteInput {
                 numberOfBits--;
                 parsedBitsNumber++;
                 if (numberOfBits == -1) {
+                    // if full byte, add it to the output buffer
                     addSingleByte(currentByte);
                     numberOfBits = highestBitIndex;
                     currentByte = 0;
                 }
             }
         }
-        // the right padding is the native way how to store bits, no need for aligning
+        // the right padding is the native way how to store bits, no need for further aligning
         if (padding == Option.RIGHT_PAD) {
             this.flush();
         }
@@ -72,7 +73,7 @@ public class PanbyteBitInput extends PanbyteInput {
      */
     @Override
     public void parserFinalize() throws IOException {
-        // if there are still some unparsed input bytes, their corresponding bits fit into one byte
+        // if there are still some unparsed input bytes, there is less than 8 of them (otherwise already parsed)
         if (!unparsedBuffer.isEmpty()) {
             Byte popped;
             int numberOfBits = highestBitIndex;
@@ -170,11 +171,7 @@ public class PanbyteBitInput extends PanbyteInput {
         for (int i = highestBitIndex; i >= 0; i--) {
             int mask = 1 << i;
             if (((int) in & (1 << i)) != 0) {
-                if (direction) {
-                    out |= mask >> shift;
-                } else {
-                    out |= mask << shift;
-                }
+                out |= (direction ? mask >> shift : mask << shift);
             }
         }
         return out;
@@ -198,7 +195,7 @@ public class PanbyteBitInput extends PanbyteInput {
         byte shifted = shift(b, shift, true);
         alignedBytes.add(shifted);
 
-        // Then, get second part of the current byte and first part of next byte
+        // Then, get & shift second part of the current byte and first part of next byte, so they fit into new one byte
         for (int i = 0; i < unalignedParsedBytes.size() - 1; i++) {
             byte currentByte = 0;
             currentByte |= shift(unalignedParsedBytes.get(i), bits - shift, false);
