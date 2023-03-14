@@ -136,6 +136,11 @@ class ArgumentParser {
                     throw new InvalidArgumentsException("Unknown option");
             }
         }
+
+        // if input format is bit-format, reset delimiter to no delimiter if not set explicitly
+        if (result.getInputFormat() == Format.BITS && !result.isDelimiterSet()) {
+            result.setDelimiter("\n");
+        }
     }
 
     private static void setDefaultArguments(ProgramArguments arguments) throws InvalidArgumentsException {
