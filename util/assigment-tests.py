@@ -18,9 +18,9 @@ TESTS: List[TestCase] = [
     TestCase(args=['-f', 'bytes', '-t', 'bytes'], data_in='čauky'.encode('utf8'), expected_out='čauky'.encode('utf8')),  # extended test
     TestCase(args=['-f', 'bytes', '-t', 'bytes'], data_in=b'test1\ntest2', expected_out=b'test1\ntest2'),  # extended test
     # hex
-    # TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74657374', expected_out=b'test'),
-    # TestCase(args=['-f', 'bytes', '-t', 'hex'], data_in=b'test', expected_out=b'74657374'),
-    # TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74 65 73 74', expected_out=b'test'),
+    TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74657374', expected_out=b'test'),
+    TestCase(args=['-f', 'bytes', '-t', 'hex'], data_in=b'test', expected_out=b'74657374'),
+    TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74 65 73 74', expected_out=b'test'),
     # int
     # TestCase(args=['-f', 'int', '-t', 'hex'], data_in=b'1234567890', expected_out=b'499602d2'),
     # TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=big'], data_in=b'1234567890', expected_out=b'499602d2'),
