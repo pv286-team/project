@@ -70,11 +70,6 @@ public class ArgumentValidator {
                 arguments.setOutputOption(new ArrayList<>(List.of(lastInt)));
                 break;
             case BITS:
-                Option lastBits = arguments.getOutputOption().get(arguments.getOutputOption().size() - 1);
-                if (!lastBits.equals(Option.LEFT_PAD) && !lastBits.equals(Option.RIGHT_PAD)) {
-                    throw new InvalidArgumentsException("Invalid option for bits output format");
-                }
-                arguments.setOutputOption(new ArrayList<>(List.of(lastBits)));
                 break;
             case ARRAY:
                 // TODO: Validate two values - format and brackets
