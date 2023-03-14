@@ -23,4 +23,9 @@ public class PanbyteRawOutput extends PanbyteOutput {
     public void parserFinalize() {
         // no-op, everything already has been sent from stringify
     }
+
+    @Override
+    public PanbyteOutput getFresh() {
+        return new PanbyteRawOutput(this.outputStream);
+    }
 }

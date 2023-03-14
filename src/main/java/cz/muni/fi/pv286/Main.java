@@ -26,11 +26,11 @@ public class Main {
             System.exit(1);
         }
 
-        final OutputStream stdoutWriter;
-        final InputStream stdinReader;
+        final OutputStream outputStream;
+        final InputStream inputStream;
         if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default output stream from stdout
-            stdoutWriter = System.out;
+            outputStream = System.out;
         } else {
             System.out.print("Not implemented yet.");
             return;
@@ -38,34 +38,93 @@ public class Main {
 
         if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default input stream from stdin
-            stdinReader =  System.in;
+            inputStream =  System.in;
         } else {
             System.out.print("Not implemented yet.");
             return;
         }
 
-        // Create default output as raw
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        // Create default input as raw with output as output
-        final PanbyteInput input = new PanbyteRawInput(output);
+        final PanbyteOutput output;
+        final PanbyteInput input;
 
-        // Buffer of raw characters from the input
-        byte[] buffPrimitive = new byte[4096];
-        int buffPrimitiveReadCount;
-
-        // Until the end of file is reached, try to fill up buffer
-        while ((buffPrimitiveReadCount = stdinReader.read(buffPrimitive)) != -1) {
-            // Copy the filled part of the (possibly) partially filled array into a List
-            final List<Byte> bytes = new ArrayList<>();
-            for (int i = 0; i < buffPrimitiveReadCount; i++) {
-                bytes.add(buffPrimitive[i]);
-            }
-
-            // Notify input parser about new data and send it unmodifiable list
-            input.parse(Collections.unmodifiableList(bytes));
+        switch (arguments.getOutputFormat()) {
+            case BYTES:
+                output = new PanbyteRawOutput(outputStream);
+                break;
+            default:
+                System.out.print("Not implemented yet.");
+                return;
         }
 
-        // Notify input parser that we are done
+        switch (arguments.getInputFormat()) {
+            case BYTES:
+                input = new PanbyteRawInput(output);
+                if (!arguments.isDelimiterSet()) {
+                    // when delimiter is not explicitly set for this mode, ignore it
+                    arguments.setDelimiter("");
+                }
+                break;
+            default:
+                System.out.print("Not implemented yet.");
+                return;
+        }
+
+        Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
+    }
+
+    /**
+     * Processes all inputs possibly split by delimiter until end of file is reached
+     * For each input a new instance from inputFabricator is created
+     * @param inputStream from where to read input
+     * @param outputStream where to write output
+     * @param inputFabricator model from which fresh inputs are cloned
+     * @param delimiter delimiter to consider
+     */
+    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+        final VirtualByteReader reader = new VirtualByteReader(inputStream);
+
+        // the single IO process returns true when delimiter was hit and there is more data to be read
+        while (Main.processIOSingle(reader, inputFabricator, delimiter)) {
+            // flush the delimiter to the output if whole input was not read yet
+            outputStream.write(delimiter);
+            outputStream.flush();
+        }
+    }
+
+    /**
+     * Processes a single input (separated by delimiter or end of file), sends it to the input parser and terminates
+     * @param reader input source
+     * @param inputFabricator model from which fresh inputs are cloned
+     * @param delimiter delimiter to consider
+     * @return true if more input is to be read, false otherwise
+     */
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+        final PanbyteInput input = inputFabricator.getFresh();
+
+        // buffer read bytes so that it can be sent to the input parser at chunks
+        final List<Byte> bufferInternal = new ArrayList<>();
+
+        boolean delimiterReached = false;
+        while (!delimiterReached && !reader.isAllRead()) {
+            if (delimiter.length > 0 && reader.isNext(delimiter, true)) {
+                // there is delimiter ahead, pop it from the input, ignore it and end this input
+                delimiterReached = true;
+            } else {
+                // there is still at least one byte to read
+                bufferInternal.add(reader.readByte());
+            }
+
+            // if the buffer is larger enough or the end of this input was reached, flush
+            if (bufferInternal.size() % 4096 == 0 || delimiterReached || reader.isAllRead()) {
+                input.parse(Collections.unmodifiableList(bufferInternal));
+                bufferInternal.clear();
+            }
+        }
+
+        // notify input parser that we are done
         input.parserFinalize();
+
+        // returns true if there is more data to be read
+        return !reader.isAllRead();
     }
 }

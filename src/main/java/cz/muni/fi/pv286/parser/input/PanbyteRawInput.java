@@ -19,4 +19,9 @@ public class PanbyteRawInput extends PanbyteInput {
         this.parsedBytes.addAll(buffer);
         this.flush();
     }
+
+    @Override
+    public PanbyteInput getFresh() {
+        return new PanbyteRawInput(this.output.getFresh());
+    }
 }
