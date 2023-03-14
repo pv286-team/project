@@ -9,12 +9,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** This class has to load all digits from input in the internal buffer and only then convert them to bytes */
+/** This class has to load all digits from input in the internal buffer and only then convert them to bytes. */
 public class PanbyteIntInput extends PanbyteInput {
 
-    /** Internal buffer of yet unparsed bytes, may contain up to one (odd) byte from parse() call */
     private final List<Byte> unparsedBuffer = new ArrayList<>();
-    private final List<Byte> numberInputBytes = new ArrayList<>();
+    private final List<Byte> integerInputBytes = new ArrayList<>();
     private String digits = "";
     private final Option endianity;
 
@@ -40,11 +39,11 @@ public class PanbyteIntInput extends PanbyteInput {
                 continue;
             }
 
-            numberInputBytes.add(nextByte);
+            integerInputBytes.add(nextByte);
         }
 
         // from parsed bytes make String and append it to stored digits
-        digits = digits.concat(numberInputBytes.stream()
+        digits = digits.concat(integerInputBytes.stream()
                 .map(n -> String.valueOf(n))
                 .collect(Collectors.joining())
         );
@@ -61,10 +60,10 @@ public class PanbyteIntInput extends PanbyteInput {
             throw new IllegalArgumentException("Internal buffer should be empty");
         }
 
-        BigInteger number = new BigInteger(digits);
-        byte[] numberByteArray = number.toByteArray();
+        BigInteger integer = new BigInteger(digits);
+        byte[] integerByteArray = integer.toByteArray();
 
-        for (byte b : numberByteArray) {
+        for (byte b : integerByteArray) {
             this.parsedBytes.add(b);
         }
 
