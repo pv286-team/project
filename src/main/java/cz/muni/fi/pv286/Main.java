@@ -80,7 +80,7 @@ public class Main {
      * @param inputFabricator model from which fresh inputs are cloned
      * @param delimiter delimiter to consider
      */
-    private static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
         final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
         // the single IO process returns true when delimiter was hit and there is more data to be read
