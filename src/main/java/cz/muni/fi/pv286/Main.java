@@ -5,11 +5,13 @@ import cz.muni.fi.pv286.arguments.ProgramArguments;
 import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.input.PanbyteIntInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
+import cz.muni.fi.pv286.parser.output.PanbyteIntOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 
 import java.io.*;
@@ -61,6 +63,9 @@ public class Main {
             case BITS:
                 output = new PanbyteBitOutput(outputStream);
                 break;
+            case INT:
+                output = new PanbyteIntOutput(outputStream, arguments.getInputOption().get(0));
+                break;
             default:
                 System.out.print("Not implemented yet.");
                 return;
@@ -77,9 +82,12 @@ public class Main {
             case HEX:
                 input = new PanbyteHexInput(output);
                 break;
-        case BITS:
+            case BITS:
                 /* In that place, argument should be checked and valid */
                 input = new PanbyteBitInput(output, arguments.getInputOption());
+                break;
+            case INT:
+                input = new PanbyteIntInput(output, arguments.getInputOption().get(0));
                 break;
             default:
                 System.out.print("Not implemented yet.");
