@@ -5,6 +5,7 @@ import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
+import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,25 @@ class PanbyteBitInputOutputTest {
 
         String result = stdoutWriter.toString();
         assert(result.equals("OK"));
+    }
+
+    @Test
+    void TestAssignment_03()  {
+        String inputString = "100111101001011";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+
+        try {
+            readInput(stdinReader, input);
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("9e96"));
     }
 
     @Test
