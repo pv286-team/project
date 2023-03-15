@@ -64,7 +64,7 @@ public class Main {
                 output = new PanbyteBitOutput(outputStream);
                 break;
             case INT:
-                output = new PanbyteIntOutput(outputStream, arguments.getInputOption().get(0));
+                output = new PanbyteIntOutput(outputStream, arguments.getOutputOption().get(0));
                 break;
             default:
                 System.out.print("Not implemented yet.");
