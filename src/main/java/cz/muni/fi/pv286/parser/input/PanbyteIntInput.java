@@ -3,6 +3,7 @@ package cz.muni.fi.pv286.parser.input;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,15 +43,15 @@ public class PanbyteIntInput extends PanbyteInput {
             integerInputBytes.add(nextByte);
         }
 
-        // from parsed bytes make String and append it to stored digits
+        // each parsed byte convert to char, then to String and concat those Strings into one String
         digits = digits.concat(integerInputBytes.stream()
-                .map(n -> String.valueOf(n))
+                .map(n -> String.valueOf((char) (n & 0xFF)))
                 .collect(Collectors.joining())
         );
     }
 
     @Override
-    public void parserFinalize() {
+    public void parserFinalize() throws IOException {
         // check if everything was already parsed and nothing more is available
         if (this.unparsedBuffer.size() > 0) {
             throw new IllegalArgumentException("More input is expected");
@@ -71,6 +72,7 @@ public class PanbyteIntInput extends PanbyteInput {
             Collections.reverse(this.parsedBytes);
         }
 
+        this.flush();
         super.parserFinalize();
     }
 

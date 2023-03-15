@@ -21,17 +21,24 @@ public class PanbyteIntOutput extends PanbyteOutput {
     @Override
     public void stringify(final List<Byte> buffer) throws IOException {
         final List<Byte> out = new ArrayList<>();
+        List<Byte> mutableBuffer = new ArrayList<>(buffer);
 
         if (endianity == Option.LITTLE_ENDIAN) {
-            Collections.reverse(buffer);
+            Collections.reverse(mutableBuffer);
         }
 
-        final byte[] integerByteArray = new byte[buffer.size()];
-        for (int i = 0; i < buffer.size(); i++) {
-            integerByteArray[i] = buffer.get(i);
+        final byte[] integerByteArray = new byte[mutableBuffer.size()];
+        for (int i = 0; i < mutableBuffer.size(); i++) {
+            integerByteArray[i] = mutableBuffer.get(i);
         }
 
-        final BigInteger integer = new BigInteger(integerByteArray);
+        final BigInteger integer;
+        try {
+            integer = new BigInteger(integerByteArray);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Cannot create integer from input bytes");
+        }
+
         final String digits = integer.toString(10);
 
         // using platform default charset
