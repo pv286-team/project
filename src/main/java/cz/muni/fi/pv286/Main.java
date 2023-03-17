@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvalidArgumentsException {
 
         ProgramArguments arguments = null;
         try {
@@ -105,7 +105,7 @@ public class Main {
      * @param inputFabricator model from which fresh inputs are cloned
      * @param delimiter delimiter to consider
      */
-    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
         final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
         // the single IO process returns true when delimiter was hit and there is more data to be read
@@ -123,7 +123,7 @@ public class Main {
      * @param delimiter delimiter to consider
      * @return true if more input is to be read, false otherwise
      */
-    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
         final PanbyteInput input = inputFabricator.getFresh();
 
         // buffer read bytes so that it can be sent to the input parser at chunks

@@ -1,5 +1,6 @@
 package cz.muni.fi.pv286.parser.input;
 
+import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public abstract class PanbyteInput {
      * @param buffer raw read data
      * @throws IOException Output write operation failed if parse method also flushes
      */
-    public abstract void parse(final List<Byte> buffer) throws IOException;
+    public abstract void parse(final List<Byte> buffer) throws IOException, InvalidArgumentsException;
 
     /**
      * Requests a fresh copy of a subclass of this object with empty buffers

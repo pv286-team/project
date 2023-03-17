@@ -1,5 +1,6 @@
 package cz.muni.fi.pv286.parser.input;
 
+import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.Util;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
@@ -22,7 +23,7 @@ public class PanbyteIntInput extends PanbyteInput {
         endianity = option;
     }
 
-    public void parse(final List<Byte> buffer) {
+    public void parse(final List<Byte> buffer) throws InvalidArgumentsException {
         // append all received bytes to the previously unparsed ones
         this.unparsedBuffer.addAll(buffer);
 
@@ -35,8 +36,7 @@ public class PanbyteIntInput extends PanbyteInput {
                 continue;
             }
             if (!Character.isDigit(nextByte)) {
-                // skip all non-digit characters
-                continue;
+                throw new InvalidArgumentsException("Invalid character encountered");
             }
 
             integer = integer.multiply(new BigInteger("10"));
@@ -47,9 +47,7 @@ public class PanbyteIntInput extends PanbyteInput {
     @Override
     public void parserFinalize() throws IOException {
         // check if everything was already parsed and nothing more is available
-        if (this.unparsedBuffer.size() > 0) {
-            throw new IllegalArgumentException("More input is expected");
-        }
+        assert(this.unparsedBuffer.size() > 0);
         // check if some partial parsing have been done
         if (this.parsedBytes.size() > 0) {
             throw new IllegalArgumentException("Internal buffer should be empty");
