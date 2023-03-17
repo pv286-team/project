@@ -145,7 +145,7 @@ class ArgumentParser {
 
     private static void setDefaultArguments(ProgramArguments arguments) throws InvalidArgumentsException {
         // if input format is bit-format, reset delimiter to no delimiter if not set explicitly
-        if (arguments.getInputFormat() == Format.BITS && !arguments.isDelimiterSet()) {
+        if (arguments.getInputFormat() == Format.BYTES && !arguments.isDelimiterSet()) {
             arguments.setDelimiter("");
         }
 
