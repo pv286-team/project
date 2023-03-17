@@ -30,7 +30,7 @@ public abstract class PanbyteInput {
     /**
      * Notifies both this input and attached output that the end-of-file was reached
      */
-    public void parserFinalize() {
+    public void parserFinalize() throws IOException {
         this.output.parserFinalize();
     }
 

@@ -29,10 +29,10 @@ TESTS: List[TestCase] = [
     # TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=big'], data_in=b'499602d2', expected_out=b'1234567890'),
     # TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=little'], data_in=b'd2029649', expected_out=b'1234567890'),
     # bits
-    # TestCase(args=['-f', 'bits', '-t', 'bytes'], data_in=b'100 1111 0100 1011', expected_out=b'OK'),
-    # TestCase(args=['-f', 'bits', '-t', 'bytes', '--from-options=left'], data_in=b'100111101001011', expected_out=b'OK'),
-    # TestCase(args=['-f', 'bits', '-t', 'hex', '--from-options=right'], data_in=b'100111101001011', expected_out=b'9e96'),
-    # TestCase(args=['-f', 'bytes', '-t', 'bits'], data_in=b'OK', expected_out=b'0100111101001011'),
+    TestCase(args=['-f', 'bits', '-t', 'bytes'], data_in=b'100 1111 0100 1011', expected_out=b'OK'),
+    TestCase(args=['-f', 'bits', '-t', 'bytes', '--from-options=left'], data_in=b'100111101001011', expected_out=b'OK'),
+    TestCase(args=['-f', 'bits', '-t', 'hex', '--from-options=right'], data_in=b'100111101001011', expected_out=b'9e96'),
+    TestCase(args=['-f', 'bytes', '-t', 'bits'], data_in=b'OK', expected_out=b'0100111101001011'),
     # array
     # TestCase(
     #     args=['-f', 'hex', '-t', 'array'],

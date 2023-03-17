@@ -72,7 +72,7 @@ public class PanbyteHexInput extends PanbyteInput {
      * Assert that all left bytes in the unparsed buffer are whitespace
      */
     @Override
-    public void parserFinalize() {
+    public void parserFinalize() throws IOException {
         // check if everything was already parsed and nothing more is available
         if (this.popUnparsedByte() != null) {
             throw new IllegalArgumentException("More input is expected");
