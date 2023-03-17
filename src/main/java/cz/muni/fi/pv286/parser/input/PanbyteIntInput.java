@@ -1,6 +1,7 @@
 package cz.muni.fi.pv286.parser.input;
 
 import cz.muni.fi.pv286.arguments.values.Option;
+import cz.muni.fi.pv286.parser.Util;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
@@ -8,14 +9,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/** This class has to load all digits from input in the internal buffer and only then convert them to bytes. */
+/** This class stores digit after digit in BigInteger and only then converts them to bytes. */
 public class PanbyteIntInput extends PanbyteInput {
 
     private final List<Byte> unparsedBuffer = new ArrayList<>();
-    private final List<Byte> integerInputBytes = new ArrayList<>();
-    private String digits = "";
+    private BigInteger integer = new BigInteger("0");
     private final Option endianity;
 
     public PanbyteIntInput(final PanbyteOutput output, Option option) {
@@ -40,14 +39,9 @@ public class PanbyteIntInput extends PanbyteInput {
                 continue;
             }
 
-            integerInputBytes.add(nextByte);
+            integer = integer.multiply(new BigInteger("10"));
+            integer = integer.add(new BigInteger(Util.byteAsASCII(nextByte)));
         }
-
-        // each parsed byte convert to char, then to String and concat those Strings into one String
-        digits = digits.concat(integerInputBytes.stream()
-                .map(n -> String.valueOf((char) (n & 0xFF)))
-                .collect(Collectors.joining())
-        );
     }
 
     @Override
@@ -61,7 +55,6 @@ public class PanbyteIntInput extends PanbyteInput {
             throw new IllegalArgumentException("Internal buffer should be empty");
         }
 
-        BigInteger integer = new BigInteger(digits);
         byte[] integerByteArray = integer.toByteArray();
 
         for (byte b : integerByteArray) {
