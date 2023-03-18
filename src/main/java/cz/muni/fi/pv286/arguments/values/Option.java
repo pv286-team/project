@@ -9,6 +9,7 @@ public enum Option {
     HEX,
     DEC,
     CHAR,
+    BIT,
     CURLY_BRACKETS,
     SQUARE_BRACKETS,
     REGULAR_BRACKETS

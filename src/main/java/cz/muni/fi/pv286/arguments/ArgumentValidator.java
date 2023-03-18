@@ -3,9 +3,6 @@ package cz.muni.fi.pv286.arguments;
 import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.arguments.values.Option;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ArgumentValidator {
 
     /*  In case contradictory options are provided, use the latter. In case
@@ -17,31 +14,31 @@ public class ArgumentValidator {
             case NONE:
                 throw new InvalidArgumentsException("No input format given");
             case BYTES:
-                if (!arguments.getInputOption().isEmpty()) {
+                if (!arguments.getInputOption().equals(Option.NONE)) {
                     throw new InvalidArgumentsException("Bytes format does not support input options");
                 }
                 break;
             case HEX:
-                if (!arguments.getInputOption().isEmpty()) {
+                if (!arguments.getInputOption().equals(Option.NONE)) {
                     throw new InvalidArgumentsException("Hex format does not support input options");
                 }
                 break;
             case INT:
-                Option lastInt = arguments.getInputOption().get(arguments.getInputOption().size() - 1);
-                if (!lastInt.equals(Option.BIG_ENDIAN) && !lastInt.equals(Option.LITTLE_ENDIAN)) {
+                Option intInputOption = arguments.getInputOption();
+                if (!intInputOption.equals(Option.BIG_ENDIAN) && !intInputOption.equals(Option.LITTLE_ENDIAN)) {
                     throw new InvalidArgumentsException("Invalid option for integer input format");
                 }
-                arguments.setInputOption(new ArrayList<>(List.of(lastInt)));
                 break;
             case BITS:
-                Option lastBits = arguments.getInputOption().get(arguments.getInputOption().size() - 1);
-                if (!lastBits.equals(Option.LEFT_PAD) && !lastBits.equals(Option.RIGHT_PAD)) {
+                Option bitInputOption = arguments.getInputOption();
+                if (!bitInputOption.equals(Option.LEFT_PAD) && !bitInputOption.equals(Option.RIGHT_PAD)) {
                     throw new InvalidArgumentsException("Invalid option for bits input format");
                 }
-                arguments.setInputOption(new ArrayList<>(List.of(lastBits)));
                 break;
             case ARRAY:
-                // TODO: Validate two values - format and brackets
+                if (!arguments.getInputOption().equals(Option.NONE)) {
+                    throw new InvalidArgumentsException("Array format does not support input options");
+                }
                 break;
             default:
                 throw new InvalidArgumentsException("Undefined input format");
@@ -53,26 +50,44 @@ public class ArgumentValidator {
             case NONE:
                 throw new InvalidArgumentsException("No output format given");
             case BYTES:
-                if (!arguments.getOutputOption().isEmpty()) {
+                if (!arguments.getOutputOption().equals(Option.NONE)
+                        || !arguments.getOutputBrackets().equals(Option.NONE)) {
                     throw new InvalidArgumentsException("Bytes format does not support output options");
                 }
                 break;
             case HEX:
-                if (!arguments.getOutputOption().isEmpty()) {
+                if (!arguments.getOutputOption().equals(Option.NONE)
+                        || !arguments.getOutputBrackets().equals(Option.NONE)) {
                     throw new InvalidArgumentsException("Hex format does not support output options");
                 }
                 break;
             case INT:
-                Option lastInt = arguments.getOutputOption().get(arguments.getOutputOption().size() - 1);
-                if (!lastInt.equals(Option.BIG_ENDIAN) && !lastInt.equals(Option.LITTLE_ENDIAN)) {
-                    throw new InvalidArgumentsException("Invalid option for integer output format");
+                Option intOutputOption = arguments.getOutputOption();
+                if (!intOutputOption.equals(Option.BIG_ENDIAN) && !intOutputOption.equals(Option.LITTLE_ENDIAN)
+                        || !arguments.getOutputBrackets().equals(Option.NONE)) {
+                    throw new InvalidArgumentsException("Invalid option for integer input format");
                 }
-                arguments.setOutputOption(new ArrayList<>(List.of(lastInt)));
                 break;
             case BITS:
+                if (!arguments.getOutputOption().equals(Option.NONE)
+                        || !arguments.getOutputBrackets().equals(Option.NONE)) {
+                    throw new InvalidArgumentsException("Bit format does not support output options");
+                }
                 break;
             case ARRAY:
-                // TODO: Validate two values - format and brackets
+                Option arrayOutputOption = arguments.getOutputOption();
+                if (!arrayOutputOption.equals(Option.HEX)
+                        && !arrayOutputOption.equals(Option.DEC)
+                        && !arrayOutputOption.equals(Option.CHAR)
+                        && !arrayOutputOption.equals(Option.BIT)) {
+                    throw new InvalidArgumentsException("Invalid option for array input format");
+                }
+                Option arrayBracketsOption = arguments.getOutputBrackets();
+                if (!arrayBracketsOption.equals(Option.CURLY_BRACKETS)
+                        && !arrayBracketsOption.equals(Option.REGULAR_BRACKETS)
+                        && !arrayBracketsOption.equals(Option.SQUARE_BRACKETS)) {
+                    throw new InvalidArgumentsException("Invalid option for array input format");
+                }
                 break;
             default:
                 throw new InvalidArgumentsException("Undefined output format");

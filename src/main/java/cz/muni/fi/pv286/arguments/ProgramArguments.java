@@ -12,11 +12,12 @@ public class ProgramArguments {
     private FileType inputFileType = FileType.STANDARD;
     private String inputFileName = "";
     private Format inputFormat = Format.NONE;
-    private List<Option> inputOption = new ArrayList<>();
+    private Option inputOption = Option.NONE;
     private FileType outputFileType = FileType.STANDARD;
     private String outputFileName = "";
     private Format outputFormat = Format.NONE;
-    private List<Option> outputOption = new ArrayList<>();
+    private Option outputOption = Option.NONE;
+    private Option outputBrackets = Option.NONE;
     private String delimiter = "\n";
     private boolean delimiterSet = false;
     private Boolean help = false;
@@ -51,15 +52,12 @@ public class ProgramArguments {
         this.inputFormat = inputFormat;
     }
 
-    public List<Option> getInputOption() {
+    public Option getInputOption() {
         return inputOption;
     }
 
-    public void addInputOption(Option inputOption) {
-        this.inputOption.add(inputOption);
-    }
 
-    public void setInputOption(List<Option> inputOption) {
+    public void setInputOption(Option inputOption) {
         this.inputOption = inputOption;
     }
 
@@ -87,12 +85,20 @@ public class ProgramArguments {
         this.outputFormat = outputFormat;
     }
 
-    public List<Option> getOutputOption() {
+    public Option getOutputOption() {
         return outputOption;
     }
 
-    public void addOutputOption(Option option) {
-        this.outputOption.add(option);
+    public void setOutputOption(Option option) {
+        this.outputOption = option;
+    }
+
+    public Option getOutputBrackets() {
+        return outputBrackets;
+    }
+
+    public void setOutputBrackets(Option outputBrackets) {
+        this.outputBrackets = outputBrackets;
     }
 
     public String getDelimiter() {
@@ -114,9 +120,5 @@ public class ProgramArguments {
 
     public void setHelp(Boolean help) {
         this.help = help;
-    }
-
-    public void setOutputOption(List<Option> outputOption) {
-        this.outputOption = outputOption;
     }
 }

@@ -80,8 +80,7 @@ public class Main {
                 break;
         case BITS:
                 /* In that place, argument should be checked and valid */
-                Option inputOption = arguments.getInputOption().get(0);
-                input = new PanbyteBitInput(output, inputOption);
+                input = new PanbyteBitInput(output, arguments.getInputOption());
                 break;
             default:
                 System.out.print("Not implemented yet.");

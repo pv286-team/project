@@ -10,8 +10,8 @@ class ArgumentParser {
 
     static private final List<String> formats = new ArrayList<>(Arrays.asList("bytes", "hex", "int", "bits", "array"));
     static private final List<String> inputOptions = new ArrayList<>(Arrays.asList("big", "little", "left", "right"));
-    static private final List<String> outputOptions = new ArrayList<>(Arrays.asList("big", "little", "left", "right",
-            "0x", "0", "a", "{}", "}", "{", "()", "(", ")", "[]", "[", "]"));
+    static private final List<String> outputOptions = new ArrayList<>(Arrays.asList("big", "little", "left", "right", "0x", "0", "a", "0b"));
+    static private final List<String> outputBrackets = new ArrayList<>(Arrays.asList("{}", "}", "{", "()", "(", ")", "[]", "[", "]"));
     static private final Map<String, Format> formatMap;
     static private final Map<String, Option> optionMap;
     static {
@@ -29,6 +29,7 @@ class ArgumentParser {
         optionMap.put("0x", Option.HEX);
         optionMap.put("0", Option.DEC);
         optionMap.put("a", Option.CHAR);
+        optionMap.put("0b", Option.BIT);
         optionMap.put("{}", Option.CURLY_BRACKETS);
         optionMap.put("}", Option.CURLY_BRACKETS);
         optionMap.put("{", Option.CURLY_BRACKETS);
@@ -102,12 +103,16 @@ class ArgumentParser {
                 case "--from-options":
                     if (!inputOptions.contains(argument.getValue()))
                         throw new InvalidArgumentsException("Invalid value for input options");
-                    result.addInputOption(optionMap.get(argument.getValue()));
+                    result.setInputOption(optionMap.get(argument.getValue()));
                     break;
                 case "--to-options":
-                    if (!outputOptions.contains(argument.getValue()))
+                    if (outputOptions.contains(argument.getValue())) {
+                        result.setOutputOption(optionMap.get(argument.getValue()));
+                    } else if (outputBrackets.contains(argument.getValue())) {
+                        result.setOutputBrackets(optionMap.get(argument.getValue()));
+                    } else {
                         throw new InvalidArgumentsException("Invalid value for output options");
-                    result.addOutputOption(optionMap.get(argument.getValue()));
+                    }
                     break;
                 case "-i":
                 case "--input":
@@ -139,28 +144,37 @@ class ArgumentParser {
     }
 
     private static void setDefaultArguments(ProgramArguments arguments) throws InvalidArgumentsException {
+        // if input format is bit-format, reset delimiter to no delimiter if not set explicitly
+        if (arguments.getInputFormat() == Format.BYTES && !arguments.isDelimiterSet()) {
+            arguments.setDelimiter("");
+        }
+
         switch (arguments.getInputFormat()) {
             case NONE:
             case BYTES:
             case HEX:
                 break;
             case INT:
-                if (arguments.getInputOption().isEmpty()) {
-                    arguments.addInputOption(Option.BIG_ENDIAN);
+                if (arguments.getInputOption().equals(Option.NONE)) {
+                    arguments.setInputOption(Option.BIG_ENDIAN);
                 }
-                if (arguments.getOutputOption().isEmpty()) {
-                    arguments.addOutputOption(Option.BIG_ENDIAN);
+                if (arguments.getOutputOption().equals(Option.NONE)) {
+                    arguments.setOutputOption(Option.BIG_ENDIAN);
                 }
                 break;
             case BITS:
-                if (arguments.getInputOption().isEmpty()) {
-                    arguments.addInputOption(Option.LEFT_PAD);
+                if (arguments.getInputOption().equals(Option.NONE)) {
+                    arguments.setInputOption(Option.LEFT_PAD);
                 }
                 break;
             case ARRAY:
                 /* Prepend default values, if overwritten, the latter is taken */
-                arguments.getOutputOption().add(0, Option.HEX);
-                arguments.getOutputOption().add(0, Option.CURLY_BRACKETS);
+                if (arguments.getOutputOption().equals(Option.NONE)) {
+                    arguments.setOutputOption(Option.HEX);
+                }
+                if (arguments.getOutputBrackets().equals(Option.NONE)) {
+                    arguments.setOutputBrackets(Option.CURLY_BRACKETS);
+                }
                 break;
             default:
                 throw new InvalidArgumentsException("Undefined input format");
