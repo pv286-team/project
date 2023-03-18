@@ -7,7 +7,6 @@ import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
-import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
