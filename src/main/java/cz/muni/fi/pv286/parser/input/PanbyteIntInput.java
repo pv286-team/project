@@ -47,7 +47,7 @@ public class PanbyteIntInput extends PanbyteInput {
     @Override
     public void parserFinalize() throws IOException {
         // check if everything was already parsed and nothing more is available
-        assert(this.unparsedBuffer.size() > 0);
+        assert this.unparsedBuffer.size() == 0;
         // check if some partial parsing have been done
         if (this.parsedBytes.size() > 0) {
             throw new IllegalArgumentException("Internal buffer should be empty");
