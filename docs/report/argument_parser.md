@@ -4,6 +4,12 @@ The `ArgumentParser` and `ArgumentValidator` classes are used to parse and valid
 the input arguments.
 The resulting options are stored in an instance of the `ProgramArguments` class.
 
+#### Clarification on repeat options:
+* repeating formats is considered an error
+* repeating input and output file settings is considered an error
+* repeating a delimiter is not considered an error, the last set is used
+* repeating the input and output options is not considered an error, the last set is used
+
 ### Representation of program arguments
 The `ProgramArgument` class provides a simple interface to use custom arguments passed to the
 program from the command line. When an instance is created, it should guarantee
