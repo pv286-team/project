@@ -92,12 +92,16 @@ class ArgumentParser {
                 case "--from":
                     if (!formats.contains(argument.getValue()))
                         throw new InvalidArgumentsException("Invalid value for input format");
+                    if (!result.getInputFormat().equals(Format.NONE))
+                        throw new InvalidArgumentsException("Repeating value for input format");
                     result.setInputFormat(formatMap.get(argument.getValue()));
                     break;
                 case "-t":
                 case "--to":
                     if (!formats.contains(argument.getValue()))
                         throw new InvalidArgumentsException("Invalid value for output format");
+                    if (!result.getOutputFormat().equals(Format.NONE))
+                        throw new InvalidArgumentsException("Repeating value for output format");
                     result.setOutputFormat(formatMap.get(argument.getValue()));
                     break;
                 case "--from-options":
@@ -116,11 +120,15 @@ class ArgumentParser {
                     break;
                 case "-i":
                 case "--input":
+                    if (!result.getInputFileType().equals(FileType.STANDARD))
+                        throw new InvalidArgumentsException("Repeating value for input file");
                     result.setInputFileType(FileType.FILE);
                     result.setInputFileName(argument.getValue());
                     break;
                 case "-o":
                 case "--output":
+                    if (!result.getOutputFileType().equals(FileType.STANDARD))
+                        throw new InvalidArgumentsException("Repeating value for output file");
                     result.setOutputFileType(FileType.FILE);
                     result.setOutputFileName(argument.getValue());
                     break;
