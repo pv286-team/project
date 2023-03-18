@@ -1,5 +1,6 @@
 package cz.muni.fi.pv286.arguments;
 
+import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.arguments.values.Format;
 import cz.muni.fi.pv286.arguments.values.Option;
 import org.junit.jupiter.api.Test;
@@ -520,6 +521,110 @@ class ProgramArgumentsTest {
         }
     }
 
+    @Test
+    void repeatingToFormats() {
+        String[] args = {"-f", "bytes","-t", "bytes", "-t", "bytes"};
+        try {
+            new ProgramArguments(args);
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void repeatingFromFormats() {
+        String[] args = {"-f", "bytes","-t", "bytes", "-f", "bytes"};
+        try {
+            new ProgramArguments(args);
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void inputFile_short() {
+        String[] args = {"--from=bytes", "-t", "bytes", "-i", "file"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getInputFileType().equals(FileType.FILE));
+            assert(arguments.getInputFileName().equals("file"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void inputFile_long() {
+        String[] args = {"--from=bytes", "-t", "bytes", "--input=file"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getInputFileType().equals(FileType.FILE));
+            assert(arguments.getInputFileName().equals("file"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void outputFile_short() {
+        String[] args = {"--from=bytes", "-t", "bytes", "-o", "file"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFileType().equals(FileType.FILE));
+            assert(arguments.getOutputFileName().equals("file"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void outputFile_long() {
+        String[] args = {"--from=bytes", "-t", "bytes", "--output=file"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFileType().equals(FileType.FILE));
+            assert(arguments.getOutputFileName().equals("file"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void delimiter_nonRepeating() {
+        String[] args = {"--from=bytes", "-t", "bytes", "-d", "del"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getDelimiter().equals("del"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void delimiter_repeating() {
+        String[] args = {"-d", "dl", "--from=bytes", "-t", "bytes", "-d", "del"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getDelimiter().equals("del"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
     /* Combining formats with default options*/
     @Test
     void fromByte_toHex() {
@@ -536,7 +641,6 @@ class ProgramArgumentsTest {
             assert(false);
         }
     }
-
     @Test
     void fromByte_toInt() {
         String[] args = { "--from=bytes","--to=int"};
