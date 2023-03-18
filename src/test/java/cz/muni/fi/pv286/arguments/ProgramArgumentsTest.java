@@ -62,7 +62,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BYTES));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals("\n"));
+            assert(arguments.getDelimiter().equals(""));
         } catch (Exception e) {
             assert(false);
         }
@@ -78,7 +78,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BYTES));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals("\n"));
+            assert(arguments.getDelimiter().equals(""));
         } catch (Exception e) {
             assert(false);
         }
@@ -94,7 +94,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BYTES));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals("\n"));
+            assert(arguments.getDelimiter().equals(""));
         } catch (Exception e) {
             assert(false);
         }
@@ -167,7 +167,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BITS));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals(""));
+            assert(arguments.getDelimiter().equals("\n"));
         } catch (Exception e) {
             assert(false);
         }
@@ -183,7 +183,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BITS));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals(""));
+            assert(arguments.getDelimiter().equals("\n"));
         } catch (Exception e) {
             assert(false);
         }
@@ -216,7 +216,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BITS));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals(""));
+            assert(arguments.getDelimiter().equals("\n"));
         } catch (Exception e) {
             assert(false);
         }
@@ -232,7 +232,7 @@ class ProgramArgumentsTest {
             assert(arguments.getOutputFormat().equals(Format.BITS));
             assert(arguments.getOutputOption().equals(Option.NONE));
             assert(arguments.getOutputBrackets().equals(Option.NONE));
-            assert(arguments.getDelimiter().equals(""));
+            assert(arguments.getDelimiter().equals("\n"));
         } catch (Exception e) {
             assert(false);
         }
