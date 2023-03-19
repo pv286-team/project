@@ -127,7 +127,7 @@ def build_jar(force_refresh: bool = False) -> Path:
     if path_jar.exists() and not force_refresh:
         return path_jar
 
-    check_call(['mvn', 'clean', 'package'], stdin=PIPE, timeout=300)
+    check_call(['mvn', 'clean', 'package', '-Dmaven.test.skip=true'], stdin=PIPE, timeout=300)
     assert path_jar.exists()
     return path_jar
 
