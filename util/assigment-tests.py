@@ -22,12 +22,12 @@ TESTS: List[TestCase] = [
     TestCase(args=['-f', 'bytes', '-t', 'hex'], data_in=b'test', expected_out=b'74657374'),
     TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74 65 73 74', expected_out=b'test'),
     # int
-    # TestCase(args=['-f', 'int', '-t', 'hex'], data_in=b'1234567890', expected_out=b'499602d2'),
-    # TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=big'], data_in=b'1234567890', expected_out=b'499602d2'),
-    # TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=little'], data_in=b'1234567890', expected_out=b'd2029649'),
-    # TestCase(args=['-f', 'hex', '-t', 'int'], data_in=b'499602d2', expected_out=b'1234567890'),
-    # TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=big'], data_in=b'499602d2', expected_out=b'1234567890'),
-    # TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=little'], data_in=b'd2029649', expected_out=b'1234567890'),
+    TestCase(args=['-f', 'int', '-t', 'hex'], data_in=b'1234567890', expected_out=b'499602d2'),
+    TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=big'], data_in=b'1234567890', expected_out=b'499602d2'),
+    TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=little'], data_in=b'1234567890', expected_out=b'd2029649'),
+    TestCase(args=['-f', 'hex', '-t', 'int'], data_in=b'499602d2', expected_out=b'1234567890'),
+    TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=big'], data_in=b'499602d2', expected_out=b'1234567890'),
+    TestCase(args=['-f', 'hex', '-t', 'int', '--to-options=little'], data_in=b'd2029649', expected_out=b'1234567890'),
     # bits
     TestCase(args=['-f', 'bits', '-t', 'bytes'], data_in=b'100 1111 0100 1011', expected_out=b'OK'),
     TestCase(args=['-f', 'bits', '-t', 'bytes', '--from-options=left'], data_in=b'100111101001011', expected_out=b'OK'),
