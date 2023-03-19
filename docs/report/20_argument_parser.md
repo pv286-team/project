@@ -19,7 +19,7 @@ be checked further in the program.
 Input and output formats can only take the values `bytes, bits, int, hex, array` as
 specified in the specification. Input and output options are divided into variables
 representing options for input (padding for bits format, endianness for int format),
-output (endianness for int format, number expression for array) and bracket type
+output (endianness for int format, number expression for array) and the bracket type
 (only for the array as output format).
 
 ### Parsing of command line arguments
