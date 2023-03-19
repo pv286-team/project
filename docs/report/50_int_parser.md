@@ -6,7 +6,7 @@ The parsing of integer from digits has to be divided into two main parts. Digits
 and processed only when there are no more digits on input because the bit representation of an integer depends on the whole 
 integer, not on individual digits.
 
-Instance of `BigInteger` class is created at the start of parsing. This class can represent arbitrary large integer. 
+An instance of `BigInteger` class is created at the start of parsing. This class can represent arbitrarily large integers. 
 For each digit from input, the internal `BigInteger` instance is multiplied by ten and the digit is converted 
 to the new `BigInteger` instance and added to the internal one. This procedure allows us to process each digit 
 separately, not storing arrays or Strings in memory but only one instance of `BigInteger` class.
