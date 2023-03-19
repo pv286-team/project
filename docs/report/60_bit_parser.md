@@ -17,5 +17,5 @@ individual bits in parsed bytes and convert them to output values 1 and 0.
 
 ### Encountered problems
 One of the main problems in the implementation was the use of the `byte` type,
-which is signed in Java. Therefore, it was necessary to create custom helper
+which is signed in Java. Therefore, it was necessary to create a custom helper
 functions to implement the bit shift.
