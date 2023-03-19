@@ -25,3 +25,5 @@ The resulting `String` is then outputted.
 As this parser was created after raw, bit and hex parsers, the structure of the program was ready for parsers 
 that parses a chunk of data, outputs them and parses another chunk. That is not the case of this parser, so the structure 
 had to be changed a little.
+
+

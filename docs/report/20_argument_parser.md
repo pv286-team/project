@@ -1,16 +1,19 @@
 ## Argument parser
+
 All arguments are passed to the program from the command line.
 The `ArgumentParser` and `ArgumentValidator` classes are used to parse and validate
 the input arguments.
 The resulting options are stored in an instance of the `ProgramArguments` class.
 
-#### Clarification on repeat options:
+### Clarification on repeat options:
+
 * repeating formats is considered an error
 * repeating input and output file settings is considered an error
 * repeating a delimiter is not considered an error, the last set is used
 * repeating the input and output options is not considered an error, the last set is used
 
 ### Representation of program arguments
+
 The `ProgramArgument` class provides a simple interface to use custom arguments passed to the
 program from the command line. When an instance is created, it should guarantee
 that the given combination of arguments and options is valid and does not need to
@@ -23,6 +26,7 @@ output (endianness for int format, number expression for array) and the bracket 
 (only for the array as output format).
 
 ### Parsing of command line arguments
+
 The `ArgumentParser` static class contains a simple algorithm for parsing input arguments.
 
 First, the arguments are split into name and value pairs and stored in objects
@@ -35,11 +39,13 @@ the `ProgramArguments` object. If given by the input, missing values are set to
 default.
 
 ### Validation of arguments
+
 Finally, after parsing all arguments, the values set in the `ProgramArguments` class
 object are validated. The combinations of input arguments and options and output
 arguments, options and any parentheses (for array format) are checked.
 
 ### Encountered problems
+
 Most of the problems were related to finding the ideal simple representation of
 program arguments and then validating all possible combinations for different
 formats.
