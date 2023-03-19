@@ -3,7 +3,7 @@ The implementation is in the `PanbyteIntInput` and `PanbyteIntOutput` classes.
 
 ### Int input
 The parsing of integer from digits has to be divided into two main parts. Digits have to be accumulated into some buffer 
-and processed only when there are no more digits on input because bit representation of integer depends on the whole 
+and processed only when there are no more digits on input because the bit representation of an integer depends on the whole 
 integer, not on individual digits.
 
 Instance of `BigInteger` class is created at the start of parsing. This class can represent arbitrary large integer. 
