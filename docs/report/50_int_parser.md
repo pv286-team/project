@@ -19,7 +19,7 @@ and it is passed on to the output parser.
 The output procedure fully utilises the possibilities of the `BigInteger` class. Firstly it reverses the internal byte 
 array if the little-endian option for output is selected. Then the `BigInteger` class is constructed from the internal 
 byte array, and it is converted to the decimal `String` representation of the integer by method of `BigInteger` class. 
-The resulted `String` is then outputed.
+The resulting `String` is then outputted.
 
 ### Encountered problems
 As this parser was created after raw, bit and hex parsers, the structure of the program was ready for parsers 
