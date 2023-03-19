@@ -519,4 +519,148 @@ class ProgramArgumentsTest {
             assert(true);
         }
     }
+
+    /* Combining formats with default options*/
+    @Test
+    void fromByte_toHex() {
+        String[] args = { "--from=bytes","--to=hex"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.HEX));
+            assert(arguments.getOutputOption().equals(Option.NONE));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals(""));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromByte_toInt() {
+        String[] args = { "--from=bytes","--to=int"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals(""));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromByte_toBits() {
+        String[] args = { "--from=bytes","--to=bits"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.BITS));
+            assert(arguments.getOutputOption().equals(Option.NONE));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals(""));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromByte_toArray() {
+        String[] args = { "--from=bytes","--to=array"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BYTES));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.ARRAY));
+            assert(arguments.getOutputOption().equals(Option.HEX));
+            assert(arguments.getOutputBrackets().equals(Option.CURLY_BRACKETS));
+            assert(arguments.getDelimiter().equals(""));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromHex_toBytes() {
+        String[] args = { "--from=hex","--to=bytes"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.HEX));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.BYTES));
+            assert(arguments.getOutputOption().equals(Option.NONE));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromHex_toInt() {
+        String[] args = { "--from=hex","--to=int"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.HEX));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromHex_toBits() {
+        String[] args = { "--from=hex","--to=bits"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.HEX));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.BITS));
+            assert(arguments.getOutputOption().equals(Option.NONE));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromHex_toArray() {
+        String[] args = { "--from=hex","--to=array"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.HEX));
+            assert(arguments.getInputOption().equals(Option.NONE));
+            assert(arguments.getOutputFormat().equals(Format.ARRAY));
+            assert(arguments.getOutputOption().equals(Option.HEX));
+            assert(arguments.getOutputBrackets().equals(Option.CURLY_BRACKETS));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+    @Test
+    void fromBits_toInt() {
+        String[] args = { "--from=bits","--to=int"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BITS));
+            assert(arguments.getInputOption().equals(Option.LEFT_PAD));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
 }

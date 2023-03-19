@@ -148,23 +148,42 @@ class ArgumentParser {
         if (arguments.getInputFormat() == Format.BYTES && !arguments.isDelimiterSet()) {
             arguments.setDelimiter("");
         }
+        setDefaultInputArguments(arguments);
+        setDefaultOutputArguments(arguments);
+    }
 
+    private static void setDefaultInputArguments(ProgramArguments arguments) throws InvalidArgumentsException {
         switch (arguments.getInputFormat()) {
             case NONE:
             case BYTES:
             case HEX:
+            case ARRAY:
                 break;
             case INT:
                 if (arguments.getInputOption().equals(Option.NONE)) {
                     arguments.setInputOption(Option.BIG_ENDIAN);
                 }
-                if (arguments.getOutputOption().equals(Option.NONE)) {
-                    arguments.setOutputOption(Option.BIG_ENDIAN);
-                }
                 break;
             case BITS:
                 if (arguments.getInputOption().equals(Option.NONE)) {
                     arguments.setInputOption(Option.LEFT_PAD);
+                }
+                break;
+            default:
+                throw new InvalidArgumentsException("Undefined input format");
+        }
+    }
+
+    private static void setDefaultOutputArguments(ProgramArguments arguments) throws InvalidArgumentsException {
+        switch (arguments.getOutputFormat()) {
+            case NONE:
+            case BYTES:
+            case HEX:
+            case BITS:
+                break;
+            case INT:
+                if (arguments.getOutputOption().equals(Option.NONE)) {
+                    arguments.setOutputOption(Option.BIG_ENDIAN);
                 }
                 break;
             case ARRAY:
@@ -177,7 +196,7 @@ class ArgumentParser {
                 }
                 break;
             default:
-                throw new InvalidArgumentsException("Undefined input format");
+                throw new InvalidArgumentsException("Undefined output format");
         }
     }
 }
