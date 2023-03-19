@@ -56,7 +56,7 @@ public class PanbyteHexInput extends PanbyteInput {
 
             // two hex characters fit inside one byte
             final byte parsedByte = (byte) hexNumber;
-            assert hexNumber == parsedByte;
+            assert parsedByte >= 0 ? hexNumber == parsedByte : -256 + hexNumber == parsedByte;
 
             // mark the byte as parsed
             this.parsedBytes.add(parsedByte);
