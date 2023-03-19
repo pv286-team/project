@@ -4,4 +4,4 @@ The implementation is done in `PanbyteRawInput` and `PanbyteRawOutput` classes. 
 
 ### Encountered problems
 
-Because the bytes format should not consider delimiter unless explicitly specified, we needed to modify the argument parser so that it records if a delimiter was specified. Otherwise this mode would skip all `\n` characters as it has considered it as a default delimiter.
+Because the bytes format should not consider a delimiter unless explicitly specified, we needed to modify the argument parser so that it records if a delimiter was specified. Otherwise, this mode would skip all `\n` characters as it has considered it as a default delimiter.
