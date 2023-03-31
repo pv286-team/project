@@ -3,6 +3,7 @@ package cz.muni.fi.pv286;
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.ProgramArguments;
 import cz.muni.fi.pv286.arguments.values.FileType;
+import cz.muni.fi.pv286.parser.input.PanbyteArrayInput;
 import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteIntInput;
@@ -88,6 +89,9 @@ public class Main {
                 break;
             case INT:
                 input = new PanbyteIntInput(output, arguments.getInputOption());
+                break;
+            case ARRAY:
+                input = new PanbyteArrayInput(output);
                 break;
             default:
                 System.out.print("Not implemented yet.");
