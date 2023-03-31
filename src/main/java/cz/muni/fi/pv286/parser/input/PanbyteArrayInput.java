@@ -205,6 +205,9 @@ public class PanbyteArrayInput extends PanbyteInput {
         if (this.expectedClosingBrackets.size() > 0) {
             throw new IllegalArgumentException("Brackets were not correctly formatted");
         }
+        if (this.unparsedBuffer.size() > 0) {
+            throw new IllegalArgumentException("Not all bytes could be parsed");
+        }
 
         super.parserFinalize();
     }
