@@ -20,7 +20,7 @@ public class PanbyteArrayInput extends PanbyteInput {
         /** Reading byte input right into internal parser until end of represented byte is reached */
         INPUT,
         /** Seek the start of new input or opening bracket */
-        SEEN_INPUT_START,
+        SEEK_INPUT_START,
         /** Seek the comma separating two inputs or closing brackets  */
         SEEK_INPUT_END
     }
@@ -69,9 +69,9 @@ public class PanbyteArrayInput extends PanbyteInput {
                         throw new IllegalArgumentException("Expected a top-level bracket first");
                     }
                     // bracket was found, enter seeking the next input
-                    this.state = ParseStatus.SEEN_INPUT_START;
+                    this.state = ParseStatus.SEEK_INPUT_START;
                     continue;
-                case SEEN_INPUT_START:
+                case SEEK_INPUT_START:
                     // skip all whitespace
                     if (Character.isWhitespace(nextByte)) {
                         continue;
@@ -100,7 +100,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                         this.output.stringify(this.innerOutput.getReceivedBytes());
                         // if this separator was not the default comma, continue to search for the comma without parsing
                         // otherwise jump right to the next input
-                        this.state = this.inputSeparator == DEFAULT_SEPARATOR ? ParseStatus.SEEN_INPUT_START : ParseStatus.SEEK_INPUT_END;
+                        this.state = nextByte == DEFAULT_SEPARATOR ? ParseStatus.SEEK_INPUT_START : ParseStatus.SEEK_INPUT_END;
                     } else {
                         // push next byte to the inner parser
                         this.innerInput.parse(List.of(nextByte));
@@ -114,7 +114,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                     }
                     // command found, next input can begin
                     if (nextByte == DEFAULT_SEPARATOR) {
-                        this.state = ParseStatus.SEEN_INPUT_START;
+                        this.state = ParseStatus.SEEK_INPUT_START;
                         continue;
                     }
                     // we can always close bracket while seeking for next input
