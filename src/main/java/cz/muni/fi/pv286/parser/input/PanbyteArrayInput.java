@@ -95,7 +95,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                     continue;
                 case INPUT:
                     // end of input was reached, flush the inner output to the real output and search for next input
-                    if (nextByte == this.inputSeparator) {
+                    if (nextByte == this.inputSeparator || (bracket != null && bracket.type == ArrayBracket.BracketType.CLOSING)) {
                         this.innerInput.parserFinalize();
                         this.output.stringify(this.innerOutput.getReceivedBytes());
                         // if this separator was not the default comma, continue to search for the comma without parsing
