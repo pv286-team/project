@@ -3,6 +3,7 @@ package cz.muni.fi.pv286.parser.input;
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.ArrayBracket;
+import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteMockOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
@@ -47,8 +48,11 @@ public class PanbyteArrayInput extends PanbyteInput {
     /** This character marks the end of the current input */
     private byte inputSeparator;
 
+    private final PanbyteOutput output;
+
     public PanbyteArrayInput(final PanbyteOutput output) {
         super(output);
+        this.output = output;
     }
 
     @Override
@@ -164,6 +168,9 @@ public class PanbyteArrayInput extends PanbyteInput {
         }
 
         this.brackets.add(bracket);
+        if (this.output instanceof PanbyteArrayOutput) {
+            ((PanbyteArrayOutput) this.output).setBrackets(brackets);
+        }
         return bracket;
     }
 
