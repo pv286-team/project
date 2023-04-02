@@ -82,7 +82,7 @@ class PanbyteBitInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteRawInput(output);
 
         try {
@@ -291,7 +291,7 @@ class PanbyteBitInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
 
         try {
@@ -329,7 +329,7 @@ class PanbyteBitInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
 
         try {
@@ -348,7 +348,7 @@ class PanbyteBitInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
 
         try {
