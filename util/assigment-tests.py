@@ -34,78 +34,81 @@ TESTS: List[TestCase] = [
     TestCase(args=['-f', 'bits', '-t', 'hex', '--from-options=right'], data_in=b'100111101001011', expected_out=b'9e96'),
     TestCase(args=['-f', 'bytes', '-t', 'bits'], data_in=b'OK', expected_out=b'0100111101001011'),
     # array
-    # TestCase(
-    #     args=['-f', 'hex', '-t', 'array'],
-    #     data_in=b'01020304',
-    #     expected_out=b'{0x1, 0x2, 0x3, 0x4}'
-    # ),
+    TestCase(
+        args=['-f', 'hex', '-t', 'array'],
+        data_in=b'01020304',
+        expected_out=b'{0x1, 0x2, 0x3, 0x4}'
+    ),
     TestCase(
         args=['-f', 'array', '-t', 'hex'],
         data_in=br"{0x01, 2, 0b11, '\x04'}",
         expected_out=b'01020304'
     ),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"((1, 2), (3, 4))",expected_out=b'01020304'),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"{0x01, 0x02}",expected_out=b'0102'),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"{{0x01, (2)}}",expected_out=b'0102'),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"([],{})",expected_out=b''),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[[1, (2)], [3, 4]]",expected_out=b'01020304'),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"()",expected_out=b''),
-    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[               ]",expected_out=b''),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array'],
-    #     data_in=br"{0x01,2,0b11 ,'\x04' }",
-    #     expected_out=b'{0x1, 0x2, 0x3, 0x4}'
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=0x'],
-    #     data_in=br"[0x01, 2, 0b11, '\x04']",
-    #     expected_out=b'{0x1, 0x2, 0x3, 0x4}'
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=0'],
-    #     data_in=br"(0x01, 2, 0b11, '\x04')",
-    #     expected_out=b'{1, 2, 3, 4}'
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=a'],
-    #     data_in=br"{0x01, 2, 0b11, '\x04'}",
-    #     expected_out=br"{'\x01', '\x02', '\x03', '\x04'}"
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=0b'],
-    #     data_in=br"[0x01, 2, 0b11, '\x04']",
-    #     expected_out=br"{0b1, 0b10, 0b11, 0b100}"
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options="("'],
-    #     data_in=br"(0x01, 2, 0b11, '\x04')",
-    #     expected_out=br"(0x1, 0x2, 0x3, 0x4)"
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=0', '--to-options="["'],
-    #     data_in=br"{0x01, 2, 0b11, '\x04'}",
-    #     expected_out=br"[1, 2, 3, 4]"
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array'],
-    #     data_in=br"[[1, 2], [3, 4], [5, 6]]",
-    #     expected_out=br"{{0x1, 0x2}, {0x3, 0x4}, {0x5, 0x6}}"
-    # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options="{"', '--to-options=0'],
-    #     data_in=br"[[1, 2], [3, 4], [5, 6]]",
-    #     expected_out=br"{{1, 2}, {3, 4}, {5, 6}}"
-    # ),
+    TestCase(
+        args=['-f', 'array', '-t', 'hex'],
+        data_in=br"((1, 2), (3, 4))",
+        expected_out=b'01020304'
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'hex'],
+        data_in=br"{0x01, 0x02}",
+        expected_out=b'0102'
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array'],
+        data_in=br"{0x01,2,0b11 ,'\x04' }",
+        expected_out=b'{0x1, 0x2, 0x3, 0x4}'
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=0x'],
+        data_in=br"[0x01, 2, 0b11, '\x04']",
+        expected_out=b'{0x1, 0x2, 0x3, 0x4}'
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=0'],
+        data_in=br"(0x01, 2, 0b11, '\x04')",
+        expected_out=b'{1, 2, 3, 4}'
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=a'],
+        data_in=br"{0x01, 2, 0b11, '\x04'}",
+        expected_out=br"{'\x01', '\x02', '\x03', '\x04'}"
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=0b'],
+        data_in=br"[0x01, 2, 0b11, '\x04']",
+        expected_out=br"{0b1, 0b10, 0b11, 0b100}"
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options="("'],
+        data_in=br"(0x01, 2, 0b11, '\x04')",
+        expected_out=br"(0x1, 0x2, 0x3, 0x4)"
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=0', '--to-options="["'],
+        data_in=br"{0x01, 2, 0b11, '\x04'}",
+        expected_out=br"[1, 2, 3, 4]"
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array'],
+        data_in=br"[[1, 2], [3, 4], [5, 6]]",
+        expected_out=br"{{0x1, 0x2}, {0x3, 0x4}, {0x5, 0x6}}"
+    ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options="{"', '--to-options=0'],
+        data_in=br"[[1, 2], [3, 4], [5, 6]]",
+        expected_out=br"{{1, 2}, {3, 4}, {5, 6}}"
+    ),
     # TestCase(
     #     args=['-f', 'array', '-t', 'array', '--to-options=0', '--to-options="["'],
     #     data_in=br"{{0x01, (2), [3, 0b100, 0x05], '\x06'}}",
     #     expected_out=br"[[1, [2], [3, 4, 5], 6]]"
     # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array'],
-    #     data_in=br"()",
-    #     expected_out=br"{}"
-    # ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array'],
+        data_in=br"()",
+        expected_out=br"{}"
+    ),
     # TestCase(
     #     args=['-f', 'array', '-t', 'array', '--to-options="["'],
     #     data_in=br"([],{})",
