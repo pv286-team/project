@@ -40,7 +40,7 @@ class PanbyteHexInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
@@ -116,7 +116,7 @@ class PanbyteHexInputOutputTest {
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteRawInput(output);
 
         try {

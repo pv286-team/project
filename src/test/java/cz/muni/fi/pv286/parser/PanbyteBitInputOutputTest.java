@@ -63,7 +63,7 @@ class PanbyteBitInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
 
         try {

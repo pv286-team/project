@@ -9,9 +9,11 @@ import java.util.List;
  * Outputs received bytes as hex
  */
 public class PanbyteHexOutput extends PanbyteOutput {
+    boolean zeroPadding = true;
 
-    public PanbyteHexOutput(OutputStream outputStream) {
+    public PanbyteHexOutput(OutputStream outputStream, boolean zeroPadding) {
         super(outputStream);
+        this.zeroPadding = zeroPadding;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class PanbyteHexOutput extends PanbyteOutput {
             final String hexString = String.format("%x", byteBuffer);
             final byte[] hexStringBytes = hexString.getBytes();
             assert hexStringBytes.length == 1 || hexStringBytes.length == 2;
-            if (hexStringBytes.length < 2) {
+            if (hexStringBytes.length < 2 && zeroPadding) {
                 out.add((byte) '0');
             }
             for (byte hexStringByte : hexStringBytes) {
@@ -41,6 +43,7 @@ public class PanbyteHexOutput extends PanbyteOutput {
 
     @Override
     public PanbyteOutput getFresh() {
-        return new PanbyteHexOutput(this.outputStream);
+        return new PanbyteHexOutput(this.outputStream, zeroPadding);
     }
+
 }
