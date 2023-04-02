@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PanbyteBitOutput extends PanbyteOutput {
+    boolean zeroPadding;
 
-    public PanbyteBitOutput(OutputStream outputStream) {
+    public PanbyteBitOutput(OutputStream outputStream, boolean zeroPadding) {
         super(outputStream);
+        this.zeroPadding = zeroPadding;
     }
 
     @Override
@@ -16,9 +18,17 @@ public class PanbyteBitOutput extends PanbyteOutput {
         final List<Byte> out = new ArrayList<>();
 
         for (final Byte currentByte : buffer) {
+            boolean firstNonZeroBit = false;
             final StringBuilder bitString = new StringBuilder();
             for (int i = 7; i >= 0; i--) {
-                String bit = ((int) currentByte & (1 << i)) != 0 ? "1" : "0";
+                int bitValue = (int) currentByte & (1 << i);
+                if (bitValue != 0) {
+                    firstNonZeroBit = true;
+                }
+                if (!zeroPadding && !firstNonZeroBit) {
+                    continue;
+                }
+                String bit = bitValue != 0 ? "1" : "0";
                 bitString.append(bit);
             }
 
@@ -38,6 +48,6 @@ public class PanbyteBitOutput extends PanbyteOutput {
 
     @Override
     public PanbyteOutput getFresh() {
-        return new PanbyteBitOutput(this.outputStream);
+        return new PanbyteBitOutput(this.outputStream, zeroPadding);
     }
 }

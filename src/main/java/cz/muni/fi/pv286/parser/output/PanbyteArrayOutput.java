@@ -30,7 +30,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
                 innerOutput = new PanbyteStringOutput(outputStream);
                 break;
             case BIT:
-                innerOutput = new PanbyteBitOutput(outputStream);
+                innerOutput = new PanbyteBitOutput(outputStream, false);
                 break;
             case HEX:
             default:
@@ -93,11 +93,6 @@ public class PanbyteArrayOutput extends PanbyteOutput {
             this.innerOutput.stringify(out);
             this.innerOutput.parserFinalize();
             out.clear();
-
-            // put closing brackets
-            if (brackets != null) {
-                this.putBrackets(ArrayBracket.BracketType.CLOSING);
-            }
             index++;
         }
     }
@@ -105,12 +100,17 @@ public class PanbyteArrayOutput extends PanbyteOutput {
     @Override
     public void parserFinalize() throws IOException {
         final List<Byte> out = new ArrayList<>();
-        // add only most outer closing bracket, when some output was printed out
-        if (brackets == null && index > 0) {
+
+        if (brackets == null && index == 0) { // nothing was printed out, put starting bracket here
+            out.add(this.getBracket(ArrayBracket.BracketType.OPENING));
+            this.sendOutputData(out);
+        }
+        if (brackets == null && index >= 0){ // add only most outer closing bracket, when some output was printed out
             out.add(this.getBracket(ArrayBracket.BracketType.CLOSING));
             this.sendOutputData(out);
-        } else  {
+        } else if (brackets != null) {
             // in this case, brackets are sent from array input
+            this.putBrackets(ArrayBracket.BracketType.OPENING);
             this.putBrackets(ArrayBracket.BracketType.CLOSING);
         }
         this.index = 0;
@@ -137,7 +137,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
     }
 
     private Byte getBracket(ArrayBracket.BracketType type) {
-        switch (outputOption) {
+        switch (this.bracketsOption) {
             case REGULAR_BRACKETS:
                 return type == ArrayBracket.BracketType.OPENING ? (byte) '(' : (byte) ')';
             case SQUARE_BRACKETS:
