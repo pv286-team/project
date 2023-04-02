@@ -7,7 +7,7 @@ public class ArrayBracket {
     }
 
     /** Index of byte on which this array bracket was found */
-    public final int index;
+    public int index;
     /** Opening or closing bracket */
     public final BracketType type;
     /** Original character of the bracket */

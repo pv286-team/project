@@ -87,7 +87,6 @@ public class PanbyteArrayInput extends PanbyteInput {
                     // if not enough characters is left in buffer to decide input type, return the parsed byte and end cycle
                     if (!this.createNewInput(nextByte)) {
                         this.unparsedBuffer.add(0, nextByte);
-                        this.parsedByteIndex ++;
                         break;
                     }
                     // inner input parser was successfully created
@@ -97,7 +96,13 @@ public class PanbyteArrayInput extends PanbyteInput {
                     // end of input was reached, flush the inner output to the real output and search for next input
                     if (nextByte == this.inputSeparator || (bracket != null && bracket.type == ArrayBracket.BracketType.CLOSING)) {
                         this.innerInput.parserFinalize();
-                        this.output.stringify(this.innerOutput.getReceivedBytes());
+                        final List<Byte> parsedBytes = this.innerOutput.getReceivedBytes();
+                        this.parsedByteIndex += parsedBytes.size();
+                        if (bracket != null) {
+                            // we need to update the bracket index as the real number of bytes parsed can be different from the outer count
+                            bracket.index = this.parsedByteIndex;
+                        }
+                        this.output.stringify(parsedBytes);
                         // if this separator was not the default comma, continue to search for the comma without parsing
                         // otherwise jump right to the next input
                         this.state = nextByte == DEFAULT_SEPARATOR ? ParseStatus.SEEK_INPUT_START : ParseStatus.SEEK_INPUT_END;
@@ -188,7 +193,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                 this.innerInput = new PanbyteIntInput(this.innerOutput, Option.BIG_ENDIAN);
                 // this byte is already supposed to be parsed
                 this.innerInput.parse(List.of(character));
-                this.parsedByteIndex ++;
+                this.innerInput.flush();
                 return true;
             }
         }
