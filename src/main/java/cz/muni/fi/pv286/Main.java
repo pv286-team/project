@@ -55,7 +55,7 @@ public class Main {
                 output = new PanbyteRawOutput(outputStream);
                 break;
             case HEX:
-                output = new PanbyteHexOutput(outputStream);
+                output = new PanbyteHexOutput(outputStream, false);
                 break;
             case BITS:
                 output = new PanbyteBitOutput(outputStream);
