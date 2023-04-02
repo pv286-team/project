@@ -113,6 +113,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                         if (bracket != null) {
                             // we need to update the bracket index as the real number of bytes parsed can be different from the outer count
                             bracket.index = this.parsedByteIndex;
+                            this.propagateBrackets();
                         }
                         this.output.stringify(parsedBytes);
                         // if this separator was not the default comma, continue to search for the comma without parsing
@@ -168,10 +169,17 @@ public class PanbyteArrayInput extends PanbyteInput {
         }
 
         this.brackets.add(bracket);
+        this.propagateBrackets();
+        return bracket;
+    }
+
+    /**
+     * Sends content of the brackets list to the output, if applicable
+     */
+    private void propagateBrackets() {
         if (this.output instanceof PanbyteArrayOutput) {
             ((PanbyteArrayOutput) this.output).setBrackets(brackets);
         }
-        return bracket;
     }
 
     /**
