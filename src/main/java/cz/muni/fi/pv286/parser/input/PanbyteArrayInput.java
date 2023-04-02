@@ -79,8 +79,7 @@ public class PanbyteArrayInput extends PanbyteInput {
                     // just locally save the brackets
                     if (bracket != null) {
                         if (bracket.type == ArrayBracket.BracketType.CLOSING) {
-                            // bracket was closed, seek new input
-                            this.state = ParseStatus.SEEK_INPUT_END;
+                            throw new IllegalArgumentException("Bracket '" + bracket.character + "' was not expected, expected new input to start instead");
                         }
                         continue;
                     }
@@ -146,7 +145,7 @@ public class PanbyteArrayInput extends PanbyteInput {
             return null;
         }
         if (bracket.type == ArrayBracket.BracketType.OPENING ) {
-            this.expectedClosingBrackets.add(bracket.pair);
+            this.expectedClosingBrackets.add(0, bracket.pair);
         } else {
             if (this.expectedClosingBrackets.size() == 0 || this.expectedClosingBrackets.get(0) != bracket.character) {
                 throw new IllegalArgumentException("Closing bracket '" + character + "' was not expected on index " + this.parsedByteIndex);
