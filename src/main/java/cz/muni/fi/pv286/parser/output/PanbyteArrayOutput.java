@@ -45,12 +45,17 @@ public class PanbyteArrayOutput extends PanbyteOutput {
 
         // by default print the most out bracket first
         if (index == 0 && brackets == null) {
-            out.add(this.getBracket(true));
+            out.add(this.getBracket(ArrayBracket.BracketType.OPENING));
             this.sendOutputData(out);
         }
         out.clear();
 
         for (byte currentByte : buffer) {
+            // put closing brackets
+            if (brackets != null) {
+                this.putBrackets(ArrayBracket.BracketType.CLOSING);
+            }
+
             if (index > 0) {
                 // set whitespace
                 out.add((byte) ',');
@@ -61,7 +66,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
 
             // put opening brackets
             if (brackets != null) {
-                this.putBrackets(true);
+                this.putBrackets(ArrayBracket.BracketType.OPENING);
             }
 
             // print prefix if needed
@@ -84,13 +89,14 @@ public class PanbyteArrayOutput extends PanbyteOutput {
             this.sendOutputData(out);
             out.clear();
             out.add(currentByte);
+            this.innerOutput.getFresh();
             this.innerOutput.stringify(out);
             this.innerOutput.parserFinalize();
             out.clear();
 
             // put closing brackets
             if (brackets != null) {
-                this.putBrackets(false);
+                this.putBrackets(ArrayBracket.BracketType.CLOSING);
             }
             index++;
         }
@@ -99,13 +105,16 @@ public class PanbyteArrayOutput extends PanbyteOutput {
     @Override
     public void parserFinalize() throws IOException {
         final List<Byte> out = new ArrayList<>();
-        // add only most outer closing bracket
-        if (brackets == null) {
-            out.add(this.getBracket(false));
+        // add only most outer closing bracket, when some output was printed out
+        if (brackets == null && index > 0) {
+            out.add(this.getBracket(ArrayBracket.BracketType.CLOSING));
             this.sendOutputData(out);
         } else  {
-            this.putBrackets(false);
+            // in this case, brackets are sent from array input
+            this.putBrackets(ArrayBracket.BracketType.CLOSING);
         }
+        this.index = 0;
+        this.brackets = null;
     }
 
     @Override
@@ -113,14 +122,13 @@ public class PanbyteArrayOutput extends PanbyteOutput {
         return new PanbyteArrayOutput(this.outputStream, outputOption, bracketsOption);
     }
 
-    private void putBrackets(boolean putOpening) throws IOException {
+    private void putBrackets(ArrayBracket.BracketType type) throws IOException {
         final List<Byte> out = new ArrayList<>();
         for (ArrayBracket b : brackets) {
             int bracketIndex = b.index;
             if (bracketIndex == index) {
-                boolean opening = this.brackets.get(bracketIndex).type == ArrayBracket.BracketType.OPENING;
-                if (putOpening == opening) {
-                    out.add(this.getBracket(putOpening));
+                if (b.type == type) {
+                    out.add(this.getBracket(type));
                     this.sendOutputData(out);
                     out.clear();
                 }
@@ -128,15 +136,15 @@ public class PanbyteArrayOutput extends PanbyteOutput {
         }
     }
 
-    private Byte getBracket(boolean opening) {
+    private Byte getBracket(ArrayBracket.BracketType type) {
         switch (outputOption) {
             case REGULAR_BRACKETS:
-                return opening ? (byte) '(' : (byte) ')';
+                return type == ArrayBracket.BracketType.OPENING ? (byte) '(' : (byte) ')';
             case SQUARE_BRACKETS:
-                return opening ? (byte) '[' : (byte) ']';
+                return type == ArrayBracket.BracketType.OPENING ? (byte) '[' : (byte) ']';
             case CURLY_BRACKETS:
             default:
-                return opening ? (byte) '{' : (byte) '}';
+                return type == ArrayBracket.BracketType.OPENING ? (byte) '{' : (byte) '}';
         }
     }
 

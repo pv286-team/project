@@ -21,6 +21,7 @@ public class PanbyteStringOutput extends PanbyteOutput {
     @Override
     public void parserFinalize() throws IOException {
         this.printPrintable();
+        this.unparsedBytes.clear();
     }
 
     @Override
@@ -39,19 +40,20 @@ public class PanbyteStringOutput extends PanbyteOutput {
             if (currentByte >= 32 && currentByte <= 126) {
                 out.add(currentByte);
                 this.sendOutputData(out);
+                out.clear();
             } else if (currentByte >= 8 && currentByte <= 13) {
                 switch (currentByte) {
                     case '\b':
                         out.add((byte) '\\');
-                        out.add((byte) '\b');
+                        out.add((byte) 'b');
                         break;
                     case '\t':
                         out.add((byte) '\\');
-                        out.add((byte) '\t');
+                        out.add((byte) 't');
                         break;
                     case '\n':
                         out.add((byte) '\\');
-                        out.add((byte) '\n');
+                        out.add((byte) 'n');
                         break;
                     case 11:
                         out.add((byte) '\\');
@@ -66,7 +68,6 @@ public class PanbyteStringOutput extends PanbyteOutput {
                         out.add((byte) 'r');
                         break;
                 }
-                this.sendOutputData(out);
             } else {
                 out.add((byte) '\\');
                 out.add((byte) 'x');
