@@ -343,6 +343,44 @@ class PanbyteBitInputOutputTest {
     }
 
     @Test
+    void OUTPUT_TwoBytes_leftPad2_noZeroPadding() {
+        String inputString = "110001";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, false);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("110001"));
+    }
+
+    @Test
+    void OUTPUT_TwoBytes_leftPad3_noZeroPadding() {
+        String inputString = "1";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, false);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("1"));
+    }
+
+    @Test
     void OUTPUT_TwoBytes_leftPad4() {
         String inputString = "10 11 001100\t11";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
