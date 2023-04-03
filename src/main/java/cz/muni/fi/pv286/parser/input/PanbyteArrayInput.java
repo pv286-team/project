@@ -86,6 +86,9 @@ public class PanbyteArrayInput extends PanbyteInput {
                                 throw new IllegalArgumentException("Cannot close now");
                             }
                             this.state = ParseStatus.SEEK_INPUT_END;
+                        } else {
+                            // allow closing this newly opened bracket
+                            this.state = ParseStatus.SEEK_INPUT_START;
                         }
                         continue;
                     }

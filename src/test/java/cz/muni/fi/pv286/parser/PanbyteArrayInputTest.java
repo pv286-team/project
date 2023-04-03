@@ -54,6 +54,24 @@ class PanbyteArrayInputTest {
         assert(result.equals(""));
     }
 
+    @Test
+    void INPUT_Empty_array_double() {
+        String inputString = "((),())";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals(""));
+    }
 
     @Test
     void INPUT_Empty_content() {
