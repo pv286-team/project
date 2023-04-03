@@ -239,11 +239,11 @@ public class PanbyteArrayInputOutputTest {
         try {
             processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
         } catch (Exception e) {
-            //assert(false);
+            assert(false);
         }
 
-//        String result = stdoutWriter.toString();
-//        assert(result.equals("[[1, [2], [3, 4, 5], 6]]"));
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[1, [2], [3, 4, 5], 6]]"));
     }
 
     @Test
@@ -277,11 +277,11 @@ public class PanbyteArrayInputOutputTest {
         try {
             processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
         } catch (Exception e) {
-            //assert(false);
+            assert(false);
         }
 
-//        String result = stdoutWriter.toString();
-//        assert(result.equals("[[], []]"));
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[], []]"));
     }
 
     @Test
