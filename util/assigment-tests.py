@@ -49,6 +49,8 @@ TESTS: List[TestCase] = [
     TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"{{0x01, (2)}}",expected_out=b'0102'),
     TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"([],{})",expected_out=b''),
     TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[[1, (2)], [3, 4]]",expected_out=b'01020304'),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"()",expected_out=b''),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[               ]",expected_out=b''),
     # TestCase(
     #     args=['-f', 'array', '-t', 'array'],
     #     data_in=br"{0x01,2,0b11 ,'\x04' }",
