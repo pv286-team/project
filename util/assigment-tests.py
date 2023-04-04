@@ -99,21 +99,21 @@ TESTS: List[TestCase] = [
         data_in=br"[[1, 2], [3, 4], [5, 6]]",
         expected_out=br"{{1, 2}, {3, 4}, {5, 6}}"
     ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options=0', '--to-options="["'],
-    #     data_in=br"{{0x01, (2), [3, 0b100, 0x05], '\x06'}}",
-    #     expected_out=br"[[1, [2], [3, 4, 5], 6]]"
-    # ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options=0', '--to-options="["'],
+        data_in=br"{{0x01, (2), [3, 0b100, 0x05], '\x06'}}",
+        expected_out=br"[[1, [2], [3, 4, 5], 6]]"
+    ),
     TestCase(
         args=['-f', 'array', '-t', 'array'],
         data_in=br"()",
         expected_out=br"{}"
     ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'array', '--to-options="["'],
-    #     data_in=br"([],{})",
-    #     expected_out=br"[[], []]"
-    # ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--to-options="["'],
+        data_in=br"([],{})",
+        expected_out=br"[[], []]"
+    ),
 ]
 
 
