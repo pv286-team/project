@@ -1,6 +1,5 @@
 package cz.muni.fi.pv286.parser.input;
 
-import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.Util;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
@@ -23,7 +22,7 @@ public class PanbyteIntInput extends PanbyteInput {
         endianity = option;
     }
 
-    public void parse(final List<Byte> buffer) throws InvalidArgumentsException {
+    public void parse(final List<Byte> buffer) {
         // append all received bytes to the previously unparsed ones
         this.unparsedBuffer.addAll(buffer);
 
@@ -36,7 +35,7 @@ public class PanbyteIntInput extends PanbyteInput {
                 continue;
             }
             if (!Character.isDigit(nextByte)) {
-                throw new InvalidArgumentsException("Invalid character encountered");
+                throw new IllegalArgumentException("Invalid character encountered");
             }
 
             integer = integer.multiply(new BigInteger("10"));
