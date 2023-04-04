@@ -1,8 +1,8 @@
 package cz.muni.fi.pv286.parser.output;
 
-import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.ArrayBracket;
+import cz.muni.fi.pv286.parser.Util;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,11 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PanbyteArrayOutput extends PanbyteOutput {
+    /** Parser for received byte */
     PanbyteOutput innerOutput;
+    /** Type of output [decimal, hex, characters, bits] */
     Option outputOption;
+    /** Type of brackets used for printed array */
     Option bracketsOption;
+    /** List of all obtained brackets which should be printed */
     List<ArrayBracket> brackets;
-    int index = 0;
+    /** Index of current parsed byte */
+    int index;
 
     public PanbyteArrayOutput(OutputStream outputStream, Option outputOption, Option bracketsOption) {
         super(outputStream);
@@ -22,6 +27,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
         this.bracketsOption = bracketsOption;
         this.index = 0;
         this.brackets = null;
+        // According to set options, create inner parser
         switch (outputOption) {
             case DEC:
                 innerOutput = new PanbyteIntOutput(outputStream, Option.BIG_ENDIAN);
@@ -43,52 +49,41 @@ public class PanbyteArrayOutput extends PanbyteOutput {
     public void stringify(List<Byte> buffer) throws IOException {
         final List<Byte> out = new ArrayList<>();
 
-        // by default print the most out bracket first
+        // When the input is not array, print default outer opening bracket
         if (index == 0 && brackets == null) {
             out.add(this.getBracket(ArrayBracket.BracketType.OPENING));
             this.sendOutputData(out);
+            out.clear();
         }
-        out.clear();
 
+        // Iterate over received buffer (mostly it is just one byte)
         for (byte currentByte : buffer) {
-            // put closing brackets
-            if (brackets != null) {
-                this.putBrackets(ArrayBracket.BracketType.CLOSING);
-            }
+            // Closing brackets need to be printed before ',' and opening brackets
+            this.putBrackets(ArrayBracket.BracketType.CLOSING);
 
             if (index > 0) {
-                // set whitespace
-                out.add((byte) ',');
-                out.add((byte) ' ');
-                this.sendOutputData(out);
-                out.clear();
+                // Set array delimiter
+                this.sendOutputData(Util.bytesToList(", ".getBytes()));
             }
 
-            // put opening brackets
-            if (brackets != null) {
-                this.putBrackets(ArrayBracket.BracketType.OPENING);
-            }
+            // Put opening brackets after possible delimiter
+            this.putBrackets(ArrayBracket.BracketType.OPENING);
 
-            // print prefix if needed
+            // Print prefix if needed
             switch (outputOption) {
-                case DEC:
-                    break;
-                case CHAR:
-                    break;
                 case BIT:
-                    out.add((byte) '0');
-                    out.add((byte) 'b');
+                    this.sendOutputData(Util.bytesToList("0b".getBytes()));
                     break;
                 case HEX:
-                    out.add((byte) '0');
-                    out.add((byte) 'x');
+                    this.sendOutputData(Util.bytesToList("0x".getBytes()));
                     break;
+                case DEC:
+                case CHAR:
                 default:
                     break;
             }
-            this.sendOutputData(out);
-            out.clear();
             out.add(currentByte);
+            // Parse byte value by inner parser
             this.innerOutput.getFresh();
             this.innerOutput.stringify(out);
             this.innerOutput.parserFinalize();
@@ -99,20 +94,34 @@ public class PanbyteArrayOutput extends PanbyteOutput {
 
     @Override
     public void parserFinalize() throws IOException {
-        final List<Byte> out = new ArrayList<>();
+        // By this time, all bytes should be printed out
+        // along with the inside brackets
 
-        if (brackets == null && index == 0) { // nothing was printed out, put starting bracket here
-            out.add(this.getBracket(ArrayBracket.BracketType.OPENING));
-            this.sendOutputData(out);
+        if (brackets == null && index == 0) {
+            // input is not array & nothing was printed out, put starting bracket here
+            this.sendOutputData(List.of(this.getBracket(ArrayBracket.BracketType.OPENING)));
         }
-        if (brackets == null && index >= 0){ // add only most outer closing bracket, when some output was printed out
-            out.add(this.getBracket(ArrayBracket.BracketType.CLOSING));
-            this.sendOutputData(out);
-        } else if (brackets != null) {
-            // in this case, brackets are sent from array input
+        // input is not array & something was printed out already, print only closing bracket
+        if (brackets == null && index > 0){
+            this.sendOutputData(List.of(this.getBracket(ArrayBracket.BracketType.CLOSING)));
+        } else if (brackets != null && index > 0) {
+            // array is input & some bytes were printed, standalone brackets are left
             this.putBrackets(ArrayBracket.BracketType.OPENING);
             this.putBrackets(ArrayBracket.BracketType.CLOSING);
+        } else if (brackets != null && index == 0) {
+            // array is input & no bytes were printed, so the input is an only bunch of brackets
+            boolean closing = false;
+            for (ArrayBracket b : this.brackets) {
+                if (closing  && b.type == ArrayBracket.BracketType.OPENING) {
+                    this.sendOutputData(Util.bytesToList(", ".getBytes()));
+                    closing = false;
+                }
+                if (b.type == ArrayBracket.BracketType.CLOSING)
+                    closing = true;
+                this.sendOutputData(List.of(this.getBracket(b.type)));
+            }
         }
+        // Everything was printed out, reset to default
         this.index = 0;
         this.brackets = null;
     }
@@ -122,21 +131,23 @@ public class PanbyteArrayOutput extends PanbyteOutput {
         return new PanbyteArrayOutput(this.outputStream, outputOption, bracketsOption);
     }
 
+
+
+    /** Print all brackets of given type on current index */
     private void putBrackets(ArrayBracket.BracketType type) throws IOException {
-        final List<Byte> out = new ArrayList<>();
-        for (ArrayBracket b : brackets) {
-            int bracketIndex = b.index;
-            if (bracketIndex == index) {
+        if (brackets == null)
+            return;
+        for (ArrayBracket b : this.brackets) {
+            if (b.index == index) {
                 if (b.type == type) {
-                    out.add(this.getBracket(type));
-                    this.sendOutputData(out);
-                    out.clear();
+                    this.sendOutputData(List.of(this.getBracket(type)));
                 }
             }
         }
     }
 
-    private Byte getBracket(ArrayBracket.BracketType type) {
+    /** Get bracket as byte */
+    private byte getBracket(ArrayBracket.BracketType type) {
         switch (this.bracketsOption) {
             case REGULAR_BRACKETS:
                 return type == ArrayBracket.BracketType.OPENING ? (byte) '(' : (byte) ')';
@@ -148,6 +159,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
         }
     }
 
+    /** Set current array of brackets */
     public void setBrackets(List<ArrayBracket> brackets) {
         this.brackets = brackets;
     }

@@ -144,4 +144,16 @@ public class Util {
         }
         return sb.toString();
     }
+
+    /**
+     * Converts array of bytes into list of bytes
+     * @param bytes array of bytes
+     * @return list of bytes
+     */
+    public static List<Byte> bytesToList(byte[] bytes) {
+        List<Byte> result = new ArrayList<>();
+        for (byte b : bytes)
+            result.add(b);
+        return result;
+    }
 }
