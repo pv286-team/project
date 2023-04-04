@@ -14,7 +14,7 @@ import java.io.OutputStream;
 
 import static cz.muni.fi.pv286.Main.processIO;
 
-public class PanbyteArrayInputOutputTest {
+public class PanbyteArrayOutputTest {
 
     @Test
     void TestAssignment_01() {

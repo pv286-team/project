@@ -153,7 +153,7 @@ class PanbyteArrayInputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteArrayInput(output);
 
         try {
