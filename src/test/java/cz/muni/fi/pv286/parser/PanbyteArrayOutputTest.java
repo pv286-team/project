@@ -357,4 +357,23 @@ public class PanbyteArrayOutputTest {
         String result = stdoutWriter.toString();
         assert(result.equals("{{0x1, {0x2}}, {0x3, 0x4}}"));
     }
+
+    @Test
+    void nestedArrayBrackets_square_complex() {
+        String inputString = "[[], [[], [[([()])],[]]]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[], [[], [[[[[]]]], []]]]"));
+    }
 }
