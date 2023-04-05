@@ -39,11 +39,18 @@ TESTS: List[TestCase] = [
     #     data_in=b'01020304',
     #     expected_out=b'{0x1, 0x2, 0x3, 0x4}'
     # ),
-    # TestCase(
-    #     args=['-f', 'array', '-t', 'hex'],
-    #     data_in=br"{0x01, 2, 0b11, '\x04'}",
-    #     expected_out=b'01020304'
-    # ),
+    TestCase(
+        args=['-f', 'array', '-t', 'hex'],
+        data_in=br"{0x01, 2, 0b11, '\x04'}",
+        expected_out=b'01020304'
+    ),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"((1, 2), (3, 4))",expected_out=b'01020304'),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"{0x01, 0x02}",expected_out=b'0102'),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"{{0x01, (2)}}",expected_out=b'0102'),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"([],{})",expected_out=b''),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[[1, (2)], [3, 4]]",expected_out=b'01020304'),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"()",expected_out=b''),
+    TestCase(args=['-f', 'array', '-t', 'hex'],data_in=br"[               ]",expected_out=b''),
     # TestCase(
     #     args=['-f', 'array', '-t', 'array'],
     #     data_in=br"{0x01,2,0b11 ,'\x04' }",
