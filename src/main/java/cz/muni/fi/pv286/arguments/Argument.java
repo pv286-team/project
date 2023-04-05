@@ -9,12 +9,19 @@ public class Argument {
             throw new InvalidArgumentsException("Name of argument cannot be empty");
         }
         this.name = name;
-        this.value = value;
+        this.value = this.stripValue(value);
     }
 
     public String getName() { return this.name; }
 
     public String getValue() {
         return this.value;
+    }
+
+    /** Strips the possible "" away from argument value */
+    private String stripValue(String value) {
+        if (value.startsWith("\"") && value.endsWith("\""))
+            return value.substring(1, value.length() - 1);
+        return value;
     }
 }
