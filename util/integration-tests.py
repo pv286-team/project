@@ -177,6 +177,12 @@ TESTS: List[TestCase] = [
         expected_out=None,
         expected_code=1
     ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'array', '--input=nonexistent_file'],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
     # Error inputs
     TestCase(
         args=['-f', 'hex', '-t', 'bytes'],
