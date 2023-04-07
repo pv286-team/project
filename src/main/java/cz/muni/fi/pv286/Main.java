@@ -11,15 +11,16 @@ import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.*;
 import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 
-import java.io.*;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InvalidArgumentsException {
+    public static void main(String[] args) {
 
         ProgramArguments arguments = null;
         try {
@@ -41,7 +42,7 @@ public class Main {
 
         if (arguments.getInputFileType().equals(FileType.STANDARD)) {
             // Create default input stream from stdin
-            inputStream =  System.in;
+            inputStream = System.in;
         } else {
             System.out.print("Not implemented yet.");
             return;
@@ -97,7 +98,18 @@ public class Main {
                 return;
         }
 
-        Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
+        try {
+            Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
+        } catch (OutOfMemoryError err) {
+            System.err.println("Program run out of memory - probably the input is too big.");
+            System.exit(1);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Error occurred at input/output read/write: " + e.getMessage());
+            System.exit(1);
+        }
     }
 
     /**
@@ -108,7 +120,7 @@ public class Main {
      * @param inputFabricator model from which fresh inputs are cloned
      * @param delimiter delimiter to consider
      */
-    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
+    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
         final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
         // the single IO process returns true when delimiter was hit and there is more data to be read
@@ -126,7 +138,7 @@ public class Main {
      * @param delimiter delimiter to consider
      * @return true if more input is to be read, false otherwise
      */
-    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
         final PanbyteInput input = inputFabricator.getFresh();
 
         // buffer read bytes so that it can be sent to the input parser at chunks

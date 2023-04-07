@@ -56,7 +56,7 @@ public class PanbyteArrayInput extends PanbyteInput {
     }
 
     @Override
-    public void parse(final List<Byte> buffer) throws IOException, InvalidArgumentsException {
+    public void parse(final List<Byte> buffer) throws IOException {
         this.unparsedBuffer.addAll(buffer);
 
         while (this.unparsedBuffer.size() > 0) {
@@ -187,7 +187,7 @@ public class PanbyteArrayInput extends PanbyteInput {
      * @param character character that decides what type of inputs comes next
      * @return true if we can decide on the type of input, false if more bytes need to be read into unparsed buffer first
      */
-    private boolean createNewInput(final byte character) throws IOException, InvalidArgumentsException {
+    private boolean createNewInput(final byte character) throws IOException {
         this.innerOutput = new PanbyteMockOutput();
 
         if (character == '\'') {
