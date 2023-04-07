@@ -48,7 +48,7 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
         final List<Byte> out = new ArrayList<>();
 
         // When the input is not array, print default outer opening bracket
-        if (index == 0 && brackets == null) {
+        if (index == 0 && brackets == null && !buffer.isEmpty()) {
             out.add(this.getBracket(ArrayBracket.BracketType.OPENING));
             this.sendOutputData(out);
             out.clear();
