@@ -25,8 +25,14 @@ public class Main {
         try {
             arguments = new ProgramArguments(args);
         } catch (InvalidArgumentsException e) {
-            System.out.print(e.getMessage());
+            System.err.print(e.getMessage() + "\n");
+            System.err.println(ProgramArguments.getHelpString());
             System.exit(1);
+        }
+
+        if (arguments.getHelp()) {
+            System.out.println(ProgramArguments.getHelpString());
+            return;
         }
 
         final OutputStream outputStream;
@@ -67,7 +73,7 @@ public class Main {
                 output = new PanbyteArrayOutput(outputStream, arguments.getOutputOption(), arguments.getOutputBrackets());
                 break;
             default:
-                System.out.print("Not implemented yet.");
+                System.out.println(ProgramArguments.getHelpString());
                 return;
         }
 
@@ -93,7 +99,7 @@ public class Main {
                 input = new PanbyteArrayInput(output);
                 break;
             default:
-                System.out.print("Not implemented yet.");
+                System.out.println(ProgramArguments.getHelpString());
                 return;
         }
 
