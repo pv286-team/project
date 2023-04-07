@@ -4,9 +4,6 @@ import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.arguments.values.Format;
 import cz.muni.fi.pv286.arguments.values.Option;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProgramArguments {
 
     private FileType inputFileType = FileType.STANDARD;
@@ -26,6 +23,25 @@ public class ProgramArguments {
     public ProgramArguments(String[] args) throws InvalidArgumentsException {
         ArgumentParser.parseArguments(args, this);
         ArgumentValidator.validateArguments(this);
+    }
+
+    public static String getHelpString() {
+        return "USAGE: ./panbyte [ARGS...]\n"
+                + "ARGS:\n"
+                + "-f\tFORMAT\t\t--from=FORMAT\t\t\tSet input data format\n"
+                + "\t\t\t\t--from-options=OPTIONS\tSet input options\n"
+                + "-t\tFORMAT\t\t--to=FORMAT\t\t\t\tSet output data format\n"
+                + "\t\t\t\t--to-options=OPTIONS\tSet output options\n"
+                + "-i\tFILE\t\t--input=FILE\t\t\tSet input file (default stdin)\n"
+                + "-o\tFILE\t\t--output=FILE\t\t\tSet output file (default stdout)\n"
+                + "-d\tDELIMITER\t--delimiter=DELIMITER\tRecord delimiter (default newline)\n"
+                + "-h\t\t\t\t--help\t\t\t\t\tPrint help\n"
+                + "FORMATS:\n"
+                + "bytes\t\tRaw bytes\n"
+                + "hex\t\t\tHex-encoded string\n"
+                + "int\t\t\tInteger\n"
+                + "bits\t\t0,1-represented bits\n"
+                + "array\t\tByte array\n";
     }
 
     public FileType getInputFileType() {
