@@ -101,13 +101,13 @@ public class Main {
         try {
             Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
         } catch (OutOfMemoryError err) {
-            System.err.print("Program run out of memory - probably the input is too big.");
+            System.err.println("Program run out of memory - probably the input is too big.");
             System.exit(1);
         } catch (IllegalArgumentException e) {
-            System.err.print("Unexpected error: " + e.getMessage());
+            System.err.println("Unexpected error: " + e.getMessage());
             System.exit(1);
         } catch (IOException e) {
-            System.err.print("Error occurred at input/output read/write.");
+            System.err.println("Error occurred at input/output read/write: " + e.getMessage());
             System.exit(1);
         }
     }
