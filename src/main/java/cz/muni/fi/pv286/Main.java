@@ -6,12 +6,7 @@ import cz.muni.fi.pv286.parser.PanbyteInputOutputFactory;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,8 +39,9 @@ public class Main {
             case FILE:
                 try {
                     outputStream = new FileOutputStream(arguments.getOutputFileName());
-                } catch (FileNotFoundException e) {
-                    System.err.println("Output file not found: " + arguments.getOutputFileName());
+                } catch (Exception e) {
+                    System.err.println("Cannot use output file: " + arguments.getOutputFileName());
+                    System.exit(1);
                 }
                 break;
             default:
@@ -61,6 +57,7 @@ public class Main {
                     inputStream = new FileInputStream(arguments.getInputFileName());
                 } catch (FileNotFoundException e) {
                     System.err.println("Input file not found: " + arguments.getInputFileName());
+                    System.exit(1);
                 }
                 break;
             default:
