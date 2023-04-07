@@ -19,14 +19,12 @@ public class PanbyteArrayOutput extends PanbyteOutput {
     /** List of all obtained brackets which should be printed */
     List<ArrayBracket> brackets;
     /** Index of current parsed byte */
-    int index;
+    int index = 0;
 
     public PanbyteArrayOutput(OutputStream outputStream, Option outputOption, Option bracketsOption) {
         super(outputStream);
         this.outputOption = outputOption;
         this.bracketsOption = bracketsOption;
-        this.index = 0;
-        this.brackets = null;
         // According to set options, create inner parser
         switch (outputOption) {
             case DEC:
@@ -102,7 +100,7 @@ public class PanbyteArrayOutput extends PanbyteOutput {
             this.sendOutputData(List.of(this.getBracket(ArrayBracket.BracketType.OPENING)));
         }
         // input is not array & something was printed out already, print only closing bracket
-        if (brackets == null && index > 0){
+        if (brackets == null && index >= 0){
             this.sendOutputData(List.of(this.getBracket(ArrayBracket.BracketType.CLOSING)));
         } else if (brackets != null && index > 0) {
             // array is input & some bytes were printed, standalone brackets are left
