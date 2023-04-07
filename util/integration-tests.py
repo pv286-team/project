@@ -3,6 +3,12 @@ from utils import *
 TESTS: List[TestCase] = [
     # Error arguments
     TestCase(
+        args=[],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
         args=['-help'],
         data_in=br"",
         expected_out=None,
@@ -106,6 +112,12 @@ TESTS: List[TestCase] = [
         expected_code=1
     ),
     TestCase(
+        args=['-f', 'int', '-t', 'int', '--to-options=little', '--to-options=left'],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
         args=['-f', 'bits', '-t', 'int', '--from-options=big'],
         data_in=br"",
         expected_out=None,
@@ -113,6 +125,12 @@ TESTS: List[TestCase] = [
     ),
     TestCase(
         args=['-f', 'bits', '-t', 'bits', '--to-options=little'],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'bits', '--to-options=big', '--to-options=little'],
         data_in=br"",
         expected_out=None,
         expected_code=1
@@ -137,6 +155,24 @@ TESTS: List[TestCase] = [
     ),
     TestCase(
         args=['-f', 'bits', '-t', 'array', '--to-options= a', '--to-options=a'],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'array', '--to-options= "(\''],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'array', '--to-options="[]"', '--to-options=big'],
+        data_in=br"",
+        expected_out=None,
+        expected_code=1
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'array', '--to-options=a', '--to-options=big'],
         data_in=br"",
         expected_out=None,
         expected_code=1
@@ -245,6 +281,26 @@ TESTS: List[TestCase] = [
         expected_out=br"[]",
         expected_code=0
     ),
+    TestCase(
+        args=['-f', 'array', '-t', 'hex'],
+        data_in=br"{0x01, 0x02}",
+        expected_out=b'0102'
+        , expected_code=0),
+    TestCase(
+        args=['-f', 'array', '-t', 'hex'],
+        data_in=br"((1, 2), (3, 4))",
+        expected_out=b'01020304'
+        , expected_code=0),
+    TestCase(
+        args=['-f', 'array', '-t', 'array'],
+        data_in=br"{0x01,2,0b11 ,'\x04' }",
+        expected_out=b'{0x1, 0x2, 0x3, 0x4}'
+        , expected_code=0),
+    TestCase(
+        args=['-f', 'array', '-t', 'array'],
+        data_in=br"{(),  {{}, {[]}} ,{   }}",
+        expected_out=b'{{}, {{}, {{}}}, {}}'
+        , expected_code=0),
 ]
 
 if __name__ == '__main__':
