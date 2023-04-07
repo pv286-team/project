@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Saves all parsed bytes into a local list only
  */
-public class PanbyteMockOutput extends PanbyteOutput {
+public class PanbyteMockOutput extends PanbyteOutputBase {
     private final List<Byte> bytes = new ArrayList<>();
 
     public PanbyteMockOutput() {

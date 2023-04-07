@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Input parser for raw bytes
  */
-public class PanbyteRawInput extends PanbyteInput {
+public class PanbyteRawInput extends PanbyteInputBase {
     public PanbyteRawInput(final PanbyteOutput output) {
         super(output);
     }

@@ -1,10 +1,10 @@
 package cz.muni.fi.pv286.parser;
 
-import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
-import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
+import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import org.junit.jupiter.api.Test;
 

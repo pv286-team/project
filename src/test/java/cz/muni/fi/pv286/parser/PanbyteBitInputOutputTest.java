@@ -1,16 +1,15 @@
 package cz.muni.fi.pv286.parser;
 
 import cz.muni.fi.pv286.arguments.values.Option;
-import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
+import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 

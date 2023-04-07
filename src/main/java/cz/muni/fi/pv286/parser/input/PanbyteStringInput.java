@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Input parser for encoded strings
  */
-public class PanbyteStringInput extends PanbyteInput {
+public class PanbyteStringInput extends PanbyteInputBase {
     private final List<Byte> unparsedBytes = new ArrayList<>();
 
     public PanbyteStringInput(final PanbyteOutput output) {

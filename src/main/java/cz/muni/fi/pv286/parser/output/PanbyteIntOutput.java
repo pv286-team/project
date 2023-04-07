@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PanbyteIntOutput extends PanbyteOutput {
+public class PanbyteIntOutput extends PanbyteOutputBase {
 
     private final Option endianity;
 

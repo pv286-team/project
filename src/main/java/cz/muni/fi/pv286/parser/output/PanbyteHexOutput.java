@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Outputs received bytes as hex
  */
-public class PanbyteHexOutput extends PanbyteOutput {
-    boolean zeroPadding = true;
+public class PanbyteHexOutput extends PanbyteOutputBase {
+    boolean zeroPadding;
 
     public PanbyteHexOutput(OutputStream outputStream, boolean zeroPadding) {
         super(outputStream);

@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanbyteStringOutput extends PanbyteOutput {
+public class PanbyteStringOutput extends PanbyteOutputBase {
     private final List<Byte> unparsedBytes = new ArrayList<>();
     private final PanbyteHexOutput innerHexOutput;
     public PanbyteStringOutput(OutputStream outputStream) {

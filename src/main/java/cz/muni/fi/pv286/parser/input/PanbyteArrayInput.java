@@ -3,9 +3,9 @@ package cz.muni.fi.pv286.parser.input;
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.ArrayBracket;
+import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteMockOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Parsers array input
  */
-public class PanbyteArrayInput extends PanbyteInput {
+public class PanbyteArrayInput extends PanbyteInputBase {
     private enum ParseStatus {
         /** No data was yet parsed, expecting top-level opening bracket */
         ROOT,
@@ -42,7 +42,7 @@ public class PanbyteArrayInput extends PanbyteInput {
     /** Count of parsed represented bytes, for storing correct position of brackets */
     private int parsedByteIndex = 0;
     /** Internal parser for single represented byte */
-    private PanbyteInput innerInput;
+    private PanbyteInputBase innerInput;
     /** Mock output for reading bytes from the internal one */
     private PanbyteMockOutput innerOutput;
     /** This character marks the end of the current input */

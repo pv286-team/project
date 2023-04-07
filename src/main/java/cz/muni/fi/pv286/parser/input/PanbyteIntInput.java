@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /** This class stores digit after digit in BigInteger and only then converts them to bytes. */
-public class PanbyteIntInput extends PanbyteInput {
+public class PanbyteIntInput extends PanbyteInputBase {
 
     private final List<Byte> unparsedBuffer = new ArrayList<>();
     private BigInteger integer = new BigInteger("0");
