@@ -18,7 +18,7 @@ public class PanbyteStringInput extends PanbyteInput {
     }
 
     @Override
-    public void parse(final List<Byte> buffer) throws IOException {
+    public void parse(final List<Byte> buffer) {
         // We need all data to be read first in memory so that escape characters are interpreted correctly
         this.unparsedBytes.addAll(buffer);
     }
