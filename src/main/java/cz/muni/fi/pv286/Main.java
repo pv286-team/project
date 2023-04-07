@@ -145,6 +145,6 @@ public class Main {
         input.parserFinalize();
 
         // returns true if there is more data to be read
-        return !reader.isAllRead();
+        return delimiterReached || !reader.isAllRead();
     }
 }

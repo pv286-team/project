@@ -21,6 +21,7 @@ TESTS: List[TestCase] = [
     TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74657374', expected_out=b'test', expected_code=0),
     TestCase(args=['-f', 'bytes', '-t', 'hex'], data_in=b'test', expected_out=b'74657374', expected_code=0),
     TestCase(args=['-f', 'hex', '-t', 'bytes'], data_in=b'74 65 73 74', expected_out=b'test', expected_code=0),
+    TestCase(args=['-f', 'bytes', '-t', 'hex', '--delimiter="\n"'], data_in=b'hel\nlo\n', expected_out=b'68656c\n6c6f\n', expected_code=0),
     # int
     TestCase(args=['-f', 'int', '-t', 'hex'], data_in=b'1234567890', expected_out=b'499602d2', expected_code=0),
     TestCase(args=['-f', 'int', '-t', 'hex', '--from-options=big'], data_in=b'1234567890', expected_out=b'499602d2', expected_code=0),

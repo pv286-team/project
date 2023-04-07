@@ -129,7 +129,7 @@ class PanbyteBitInputOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("O"));
+        assert(result.equals("O\n"));
     }
 
     @Test
@@ -167,7 +167,7 @@ class PanbyteBitInputOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("0"));
+        assert(result.equals("0\n"));
     }
 
     @Test
