@@ -4,6 +4,7 @@ import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.input.PanbyteArrayInput;
 import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
+import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
@@ -378,7 +379,7 @@ public class PanbyteArrayOutputTest {
     }
 
     @Test
-    void empty() {
+    void emptyInputArray() {
         String inputString = "";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
@@ -393,6 +394,25 @@ public class PanbyteArrayOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals(""));
+        assert(result.equals("[]"));
+    }
+
+    @Test
+    void emptyInputBytes() {
+        String inputString = "";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteRawInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[]"));
     }
 }
