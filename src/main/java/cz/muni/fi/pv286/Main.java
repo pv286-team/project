@@ -3,18 +3,9 @@ package cz.muni.fi.pv286;
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.ProgramArguments;
 import cz.muni.fi.pv286.arguments.values.FileType;
+import cz.muni.fi.pv286.parser.PanbyteInputOutputFactory;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
-import cz.muni.fi.pv286.parser.input.PanbyteArrayInput;
-import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
-import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
-import cz.muni.fi.pv286.parser.input.PanbyteIntInput;
-import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteIntOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,54 +50,15 @@ public class Main {
             return;
         }
 
-        final PanbyteOutput output;
-        final PanbyteInput input;
+        final PanbyteOutput output = PanbyteInputOutputFactory.makeOutput(arguments, outputStream);
+        PanbyteInput input = null;
 
-        switch (arguments.getOutputFormat()) {
-            case BYTES:
-                output = new PanbyteRawOutput(outputStream);
-                break;
-            case HEX:
-                output = new PanbyteHexOutput(outputStream, true);
-                break;
-            case BITS:
-                output = new PanbyteBitOutput(outputStream, true);
-                break;
-            case INT:
-                output = new PanbyteIntOutput(outputStream, arguments.getOutputOption());
-                break;
-            case ARRAY:
-                output = new PanbyteArrayOutput(outputStream, arguments.getOutputOption(), arguments.getOutputBrackets());
-                break;
-            default:
-                System.out.println(ProgramArguments.getHelpString());
-                return;
+        if (output != null) {
+            input = PanbyteInputOutputFactory.makeInput(arguments, output);
         }
-
-        switch (arguments.getInputFormat()) {
-            case BYTES:
-                input = new PanbyteRawInput(output);
-                if (!arguments.isDelimiterSet()) {
-                    // when delimiter is not explicitly set for this mode, ignore it
-                    arguments.setDelimiter("");
-                }
-                break;
-            case HEX:
-                input = new PanbyteHexInput(output);
-                break;
-            case BITS:
-                /* In that place, argument should be checked and valid */
-                input = new PanbyteBitInput(output, arguments.getInputOption());
-                break;
-            case INT:
-                input = new PanbyteIntInput(output, arguments.getInputOption());
-                break;
-            case ARRAY:
-                input = new PanbyteArrayInput(output);
-                break;
-            default:
-                System.out.println(ProgramArguments.getHelpString());
-                return;
+        if (input == null) {
+            System.out.println(ProgramArguments.getHelpString());
+            System.exit(1);
         }
 
         try {
