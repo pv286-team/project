@@ -24,7 +24,7 @@ class PanbyteIntInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
@@ -43,7 +43,7 @@ class PanbyteIntInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
@@ -62,7 +62,7 @@ class PanbyteIntInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {

@@ -8,12 +8,8 @@ import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteIntInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
-import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
+import cz.muni.fi.pv286.parser.output.*;
 import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
-import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteIntOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 
 import java.io.*;
 import java.io.IOException;
@@ -59,13 +55,16 @@ public class Main {
                 output = new PanbyteRawOutput(outputStream);
                 break;
             case HEX:
-                output = new PanbyteHexOutput(outputStream);
+                output = new PanbyteHexOutput(outputStream, true);
                 break;
             case BITS:
-                output = new PanbyteBitOutput(outputStream);
+                output = new PanbyteBitOutput(outputStream, true);
                 break;
             case INT:
                 output = new PanbyteIntOutput(outputStream, arguments.getOutputOption());
+                break;
+            case ARRAY:
+                output = new PanbyteArrayOutput(outputStream, arguments.getOutputOption(), arguments.getOutputBrackets());
                 break;
             default:
                 System.out.print("Not implemented yet.");

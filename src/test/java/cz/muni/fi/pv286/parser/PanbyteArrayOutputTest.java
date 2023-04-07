@@ -1,32 +1,30 @@
 package cz.muni.fi.pv286.parser;
 
 import cz.muni.fi.pv286.arguments.values.Option;
-import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
+import cz.muni.fi.pv286.parser.input.PanbyteArrayInput;
+import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
-import cz.muni.fi.pv286.parser.output.PanbyteBitOutput;
+import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import static cz.muni.fi.pv286.Main.processIO;
 
-
-class PanbyteBitInputOutputTest {
+public class PanbyteArrayOutputTest {
 
     @Test
     void TestAssignment_01() {
-        String inputString = "0100 1111 0100 1011";
+        String inputString = "01020304";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
             processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
@@ -35,36 +33,17 @@ class PanbyteBitInputOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("OK"));
+        assert(result.equals("{0x1, 0x2, 0x3, 0x4}"));
     }
 
     @Test
-    void TestAssignment_02()  {
-        String inputString = "100111101001011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("OK"));
-    }
-
-    @Test
-    void TestAssignment_03()  {
-        String inputString = "100111101001011";
+    void TestAssignment_02() {
+        String inputString = "{0x01, 2, 0b11, '\\x04'}";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+        final PanbyteInput input = new PanbyteArrayInput(output);
 
         try {
             processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
@@ -73,16 +52,358 @@ class PanbyteBitInputOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("9e96"));
+        assert(result.equals("01020304"));
+    }
+
+    @Test
+    void TestAssignment_03() {
+        String inputString = "{0x01,2,0b11 ,'\\x04' }";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x1, 0x2, 0x3, 0x4}"));
     }
 
     @Test
     void TestAssignment_04() {
-        String inputString = "OK";
+        String inputString = "[0x01, 2, 0b11, '\\x04']";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x1, 0x2, 0x3, 0x4}"));
+    }
+
+    @Test
+    void TestAssignment_05() {
+        String inputString = "(0x01, 2, 0b11, '\\x04')";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.DEC, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{1, 2, 3, 4}"));
+    }
+
+    @Test
+    void TestAssignment_06() {
+        String inputString = "{0x01, 2, 0b11, '\\x04'}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.CHAR, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{'\\x01', '\\x02', '\\x03', '\\x04'}"));
+    }
+
+    @Test
+    void TestAssignment_07() {
+        String inputString = "[0x01, 2, 0b11, '\\x04']";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.BIT, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0b1, 0b10, 0b11, 0b100}"));
+    }
+
+    @Test
+    void TestAssignment_08() {
+        String inputString = "(0x01, 2, 0b11, '\\x04')";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.REGULAR_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("(0x1, 0x2, 0x3, 0x4)"));
+    }
+
+    @Test
+    void TestAssignment_09() {
+        String inputString = "{0x01, 2, 0b11, '\\x04'}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.DEC, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[1, 2, 3, 4]"));
+    }
+
+    @Test
+    void TestAssignment_10() {
+        String inputString = "[[1, 2], [3, 4], [5, 6]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{0x1, 0x2}, {0x3, 0x4}, {0x5, 0x6}}"));
+    }
+
+    @Test
+    void TestAssignment_11() {
+        String inputString = "[[1, 2], [3, 4], [5, 6]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.DEC, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{1, 2}, {3, 4}, {5, 6}}"));
+    }
+
+    @Test
+    void TestAssignment_12() {
+        String inputString = "{{0x01, (2), [3, 0b100, 0x05], '\\x06'}}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.DEC, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[1, [2], [3, 4, 5], 6]]"));
+    }
+
+    @Test
+    void TestAssignment_13() {
+        String inputString = "()";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{}"));
+    }
+
+    @Test
+    void TestAssignment_14() {
+        String inputString = "([],{})";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[], []]"));
+    }
+
+    @Test
+    void nestedArray_curlyHex_double() {
+        String inputString = "[[1, 2]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{0x1, 0x2}}"));
+    }
+
+    @Test
+    void nestedArray_curlyHex_triple() {
+        String inputString = "[[[1, 2]]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{{0x1, 0x2}}}"));
+    }
+
+    @Test
+    void nestedArray_curlyHex_twoDouble() {
+        String inputString = "[[1, 2], [3, 4]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{0x1, 0x2}, {0x3, 0x4}}"));
+    }
+
+    @Test
+    void nestedArray_curlyHex_oneTriple() {
+        String inputString = "[[1, (2)], [3, 4]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{0x1, {0x2}}, {0x3, 0x4}}"));
+    }
+
+    @Test
+    void nestedArrayBrackets_square_complex() {
+        String inputString = "[[], [[], [[([()])],[]]]]";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[[], [[], [[[[[]]]], []]]]"));
+    }
+
+    @Test
+    void emptyInputArray() {
+        String inputString = "";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("[]"));
+    }
+
+    @Test
+    void emptyInputBytes() {
+        String inputString = "";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.SQUARE_BRACKETS);
         final PanbyteInput input = new PanbyteRawInput(output);
 
         try {
@@ -92,310 +413,6 @@ class PanbyteBitInputOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("0100111101001011"));
-    }
-
-    @Test
-    void INPUT_OneByte_full() {
-        String inputString = "01001111";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("O"));
-    }
-
-    @Test
-    void INPUT_OneByteWhiteSpaces_full() {
-        String inputString = "0 100\t111   1\n";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("O"));
-    }
-
-    @Test
-    void INPUT_FourBits_rightPad() {
-        String inputString = "0011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("0"));
-    }
-
-    @Test
-    void INPUT_FiveBits_rightPad_whitespaces() {
-        String inputString = "00 11\t0 0\n";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("0"));
-    }
-
-    @Test
-    void INPUT_OneByte_rightPad() {
-        String inputString = "01001110";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("N"));
-    }
-
-    @Test
-    void INPUT_OneByte_leftPad1() {
-        String inputString = "0110000";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("0"));
-    }
-
-    @Test
-    void INPUT_OneByte_leftPad2() {
-        String inputString = "110001";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("1"));
-    }
-
-    @Test
-    void INPUT_TwoBytes_leftPad1() {
-        String inputString = "0110001 00110010";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("12"));
-    }
-
-    @Test
-    void INPUT_TwoBytes_leftPad2() {
-        String inputString = "110001 00110011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("13"));
-    }
-
-    @Test
-    void INPUT_TwoBytes_full() {
-        String inputString = "01001111 01001011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("OK"));
-    }
-
-    @Test
-    void OUTPUT_OneByte_full() {
-        String inputString = "01001111";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals(inputString));
-    }
-
-    @Test
-    void OUTPUT_TwoBytes_full() {
-        String inputString = "01001111 01001011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("OK"));
-    }
-
-    @Test
-    void OUTPUT_TwoBytes_leftPad2() {
-        String inputString = "110001 00110011";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("0011000100110011"));
-    }
-
-    @Test
-    void OUTPUT_TwoBytes_leftPad2_noZeroPadding() {
-        String inputString = "110001";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, false);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("110001"));
-    }
-
-    @Test
-    void OUTPUT_TwoBytes_leftPad3_noZeroPadding() {
-        String inputString = "1";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, false);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("1"));
-    }
-
-    @Test
-    void OUTPUT_TwoBytes_leftPad4() {
-        String inputString = "10 11 001100\t11";
-        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
-
-        final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
-        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
-
-        try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
-        } catch (Exception e) {
-            assert(false);
-        }
-
-        String result = stdoutWriter.toString();
-        assert(result.equals("0000101100110011"));
+        assert(result.equals("[]"));
     }
 }

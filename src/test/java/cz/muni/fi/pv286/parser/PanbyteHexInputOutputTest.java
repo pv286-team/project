@@ -40,7 +40,7 @@ class PanbyteHexInputOutputTest {
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
@@ -51,6 +51,25 @@ class PanbyteHexInputOutputTest {
 
         String result = stdoutWriter.toString();
         assert(result.equals("499602d2"));
+    }
+
+    @Test
+    void INPUT_Single_full_high_noZeroPadding() {
+        String inputString = "499602d2";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, false);
+        final PanbyteInput input = new PanbyteHexInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("49962d2"));
     }
 
 
@@ -116,7 +135,7 @@ class PanbyteHexInputOutputTest {
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
 
-        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter);
+        final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteRawInput(output);
 
         try {

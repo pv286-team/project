@@ -45,7 +45,7 @@ public abstract class PanbyteOutput {
     /**
      * To call when all data has been already passed to the stringify function
      */
-    public abstract void parserFinalize();
+    public abstract void parserFinalize() throws IOException;
 
     /**
      * Requests a fresh copy of a subclass of this object with empty buffers
