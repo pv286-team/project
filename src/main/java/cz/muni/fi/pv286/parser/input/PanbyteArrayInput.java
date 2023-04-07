@@ -3,9 +3,9 @@ package cz.muni.fi.pv286.parser.input;
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.values.Option;
 import cz.muni.fi.pv286.parser.ArrayBracket;
-import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteMockOutput;
+import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
     }
 
     @Override
-    public void parse(final List<Byte> buffer) throws IOException {
+    public void parse(final List<Byte> buffer) throws IOException, InvalidArgumentsException {
         this.unparsedBuffer.addAll(buffer);
 
         while (this.unparsedBuffer.size() > 0) {
@@ -187,7 +187,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
      * @param character character that decides what type of inputs comes next
      * @return true if we can decide on the type of input, false if more bytes need to be read into unparsed buffer first
      */
-    private boolean createNewInput(final byte character) throws IOException {
+    private boolean createNewInput(final byte character) throws IOException, InvalidArgumentsException {
         this.innerOutput = new PanbyteMockOutput();
 
         if (character == '\'') {

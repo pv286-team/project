@@ -2,11 +2,13 @@ package cz.muni.fi.pv286;
 
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
 import cz.muni.fi.pv286.arguments.ProgramArguments;
-import cz.muni.fi.pv286.arguments.values.FileType;
 import cz.muni.fi.pv286.parser.PanbyteInputOutputFactory;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,22 +34,37 @@ public class Main {
             return;
         }
 
-        final OutputStream outputStream;
-        final InputStream inputStream;
-        if (arguments.getInputFileType().equals(FileType.STANDARD)) {
-            // Create default output stream from stdout
-            outputStream = System.out;
-        } else {
-            System.out.print("Not implemented yet.");
-            return;
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+
+        switch (arguments.getOutputFileType()) {
+            case STANDARD:
+                outputStream = System.out;
+                break;
+            case FILE:
+                try {
+                    outputStream = new FileOutputStream(arguments.getOutputFileName());
+                } catch (FileNotFoundException e) {
+                    System.err.println("Output file not found: " + arguments.getOutputFileName());
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Input type not implemented");
         }
 
-        if (arguments.getInputFileType().equals(FileType.STANDARD)) {
-            // Create default input stream from stdin
-            inputStream = System.in;
-        } else {
-            System.out.print("Not implemented yet.");
-            return;
+        switch (arguments.getInputFileType()) {
+            case STANDARD:
+                inputStream = System.in;
+                break;
+            case FILE:
+                try {
+                    inputStream = new FileInputStream(arguments.getInputFileName());
+                } catch (FileNotFoundException e) {
+                    System.err.println("Input file not found: " + arguments.getInputFileName());
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Input type not implemented");
         }
 
         final PanbyteOutput output = PanbyteInputOutputFactory.makeOutput(arguments, outputStream);
@@ -66,7 +83,7 @@ public class Main {
         } catch (OutOfMemoryError err) {
             System.err.println("Program run out of memory - probably the input is too big.");
             System.exit(1);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | InvalidArgumentsException e) {
             System.err.println("Unexpected error: " + e.getMessage());
             System.exit(1);
         } catch (IOException e) {
@@ -83,7 +100,7 @@ public class Main {
      * @param inputFabricator model from which fresh inputs are cloned
      * @param delimiter delimiter to consider
      */
-    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+    public static void processIO(final InputStream inputStream, final OutputStream outputStream, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
         final VirtualByteReader reader = new VirtualByteReader(inputStream);
 
         // the single IO process returns true when delimiter was hit and there is more data to be read
@@ -101,7 +118,7 @@ public class Main {
      * @param delimiter delimiter to consider
      * @return true if more input is to be read, false otherwise
      */
-    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException {
+    private static boolean processIOSingle(final VirtualByteReader reader, final PanbyteInput inputFabricator, final byte[] delimiter) throws IOException, InvalidArgumentsException {
         final PanbyteInput input = inputFabricator.getFresh();
 
         // buffer read bytes so that it can be sent to the input parser at chunks
