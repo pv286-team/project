@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Outputs all received bytes in their raw format
  */
-public class PanbyteRawOutput extends PanbyteOutput {
+public class PanbyteRawOutput extends PanbyteOutputBase {
 
     public PanbyteRawOutput(OutputStream outputStream) {
         super(outputStream);

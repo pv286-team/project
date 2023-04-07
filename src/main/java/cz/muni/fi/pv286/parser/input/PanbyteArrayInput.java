@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Parsers array input
  */
-public class PanbyteArrayInput extends PanbyteInput {
+public class PanbyteArrayInput extends PanbyteInputBase {
     private enum ParseStatus {
         /** No data was yet parsed, expecting top-level opening bracket */
         ROOT,
@@ -42,7 +42,7 @@ public class PanbyteArrayInput extends PanbyteInput {
     /** Count of parsed represented bytes, for storing correct position of brackets */
     private int parsedByteIndex = 0;
     /** Internal parser for single represented byte */
-    private PanbyteInput innerInput;
+    private PanbyteInputBase innerInput;
     /** Mock output for reading bytes from the internal one */
     private PanbyteMockOutput innerOutput;
     /** This character marks the end of the current input */
@@ -56,7 +56,7 @@ public class PanbyteArrayInput extends PanbyteInput {
     }
 
     @Override
-    public void parse(final List<Byte> buffer) throws IOException {
+    public void parse(final List<Byte> buffer) throws IOException, InvalidArgumentsException {
         this.unparsedBuffer.addAll(buffer);
 
         while (this.unparsedBuffer.size() > 0) {
@@ -187,7 +187,7 @@ public class PanbyteArrayInput extends PanbyteInput {
      * @param character character that decides what type of inputs comes next
      * @return true if we can decide on the type of input, false if more bytes need to be read into unparsed buffer first
      */
-    private boolean createNewInput(final byte character) throws IOException {
+    private boolean createNewInput(final byte character) throws IOException, InvalidArgumentsException {
         this.innerOutput = new PanbyteMockOutput();
 
         if (character == '\'') {

@@ -5,9 +5,13 @@ import cz.muni.fi.pv286.parser.Util;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class PanbyteBitInput extends PanbyteInput {
+public class PanbyteBitInput extends PanbyteInputBase {
     /** Internal buffer of yet unparsed bytes */
     private final List<Byte> unparsedBuffer = new ArrayList<>();
     /** All allowed lowercase bit characters */

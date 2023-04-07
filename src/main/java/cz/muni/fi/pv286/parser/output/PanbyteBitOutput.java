@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanbyteBitOutput extends PanbyteOutput {
+public class PanbyteBitOutput extends PanbyteOutputBase {
     boolean zeroPadding;
 
     public PanbyteBitOutput(OutputStream outputStream, boolean zeroPadding) {

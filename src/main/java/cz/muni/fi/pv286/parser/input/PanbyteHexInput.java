@@ -14,7 +14,7 @@ import java.util.Set;
  * Parsers hex input
  * Ignores whitespace
  */
-public class PanbyteHexInput extends PanbyteInput {
+public class PanbyteHexInput extends PanbyteInputBase {
     /** A tuple of bytes */
     private static class ByteTuple {
         public final byte a;

@@ -1,11 +1,8 @@
 package cz.muni.fi.pv286.parser;
 
-import cz.muni.fi.pv286.arguments.values.Option;
-import cz.muni.fi.pv286.parser.input.PanbyteBitInput;
 import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.input.PanbyteStringInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
-import cz.muni.fi.pv286.parser.output.PanbyteRawOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteStringOutput;
 import org.junit.jupiter.api.Test;
 

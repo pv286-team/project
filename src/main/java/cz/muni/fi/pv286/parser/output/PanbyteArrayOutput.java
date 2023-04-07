@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanbyteArrayOutput extends PanbyteOutput {
+public class PanbyteArrayOutput extends PanbyteOutputBase {
     /** Parser for received byte */
     PanbyteOutput innerOutput;
     /** Type of output [decimal, hex, characters, bits] */
