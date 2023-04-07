@@ -262,6 +262,12 @@ TESTS: List[TestCase] = [
         expected_out=None,
         expected_code=1
     ),
+    TestCase(
+        args=['-f', 'array', '-t', 'array', '--delimiter={'],
+        data_in=br"{ 1, 2, 3}",
+        expected_out=None,
+        expected_code=1
+    ),
     # Correct inputs & arguments
     TestCase(
         args=['-f', 'bits', '-t', 'bits', '--from-options=left', '--from-options=right'],
