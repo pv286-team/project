@@ -100,4 +100,19 @@ class MainTest {
 
         assertEquals("68656c\n6c6f\n", out.toString());
     }
+
+    @Test
+    public void bitsToArray_empty() {
+        String str = "";
+        setInput(str);
+        ByteArrayOutputStream out = getOutput();
+        String[] args = {"-f", "bits", "-t", "array", "--to-options=a", "--to-options=a"};
+        try {
+            main(args);
+        } catch (Exception e) {
+            assertFalse(false);
+        }
+
+        assertEquals("{}", out.toString());
+    }
 }

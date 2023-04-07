@@ -767,4 +767,63 @@ class ProgramArgumentsTest {
             assert(false);
         }
     }
+
+    @Test
+    void fromBits_toInt_multipleFromOptions() {
+        String[] args = { "--from=bits", "--to=int", "--from-options=left", "--from-options=left"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BITS));
+            assert(arguments.getInputOption().equals(Option.LEFT_PAD));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromBits_toInt_multipleFromOptions2() {
+        String[] args = { "--from=bits", "--to=int", "--from-options=right", "--from-options=left"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BITS));
+            assert(arguments.getInputOption().equals(Option.LEFT_PAD));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromBits_toInt_multipleFromOptions3() {
+        String[] args = { "--from=bits", "--to=int", "--from-options=left", "--from-options=right"};
+        try {
+            ProgramArguments arguments = new ProgramArguments(args);
+            assert(arguments.getInputFormat().equals(Format.BITS));
+            assert(arguments.getInputOption().equals(Option.RIGHT_PAD));
+            assert(arguments.getOutputFormat().equals(Format.INT));
+            assert(arguments.getOutputOption().equals(Option.BIG_ENDIAN));
+            assert(arguments.getOutputBrackets().equals(Option.NONE));
+            assert(arguments.getDelimiter().equals("\n"));
+        } catch (Exception e) {
+            assert(false);
+        }
+    }
+
+    @Test
+    void fromBits_toArray_multipleToOptions_wrong() {
+        String[] args = { "--from=bits", "--to=int", "--to-options= a", "--to-options=a"};
+        try {
+            new ProgramArguments(args);
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
 }
