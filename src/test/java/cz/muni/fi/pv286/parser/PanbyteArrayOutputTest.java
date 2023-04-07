@@ -1,10 +1,7 @@
 package cz.muni.fi.pv286.parser;
 
 import cz.muni.fi.pv286.arguments.values.Option;
-import cz.muni.fi.pv286.parser.input.PanbyteInput;
-import cz.muni.fi.pv286.parser.input.PanbyteArrayInput;
-import cz.muni.fi.pv286.parser.input.PanbyteHexInput;
-import cz.muni.fi.pv286.parser.input.PanbyteRawInput;
+import cz.muni.fi.pv286.parser.input.*;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteArrayOutput;
 import cz.muni.fi.pv286.parser.output.PanbyteHexOutput;
@@ -417,13 +414,13 @@ public class PanbyteArrayOutputTest {
     }
 
     @Test
-    void emptyInputBits() {
-        String inputString = "";
+    void inputBits_leftPad() {
+        String inputString = "0010011001100";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
         final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
 
-        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.CHAR, Option.CURLY_BRACKETS);
-        final PanbyteInput input = new PanbyteRawInput(output);
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
 
         try {
             processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
@@ -432,6 +429,44 @@ public class PanbyteArrayOutputTest {
         }
 
         String result = stdoutWriter.toString();
-        assert(result.equals("{}"));
+        assert(result.equals("{0x4, 0xcc}"));
+    }
+
+    @Test
+    void inputBits_rightPad() {
+        String inputString = "001001100110";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x26, 0x60}"));
+    }
+
+    @Test
+    void inputBits_rightPad_outputChars() {
+        String inputString = "001001100110";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.CHAR, Option.SQUARE_BRACKETS);
+        final PanbyteInput input = new PanbyteBitInput(output, Option.RIGHT_PAD);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("['&', '`']"));
     }
 }
