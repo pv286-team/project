@@ -23,6 +23,11 @@ public class PanbyteIntOutput extends PanbyteOutputBase {
         final List<Byte> out = new ArrayList<>();
         List<Byte> mutableBuffer = new ArrayList<>(buffer);
 
+        if (buffer.size() == 0) {
+            this.sendOutputData(out);
+            return;
+        }
+
         if (endianity == Option.LITTLE_ENDIAN) {
             Collections.reverse(mutableBuffer);
         }
@@ -34,7 +39,7 @@ public class PanbyteIntOutput extends PanbyteOutputBase {
 
         final BigInteger integer;
         try {
-            integer = new BigInteger(integerByteArray);
+            integer = new BigInteger(1, integerByteArray);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Cannot create integer from input bytes");
         }

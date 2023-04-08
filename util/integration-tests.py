@@ -313,6 +313,31 @@ TESTS: List[TestCase] = [
         data_in=br"{(),  {{}, {[]}} ,{   }}",
         expected_out=b'{{}, {{}, {{}}}, {}}'
         , expected_code=0),
+    TestCase(
+        args=['-f', 'int', '-t', 'int', '--delimiter="0"'],
+        data_in=br"1020999002",
+        expected_out=br"1020999002",
+        expected_code=0
+    ),
+    TestCase(
+        args=['-f', 'int', '-t', 'hex', '--delimiter="0"'],
+        data_in=br"0110120",
+        expected_out=br"00b00c0",
+        expected_code=0
+    ),
+    TestCase(
+        args=['-f', 'hex', '-t', 'hex', '--delimiter="0"'],
+        data_in=br"0aa0bb0cccc00ff",
+        expected_out=br"0aa0bb0cccc00ff",
+        expected_code=0
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'bits', '--delimiter="0"'],
+        data_in=br"01011001",
+        expected_out=br"0000000010000000110000000001",
+        expected_code=0
+    ),
+
 ]
 
 if __name__ == '__main__':
