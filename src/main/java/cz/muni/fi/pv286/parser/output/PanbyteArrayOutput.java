@@ -158,6 +158,6 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
 
     /** Set current array of brackets */
     public void setBrackets(List<ArrayBracket> brackets) {
-        this.brackets = brackets;
+        this.brackets = List.copyOf(brackets);
     }
 }
