@@ -83,7 +83,6 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             }
             out.add(currentByte);
             // Parse byte value by inner parser
-            this.innerOutput.getFresh();
             this.innerOutput.stringify(out);
             this.innerOutput.parserFinalize();
             out.clear();
