@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static cz.muni.fi.pv286.Main.processIO;
 
@@ -21,13 +22,13 @@ class PanbyteHexInputOutputTest {
     void INPUT_Single_full() {
         String inputString = "68656C6C6F";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -40,13 +41,13 @@ class PanbyteHexInputOutputTest {
     void INPUT_Single_full_high() {
         String inputString = "499602d2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -59,13 +60,13 @@ class PanbyteHexInputOutputTest {
     void INPUT_Single_full_high_noZeroPadding() {
         String inputString = "499602d2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, false);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -79,13 +80,13 @@ class PanbyteHexInputOutputTest {
     void INPUT_SingleWhiteSpaces_full() {
         String inputString = "68 65 6C 6C 6F";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteRawOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -134,14 +135,14 @@ class PanbyteHexInputOutputTest {
     void OUTPUT_Two_full() {
         final String inputString = "hello";
 
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteRawInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -190,14 +191,14 @@ class PanbyteHexInputOutputTest {
                 "c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71" +
                 "c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c71c7";
 
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }

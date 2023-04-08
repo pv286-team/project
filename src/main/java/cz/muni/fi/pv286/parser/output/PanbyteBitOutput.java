@@ -2,6 +2,7 @@ package cz.muni.fi.pv286.parser.output;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class PanbyteBitOutput extends PanbyteOutputBase {
                 bitString.append(bit);
             }
 
-            final byte[] bitStringBytes = bitString.toString().getBytes();
+            final byte[] bitStringBytes = bitString.toString().getBytes(StandardCharsets.US_ASCII);
             for (byte bitStringByte : bitStringBytes) {
                 out.add(bitStringByte);
             }

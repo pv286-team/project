@@ -1,11 +1,12 @@
 package cz.muni.fi.pv286;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class TestUtils {
 
     public static void setInput(String input) {
-        InputStream in = new ByteArrayInputStream(input.getBytes());
+        InputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.US_ASCII));
         System.setIn(in);
     }
     public static ByteArrayOutputStream getOutput() {

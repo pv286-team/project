@@ -5,6 +5,7 @@ import cz.muni.fi.pv286.arguments.values.Option;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +48,7 @@ public class PanbyteIntOutput extends PanbyteOutputBase {
         final String digits = integer.toString(10);
 
         // using platform default charset
-        for (byte b : digits.getBytes()) {
+        for (byte b : digits.getBytes(StandardCharsets.US_ASCII)) {
             out.add(b);
         }
 

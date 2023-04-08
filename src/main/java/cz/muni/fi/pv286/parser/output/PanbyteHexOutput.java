@@ -2,6 +2,7 @@ package cz.muni.fi.pv286.parser.output;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PanbyteHexOutput extends PanbyteOutputBase {
         // each byte convert into two hex characters
         for (final Byte byteBuffer : buffer) {
             final String hexString = String.format("%x", byteBuffer);
-            final byte[] hexStringBytes = hexString.getBytes();
+            final byte[] hexStringBytes = hexString.getBytes(StandardCharsets.US_ASCII);
             assert hexStringBytes.length == 1 || hexStringBytes.length == 2;
             if (hexStringBytes.length < 2 && zeroPadding) {
                 out.add((byte) '0');

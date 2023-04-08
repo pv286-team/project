@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static cz.muni.fi.pv286.Main.processIO;
 
@@ -16,13 +17,13 @@ public class PanbyteStringInputOutputTest {
     void printableCharacters_alphabet()  {
         String inputString = "a";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteStringOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteStringInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -35,13 +36,13 @@ public class PanbyteStringInputOutputTest {
     void printableCharacters_number()  {
         String inputString = "8";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteStringOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteStringInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -54,13 +55,13 @@ public class PanbyteStringInputOutputTest {
     void printableCharacters_escapedToUnescaped()  {
         String inputString = "\\x51";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteStringOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteStringInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -73,13 +74,13 @@ public class PanbyteStringInputOutputTest {
     void printableCharacters_escapedToEscaped()  {
         String inputString = "\\x0f";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteStringOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteStringInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -92,13 +93,13 @@ public class PanbyteStringInputOutputTest {
     void printableCharacters_special()  {
         String inputString = "\\n";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteStringOutput(stdoutWriter);
         final PanbyteInput input = new PanbyteStringInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
