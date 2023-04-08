@@ -42,7 +42,7 @@ TESTS: List[TestCase] = [
         args=['-f', 'array', '-t', 'array', '--to-options=0'],
         data_in=br"(0x01, 2, 0b11, '\x04')",
         expected_out=b'{1, 2, 3, 4}',
-        xpected_code=0),
+        expected_code=0),
     TestCase(
         args=['-f', 'array', '-t', 'array', '--to-options=a'],
         data_in=br"{0x01, 2, 0b11, '\x04'}",
