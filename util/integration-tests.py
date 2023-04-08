@@ -322,7 +322,19 @@ TESTS: List[TestCase] = [
     TestCase(
         args=['-f', 'int', '-t', 'hex', '--delimiter="0"'],
         data_in=br"0110120",
-        expected_out=br"00b0c0",
+        expected_out=br"00b00c0",
+        expected_code=0
+    ),
+    TestCase(
+        args=['-f', 'hex', '-t', 'hex', '--delimiter="0"'],
+        data_in=br"0aa0bb0cccc00ff",
+        expected_out=br"0aa0bb0cccc00ff",
+        expected_code=0
+    ),
+    TestCase(
+        args=['-f', 'bits', '-t', 'bits', '--delimiter="0"'],
+        data_in=br"01011001",
+        expected_out=br"01011001",
         expected_code=0
     ),
 
