@@ -31,6 +31,28 @@ class ProgramArgumentsTest {
     }
 
     @Test
+    void invalidLongOption() {
+        String[] args = {"--input-file"};
+        try {
+            new ProgramArguments(args);
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void invalidLongOption_noValue() {
+        String[] args = {"--from-options"};
+        try {
+            new ProgramArguments(args);
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
     void printHelp_longWrong() {
         String[] args = {"-help"};
         try {

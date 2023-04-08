@@ -63,7 +63,7 @@ class ArgumentParser {
                         String[] parts = current.split("=", 2);
                         arguments.add(new Argument(parts[0], parts[1]));
                         index += 1;
-                    } catch (ArrayIndexOutOfBoundsException e) {
+                    } catch (Exception e) {
                         throw new InvalidArgumentsException("Invalid long option format");
                     }
                 }
