@@ -2,11 +2,7 @@ package cz.muni.fi.pv286.program;
 
 import cz.muni.fi.pv286.TestUtils;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 import static cz.muni.fi.pv286.Main.main;
 import static org.junit.jupiter.api.Assertions.*;
 

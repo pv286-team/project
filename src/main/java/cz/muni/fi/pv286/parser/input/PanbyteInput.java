@@ -1,7 +1,6 @@
 package cz.muni.fi.pv286.parser.input;
 
 import cz.muni.fi.pv286.arguments.InvalidArgumentsException;
-import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
 import java.util.List;

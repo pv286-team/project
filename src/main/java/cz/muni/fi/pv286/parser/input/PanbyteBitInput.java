@@ -116,7 +116,7 @@ public class PanbyteBitInput extends PanbyteInputBase {
 
     /**
      * Read from unparsed buffer 8 bytes representing 8 bits,
-     * if cannot be read, put them back.
+     * if 8 bytes cannot be read, put them back.
      * @return allowed byte or null if not more are available
      */
     private byte[] popUnparsedEightBytes() {

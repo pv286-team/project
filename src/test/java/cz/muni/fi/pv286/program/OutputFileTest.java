@@ -1,12 +1,10 @@
 package cz.muni.fi.pv286.program;
 
 import cz.muni.fi.pv286.TestUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
 import java.time.Instant;
 

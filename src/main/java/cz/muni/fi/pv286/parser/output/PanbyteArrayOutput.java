@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PanbyteArrayOutput extends PanbyteOutputBase {
     /** Parser for received byte */
-    PanbyteOutput innerOutput;
+    final PanbyteOutput innerOutput;
     /** Type of output [decimal, hex, characters, bits] */
-    Option outputOption;
+    final Option outputOption;
     /** Type of brackets used for printed array */
     Option bracketsOption;
     /** List of all obtained brackets which should be printed */
@@ -136,10 +136,8 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
         if (brackets == null)
             return;
         for (ArrayBracket b : this.brackets) {
-            if (b.index == index) {
-                if (b.type == type) {
-                    this.sendOutputData(List.of(this.getBracket(type)));
-                }
+            if (b.index == index && b.type == type) {
+                this.sendOutputData(List.of(this.getBracket(type)));
             }
         }
     }

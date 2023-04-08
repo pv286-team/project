@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PanbyteBitOutput extends PanbyteOutputBase {
-    boolean zeroPadding;
+    final boolean zeroPadding;
 
     public PanbyteBitOutput(OutputStream outputStream, boolean zeroPadding) {
         super(outputStream);

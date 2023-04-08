@@ -11,6 +11,7 @@ class TestCase(NamedTuple):
     expected_out: Optional[bytes]
     expected_code: int
 
+
 def chdir_to_project_root() -> None:
     """
     Changes current working directory to the project root
@@ -40,7 +41,7 @@ def execute_single_test(path_jar: Path, args: List[str], data_in: bytes) -> Tupl
     """
     Executes a single test scenario
     :param path_jar: path to the jar file
-    :param args: argumments passed to the program
+    :param args: arguments passed to the program
     :param data_in: stdin
     :return: stdout, stderr
     """
@@ -55,7 +56,7 @@ def main(TESTS) -> int:
     chdir_to_project_root()
 
     build_only = False
-    if len(argv) >=2 and argv[1] == '--build':
+    if len(argv) >= 2 and argv[1] == '--build':
         build_only = True
 
     path_jar = build_jar(build_only)
@@ -65,7 +66,7 @@ def main(TESTS) -> int:
     count_passed = 0
 
     for i, case in enumerate(TESTS):
-        print(f'TEST {i+1}/{len(TESTS)} ... ', end='', flush=True)
+        print(f'TEST {i + 1}/{len(TESTS)} ... ', end='', flush=True)
         stdout, stderr, return_code = execute_single_test(path_jar, case.args, case.data_in)
         if (case.expected_out is None or stdout == case.expected_out) and return_code == case.expected_code:
             count_passed += 1

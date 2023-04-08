@@ -20,7 +20,7 @@ public class Argument {
 
     /** Strips the possible "" away from argument value */
     private String stripValue(String value) {
-        if (value.startsWith("\"") && value.endsWith("\""))
+        if (value.startsWith("\"") && value.endsWith("\"") && value.length() > 1)
             return value.substring(1, value.length() - 1);
         return value;
     }
