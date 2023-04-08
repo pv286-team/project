@@ -14,7 +14,7 @@ public class PanbyteStringOutput extends PanbyteOutputBase {
     }
 
     @Override
-    public void stringify(List<Byte> buffer) throws IOException {
+    public void stringify(List<Byte> buffer) {
         this.unparsedBytes.addAll(buffer);
     }
 
@@ -66,6 +66,8 @@ public class PanbyteStringOutput extends PanbyteOutputBase {
                     case '\r':
                         out.add((byte) '\\');
                         out.add((byte) 'r');
+                        break;
+                    default:
                         break;
                 }
             } else {

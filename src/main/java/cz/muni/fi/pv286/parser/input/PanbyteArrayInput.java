@@ -211,6 +211,8 @@ public class PanbyteArrayInput extends PanbyteInputBase {
                     case 'x':
                         this.innerInput = new PanbyteHexInput(this.innerOutput);
                         return true;
+                    default:
+                        return false;
                 }
             } else {
                 this.innerInput = new PanbyteIntInput(this.innerOutput, Option.BIG_ENDIAN);

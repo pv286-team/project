@@ -21,10 +21,10 @@ public class PanbyteInputOutputFactory {
      * Creates PanbyteInput from program arguments and selected output
      * @param arguments program arguments
      * @param output target PanByte output
-     * @return PanbyteInput, null if could not create
+     * @return PanbyteInput, null if PanbyteInput cannot be created
      */
     public static PanbyteInput makeInput(final ProgramArguments arguments, final PanbyteOutput output) {
-        PanbyteInput input = null;
+        PanbyteInput input;
 
         switch (arguments.getInputFormat()) {
             case BYTES:
@@ -47,6 +47,8 @@ public class PanbyteInputOutputFactory {
             case ARRAY:
                 input = new PanbyteArrayInput(output);
                 break;
+            default:
+                throw new IllegalArgumentException("Unsupported input format");
         }
 
         return input;
@@ -56,7 +58,7 @@ public class PanbyteInputOutputFactory {
      * Creates PanbyteOutput from program arguments and selected output
      * @param arguments program arguments
      * @param outputStream target output stream
-     * @return PanbyteOutput, null if could not create
+     * @return PanbyteOutput, null if PanbyteOutput cannot be created
      */
     public static PanbyteOutput makeOutput(final ProgramArguments arguments, final OutputStream outputStream) {
         PanbyteOutput output = null;
@@ -77,6 +79,8 @@ public class PanbyteInputOutputFactory {
             case ARRAY:
                 output = new PanbyteArrayOutput(outputStream, arguments.getOutputOption(), arguments.getOutputBrackets());
                 break;
+            default:
+                throw new IllegalArgumentException("Unsupported output format");
         }
 
         return output;

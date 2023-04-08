@@ -13,7 +13,7 @@ public abstract class PanbyteInputBase implements PanbyteInput {
     // where to send parsed data
     protected final PanbyteOutput output;
     // internal buffer of already parsed data
-    protected ArrayList<Byte> parsedBytes = new ArrayList<>();
+    protected final ArrayList<Byte> parsedBytes = new ArrayList<>();
 
     /**
      * Initialized new input

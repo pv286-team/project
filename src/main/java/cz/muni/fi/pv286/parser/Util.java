@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class Util {
     /** Map of brackets, keys are opening; values are closing */
-    public static Map<Byte, Byte> bracketsOpening = Map.of((byte) '{', (byte) '}', (byte) '(', (byte) ')', (byte) '[', (byte) ']');
+    public static final Map<Byte, Byte> bracketsOpening = Map.of((byte) '{', (byte) '}', (byte) '(', (byte) ')', (byte) '[', (byte) ']');
     /** Map of brackets, keys are closing; values are opening */
-    public static Map<Byte, Byte> bracketsClosing = Map.of((byte) '}', (byte) '{', (byte) ')', (byte) '(', (byte) ']', (byte) '[');
+    public static final Map<Byte, Byte> bracketsClosing = Map.of((byte) '}', (byte) '{', (byte) ')', (byte) '(', (byte) ']', (byte) '[');
 
     /**
      * Convert a single byte into its ASCII value string
@@ -136,6 +136,8 @@ public class Util {
                                 "" + st.charAt(i + 2) + st.charAt(i + 3), 16);
                         sb.append(Character.toChars(hexCode));
                         i += 3;
+                        continue;
+                    default:
                         continue;
                 }
                 i++;
