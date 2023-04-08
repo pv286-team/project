@@ -14,7 +14,7 @@ import java.util.List;
 public class PanbyteIntInput extends PanbyteInputBase {
 
     private final List<Byte> unparsedBuffer = new ArrayList<>();
-    private BigInteger integer = new BigInteger("0");
+    private BigInteger integer = null;
     private final Option endianity;
 
     public PanbyteIntInput(final PanbyteOutput output, Option option) {
@@ -38,8 +38,13 @@ public class PanbyteIntInput extends PanbyteInputBase {
                 throw new IllegalArgumentException("Invalid character encountered");
             }
 
-            integer = integer.multiply(new BigInteger("10"));
-            integer = integer.add(new BigInteger(Util.byteAsASCII(nextByte)));
+            // init integer here to ignore no byte case and white spaces
+            if (this.integer == null) {
+                this.integer = new BigInteger("0");
+            }
+
+            this.integer = this.integer.multiply(new BigInteger("10"));
+            this.integer = this.integer.add(new BigInteger(Util.byteAsASCII(nextByte)));
         }
     }
 
@@ -52,14 +57,17 @@ public class PanbyteIntInput extends PanbyteInputBase {
             throw new IllegalArgumentException("Internal buffer should be empty");
         }
 
-        byte[] integerByteArray = integer.toByteArray();
+        // this method could be called with no bytes parsed
+        if (this.integer != null) {
+            byte[] integerByteArray = this.integer.toByteArray();
 
-        for (byte b : integerByteArray) {
-            this.parsedBytes.add(b);
-        }
+            for (byte b : integerByteArray) {
+                this.parsedBytes.add(b);
+            }
 
-        if (endianity == Option.LITTLE_ENDIAN) {
-            Collections.reverse(this.parsedBytes);
+            if (this.endianity == Option.LITTLE_ENDIAN) {
+                Collections.reverse(this.parsedBytes);
+            }
         }
 
         this.flush();
@@ -68,6 +76,6 @@ public class PanbyteIntInput extends PanbyteInputBase {
 
     @Override
     public PanbyteInput getFresh() {
-        return new PanbyteIntInput(this.output.getFresh(), endianity);
+        return new PanbyteIntInput(this.output.getFresh(), this.endianity);
     }
 }

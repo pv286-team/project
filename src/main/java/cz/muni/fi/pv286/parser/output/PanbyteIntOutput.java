@@ -34,7 +34,7 @@ public class PanbyteIntOutput extends PanbyteOutputBase {
 
         final BigInteger integer;
         try {
-            integer = new BigInteger(integerByteArray);
+            integer = new BigInteger(1, integerByteArray);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Cannot create integer from input bytes");
         }
