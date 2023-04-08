@@ -334,7 +334,7 @@ TESTS: List[TestCase] = [
     TestCase(
         args=['-f', 'bits', '-t', 'bits', '--delimiter="0"'],
         data_in=br"01011001",
-        expected_out=br"01011001",
+        expected_out=br"0000000010000000110000000001",
         expected_code=0
     ),
 
