@@ -20,6 +20,12 @@
             <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.code-intelligence</groupId>
+            <artifactId>jazzer-junit</artifactId>
+            <version>0.16.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
