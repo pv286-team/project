@@ -61,7 +61,7 @@ public class PanbyteInputOutputFactory {
      * @return PanbyteOutput, null if PanbyteOutput cannot be created
      */
     public static PanbyteOutput makeOutput(final ProgramArguments arguments, final OutputStream outputStream) {
-        PanbyteOutput output = null;
+        PanbyteOutput output;
 
         switch (arguments.getOutputFormat()) {
             case BYTES:
