@@ -1,10 +1,12 @@
 package cz.muni.fi.pv286.program;
 
 import cz.muni.fi.pv286.TestUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.time.Instant;
 
@@ -13,12 +15,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class OutputFileTest {
-    @TempDir
-    private static Path testDir;
+    private static final File directory = new File("./test_directory");
     private static Path outputFilePath;
+
+    @BeforeAll
+    public static void createDir() {
+        directory.mkdir();
+    }
+
+    @AfterAll
+    public static void cleanup() {
+        directory.delete();
+    }
 
     @BeforeEach
     public void setUp() {
+        Path testDir = directory.toPath();
         outputFilePath = testDir.resolve(Instant.now().toString().replace(':', '_'));
     }
 
