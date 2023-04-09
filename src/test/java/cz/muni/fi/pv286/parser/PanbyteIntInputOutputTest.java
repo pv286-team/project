@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static cz.muni.fi.pv286.Main.processIO;
 
@@ -23,13 +24,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_01() {
         String inputString = "1234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -42,13 +43,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_02()  {
         String inputString = "1234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -61,13 +62,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_03()  {
         String inputString = "1234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -80,13 +81,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_04() {
         String inputString = "499602d2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -99,13 +100,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_05() {
         String inputString = "499602d2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -118,13 +119,13 @@ class PanbyteIntInputOutputTest {
     void TestAssignment_06() {
         String inputString = "d2029649";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.LITTLE_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -137,13 +138,13 @@ class PanbyteIntInputOutputTest {
     void Big_to_Big() {
         String inputString = "1234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -156,13 +157,13 @@ class PanbyteIntInputOutputTest {
     void Little_to_Little() {
         String inputString = "1234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.LITTLE_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -175,13 +176,13 @@ class PanbyteIntInputOutputTest {
     void INPUT_Zero_Big_to_Little() {
         String inputString = "0";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.LITTLE_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -194,13 +195,13 @@ class PanbyteIntInputOutputTest {
     void INPUT_Zero_Little_to_Big() {
         String inputString = "0";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -213,13 +214,13 @@ class PanbyteIntInputOutputTest {
     void INPUT_One_Big_to_Little() {
         String inputString = "1";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.LITTLE_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -232,13 +233,13 @@ class PanbyteIntInputOutputTest {
     void INPUT_One_Little_to_Big() {
         String inputString = "1";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -255,13 +256,13 @@ class PanbyteIntInputOutputTest {
                 "12345678901234567890123456789012345678901234567890123456789012345678901234567890" +
                 "12345678901234567890123456789012345678901234567890123456789012345678901234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -282,13 +283,13 @@ class PanbyteIntInputOutputTest {
                 "12345678901234567890123456789012345678901234567890123456789012345678901234567890" +
                 "12345678901234567890123456789012345678901234567890123456789012345678901234567890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.LITTLE_ENDIAN);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -305,13 +306,13 @@ class PanbyteIntInputOutputTest {
     void bitsToInt() {
         String inputString = "010011010010";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteBitInput(output, Option.LEFT_PAD);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -324,13 +325,13 @@ class PanbyteIntInputOutputTest {
     void hexToInt() {
         String inputString = "04d2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -343,13 +344,13 @@ class PanbyteIntInputOutputTest {
     void hexToInt_delimiter() {
         String inputString = "04\nd2";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteIntOutput(stdoutWriter, Option.BIG_ENDIAN);
         final PanbyteInput input = new PanbyteHexInput(output);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -362,13 +363,13 @@ class PanbyteIntInputOutputTest {
     void intToHex_big() {
         String inputString = "1234";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -381,13 +382,13 @@ class PanbyteIntInputOutputTest {
     void intToHex_little() {
         String inputString = "1234";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -400,13 +401,13 @@ class PanbyteIntInputOutputTest {
     void intToBits_big() {
         String inputString = "1234";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -419,13 +420,13 @@ class PanbyteIntInputOutputTest {
     void intToBits_little() {
         String inputString = "1234";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteBitOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.LITTLE_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -438,13 +439,13 @@ class PanbyteIntInputOutputTest {
     void intToHex_spaces() {
         String inputString = "1 234 567 890";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }
@@ -501,13 +502,13 @@ class PanbyteIntInputOutputTest {
                 "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                 "111111111111111111111";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
-        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
 
         final PanbyteOutput output = new PanbyteHexOutput(stdoutWriter, true);
         final PanbyteInput input = new PanbyteIntInput(output, Option.BIG_ENDIAN);
 
         try {
-            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
         } catch (Exception e) {
             assert(false);
         }

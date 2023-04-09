@@ -4,6 +4,7 @@ import cz.muni.fi.pv286.parser.Util;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -114,7 +115,7 @@ public class PanbyteHexInput extends PanbyteInputBase {
                 continue;
             }
 
-            final byte[] nextByteLowercase = Util.byteAsASCII(nextByte).toLowerCase().getBytes();
+            final byte[] nextByteLowercase = Util.byteAsASCII(nextByte).toLowerCase().getBytes(StandardCharsets.US_ASCII);
             // nextByteLowercase length must be exactly one, because all allowed characters are ASCII
             if (nextByteLowercase.length != 1 || !this.allowedCharactersSet.contains(nextByteLowercase[0])) {
                 throw new IllegalArgumentException("Byte '" + nextByte + "' is not in allowed characters for this mode");

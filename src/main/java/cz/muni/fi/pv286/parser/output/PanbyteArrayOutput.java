@@ -6,6 +6,7 @@ import cz.muni.fi.pv286.parser.Util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
 
             if (index > 0) {
                 // Set array delimiter
-                this.sendOutputData(Util.bytesToList(", ".getBytes()));
+                this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
             }
 
             // Put opening brackets after possible delimiter
@@ -70,10 +71,10 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             // Print prefix if needed
             switch (outputOption) {
                 case BIT:
-                    this.sendOutputData(Util.bytesToList("0b".getBytes()));
+                    this.sendOutputData(Util.bytesToList("0b".getBytes(StandardCharsets.US_ASCII)));
                     break;
                 case HEX:
-                    this.sendOutputData(Util.bytesToList("0x".getBytes()));
+                    this.sendOutputData(Util.bytesToList("0x".getBytes(StandardCharsets.US_ASCII)));
                     break;
                 case DEC:
                 case CHAR:
@@ -82,7 +83,6 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             }
             out.add(currentByte);
             // Parse byte value by inner parser
-            this.innerOutput.getFresh();
             this.innerOutput.stringify(out);
             this.innerOutput.parserFinalize();
             out.clear();
@@ -111,7 +111,7 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             boolean closing = false;
             for (ArrayBracket b : this.brackets) {
                 if (closing  && b.type == ArrayBracket.BracketType.OPENING) {
-                    this.sendOutputData(Util.bytesToList(", ".getBytes()));
+                    this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
                     closing = false;
                 }
                 if (b.type == ArrayBracket.BracketType.CLOSING)
@@ -157,6 +157,6 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
 
     /** Set current array of brackets */
     public void setBrackets(List<ArrayBracket> brackets) {
-        this.brackets = brackets;
+        this.brackets = List.copyOf(brackets);
     }
 }

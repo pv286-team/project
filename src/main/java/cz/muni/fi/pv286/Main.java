@@ -7,6 +7,7 @@ import cz.muni.fi.pv286.parser.input.PanbyteInput;
 import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +77,7 @@ public class Main {
         }
 
         try {
-            Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes());
+            Main.processIO(inputStream, outputStream, input, arguments.getDelimiter().getBytes(StandardCharsets.US_ASCII));
         } catch (OutOfMemoryError err) {
             System.err.println("Program run out of memory - probably the input is too big.");
             System.exit(1);

@@ -27,7 +27,7 @@ public class Util {
      */
     public static List<Byte> byteList(final String text) {
         final List<Byte> list = new ArrayList<>();
-        byte[] bytes = text.getBytes();
+        byte[] bytes = text.getBytes(StandardCharsets.US_ASCII);
         for (byte b : bytes) {
             list.add(b);
         }
