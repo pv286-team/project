@@ -1,0 +1,22 @@
+name: Run basic tests from the assigment
+
+on: push
+
+jobs:
+  assignment-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          java-version: '18'
+          distribution: 'temurin'
+
+      - name: Build project
+        run: python util/assigment-tests.py --build
+
+      - name: Run tests
+        run: python util/assigment-tests.py
