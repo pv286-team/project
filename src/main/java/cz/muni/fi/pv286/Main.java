@@ -20,7 +20,7 @@ public class Main {
         try {
             arguments = new ProgramArguments(args);
         } catch (InvalidArgumentsException e) {
-            System.err.print(e.getMessage() + "\n");
+            System.err.println(e.getMessage());
             System.err.println(ProgramArguments.getHelpString());
             System.exit(1);
         }
@@ -46,7 +46,7 @@ public class Main {
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Input type not implemented");
+                throw new IllegalArgumentException("Invalid output file type");
         }
 
         switch (arguments.getInputFileType()) {
@@ -62,7 +62,7 @@ public class Main {
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Input type not implemented");
+                throw new IllegalArgumentException("Invalid input file type");
         }
 
         final PanbyteOutput output = PanbyteInputOutputFactory.makeOutput(arguments, outputStream);

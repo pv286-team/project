@@ -141,7 +141,7 @@ class ArgumentParser {
                     if (!argument.getValue().isEmpty())
                         throw new InvalidArgumentsException("Help option cannot take value");
                     if (arguments.size() > 1)
-                        throw new InvalidArgumentsException("Help option be called with other options");
+                        throw new InvalidArgumentsException("Help option cannot be called with other options");
                     result.setHelp(true);
                     break;
                 default:

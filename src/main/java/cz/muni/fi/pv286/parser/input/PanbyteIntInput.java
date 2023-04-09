@@ -35,7 +35,7 @@ public class PanbyteIntInput extends PanbyteInputBase {
                 continue;
             }
             if (!Character.isDigit(nextByte)) {
-                throw new IllegalArgumentException("Invalid character encountered");
+                throw new IllegalArgumentException("Byte '" + nextByte + "' is not in allowed characters for this mode");
             }
 
             // init integer here to ignore no byte case and white spaces
@@ -54,7 +54,7 @@ public class PanbyteIntInput extends PanbyteInputBase {
         assert this.unparsedBuffer.size() == 0;
         // check if some partial parsing have been done
         if (this.parsedBytes.size() > 0) {
-            throw new IllegalArgumentException("Internal buffer should be empty");
+            throw new IllegalArgumentException("Some bytes were not parsed");
         }
 
         // this method could be called with no bytes parsed
