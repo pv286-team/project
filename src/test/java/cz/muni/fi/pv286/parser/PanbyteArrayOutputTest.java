@@ -545,4 +545,108 @@ public class PanbyteArrayOutputTest {
         String result = stdoutWriter.toString();
         assert(result.equals("(0b111, 0b1011011, 0b11001101, 0b10101)"));
     }
+
+    @Test
+    void inputArray_outputArrayHex() {
+        String inputString = "(0x01)";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x1}"));
+    }
+
+    @Test
+    void inputArray_outputArrayHex_delimiter() {
+        String inputString = "(0x01\n)";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void inputArray_outputArrayHex_delimiterComplex() {
+        String inputString = "(0x01, (0x02, 0x03), 0x05\n)";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void inputArray_outputArrayHex_shortHex() {
+        String inputString = "(0x1)";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void inputArray_outputArrayHex_space() {
+        String inputString = "(0x 1)";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    void inputArray_outputArrayHex_differentBracket() {
+        String inputString = "(0x01}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes());
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes());
+            assert(false);
+        } catch (Exception e) {
+            assert(true);
+        }
+    }
 }
