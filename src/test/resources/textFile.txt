@@ -1,4 +1,0 @@
-This is just some testing file
-full of characters and newlines and there
-should not be anything else.
-Have a nice day!
