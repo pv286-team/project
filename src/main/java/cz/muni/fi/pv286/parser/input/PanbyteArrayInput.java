@@ -72,7 +72,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
                     }
                     // force next character as bracket
                     if (bracket == null) {
-                        throw new IllegalArgumentException("Expected a top-level bracket first");
+                        throw new IllegalArgumentException("Parsing array error: Expected a top-level bracket first");
                     }
                     // bracket was found, enter seeking the next input
                     this.state = ParseStatus.SEEK_INPUT_START;
@@ -87,7 +87,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
                     if (bracket != null) {
                         if (bracket.type == ArrayBracket.BracketType.CLOSING) {
                             if (this.state == ParseStatus.SEEK_INPUT_START_CANNOT_CLOSE) {
-                                throw new IllegalArgumentException("Cannot close now");
+                                throw new IllegalArgumentException("Parsing array error: Invalid bracket sequence");
                             }
                             this.state = ParseStatus.SEEK_INPUT_END;
                         } else {
@@ -139,9 +139,9 @@ public class PanbyteArrayInput extends PanbyteInputBase {
                     if (bracket != null && bracket.type == ArrayBracket.BracketType.CLOSING) {
                         continue;
                     }
-                    throw new IllegalArgumentException("Character '" + nextByte + "' not allowed while seeking next input");
+                    throw new IllegalArgumentException("Character '" + nextByte + "' not allowed while seeking next input while parsing array");
                 default:
-                    throw new IllegalStateException("Unknown parsing state");
+                    throw new IllegalStateException("Unknown parsing array state");
             }
         }
     }
@@ -162,7 +162,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
             this.expectedClosingBrackets.add(0, bracket.pair);
         } else {
             if (this.expectedClosingBrackets.size() == 0 || this.expectedClosingBrackets.get(0) != bracket.character) {
-                throw new IllegalArgumentException("Closing bracket '" + character + "' was not expected on index " + this.parsedByteIndex);
+                throw new IllegalArgumentException("Closing bracket '" + character + "' was not expected on index " + this.parsedByteIndex + " while parsing array");
             }
             // pop expected closing bracket as it has just been found
             this.expectedClosingBrackets.remove(0);
@@ -223,7 +223,7 @@ public class PanbyteArrayInput extends PanbyteInputBase {
             }
         }
 
-        throw new IllegalArgumentException("Invalid prefix character '" + character + "'");
+        throw new IllegalArgumentException("Invalid prefix character '" + character + "'" + " while parsing array");
     }
 
     /**
