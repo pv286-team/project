@@ -650,4 +650,62 @@ public class PanbyteArrayOutputTest {
             assert(true);
         }
     }
+
+    @Test
+    void inputSingleValueArray_outputSingleValueArray() {
+        String inputString = "{128}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x80}"));
+    }
+
+    @Test
+    void inputTwoElemNestedArray_outputTwoElemNestedArray() {
+        String inputString = "{{}, 1}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{}, 0x1}"));
+    }
+
+
+    @Test
+    void inputThreeElemNestedArray_outputThreeElemNestedArray() {
+        String inputString = "{128, {}, 128}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x80, {}, 0x80}"));
+    }
 }
