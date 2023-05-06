@@ -90,6 +90,9 @@ public class PanbyteArrayInput extends PanbyteInputBase {
                                 throw new IllegalArgumentException("Parsing array error: Invalid bracket sequence");
                             }
                             this.state = ParseStatus.SEEK_INPUT_END;
+                            // Edge case: Empty bytearray, should be outputted as nested element explicitly
+                            if (this.output.getClass() == PanbyteArrayOutput.class)
+                                this.output.stringify(null);
                         } else {
                             // allow closing this newly opened bracket
                             this.state = ParseStatus.SEEK_INPUT_START;

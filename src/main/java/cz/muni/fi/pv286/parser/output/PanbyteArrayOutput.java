@@ -21,6 +21,8 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
     List<ArrayBracket> brackets;
     /** Index of current parsed byte */
     int index = 0;
+    boolean isInitialOutput = true;
+    boolean isLastOutputNotABytearray = false;
 
     public PanbyteArrayOutput(OutputStream outputStream, Option outputOption, Option bracketsOption) {
         super(outputStream);
@@ -44,8 +46,37 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
         }
     }
 
+    private void putAllEmptyBytearrays() throws IOException {
+        if (index == 0 && brackets.size() == 0)
+            return;
+
+        if (isLastOutputNotABytearray) {
+            this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
+            isLastOutputNotABytearray = false;
+        }
+
+        for (int i = 0; i < brackets.size(); i++) {
+            ArrayBracket prev = (i == 0)? null : brackets.get(i-1) ;
+            ArrayBracket curr = brackets.get(i);
+            if (brackets.get(i).index == index) {
+                if (!isInitialOutput && prev != null && prev.type == ArrayBracket.BracketType.CLOSING && curr.type == ArrayBracket.BracketType.OPENING)
+                    this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
+
+                this.sendOutputData(List.of(this.getBracket(brackets.get(i).type)));
+                isInitialOutput = false;
+            }
+            curr.index = -1;
+        }
+    }
+
     @Override
     public void stringify(List<Byte> buffer) throws IOException {
+        if (buffer == null) {
+            // Edge case, when the bytearray contains empty bytearrays
+            putAllEmptyBytearrays();
+            return;
+        }
+
         final List<Byte> out = new ArrayList<>();
 
         // When the input is not array, print default outer opening bracket
@@ -60,10 +91,12 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             // Closing brackets need to be printed before ',' and opening brackets
             this.putBrackets(ArrayBracket.BracketType.CLOSING);
 
-            if (index > 0) {
+            if (index > 0 || !isInitialOutput) {
                 // Set array delimiter
                 this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
             }
+            isInitialOutput = false;
+            isLastOutputNotABytearray = true;
 
             // Put opening brackets after possible delimiter
             this.putBrackets(ArrayBracket.BracketType.OPENING);
@@ -106,17 +139,11 @@ public class PanbyteArrayOutput extends PanbyteOutputBase {
             // array is input & some bytes were printed, standalone brackets are left
             this.putBrackets(ArrayBracket.BracketType.OPENING);
             this.putBrackets(ArrayBracket.BracketType.CLOSING);
-        } else if (brackets != null && index == 0) {
-            // array is input & no bytes were printed, so the input is an only bunch of brackets
-            boolean closing = false;
-            for (ArrayBracket b : this.brackets) {
-                if (closing  && b.type == ArrayBracket.BracketType.OPENING) {
-                    this.sendOutputData(Util.bytesToList(", ".getBytes(StandardCharsets.US_ASCII)));
-                    closing = false;
-                }
-                if (b.type == ArrayBracket.BracketType.CLOSING)
-                    closing = true;
-                this.sendOutputData(List.of(this.getBracket(b.type)));
+        } else {
+            // Print remaining brackets
+            for (ArrayBracket b: brackets) {
+                if (b.index != -1)
+                    this.sendOutputData(List.of(this.getBracket(b.type)));
             }
         }
         // Everything was printed out, reset to default
