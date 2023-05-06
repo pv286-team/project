@@ -671,6 +671,24 @@ public class PanbyteArrayOutputTest {
     }
 
     @Test
+    void inputTwoElemNestedArray_outputTwoElemNestedArrayNumberFirst() {
+        String inputString = "{1, {}}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{0x1, {}}"));
+    }
+    @Test
     void inputTwoElemNestedArray_outputTwoElemNestedArray() {
         String inputString = "{{}, 1}";
         final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
@@ -689,6 +707,24 @@ public class PanbyteArrayOutputTest {
         assert(result.equals("{{}, 0x1}"));
     }
 
+    @Test
+    void inputTwoElemDoubleNestedArray_outputTwoElemDoubleNestedArray() {
+        String inputString = "{{{}}, 1}";
+        final OutputStream stdoutWriter = new java.io.ByteArrayOutputStream();
+        final InputStream stdinReader = new java.io.ByteArrayInputStream(inputString.getBytes(StandardCharsets.US_ASCII));
+
+        final PanbyteOutput output = new PanbyteArrayOutput(stdoutWriter, Option.HEX, Option.CURLY_BRACKETS);
+        final PanbyteInput input = new PanbyteArrayInput(output);
+
+        try {
+            processIO(stdinReader, stdoutWriter, input, "\n".getBytes(StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            assert(false);
+        }
+
+        String result = stdoutWriter.toString();
+        assert(result.equals("{{{}}, 0x1}"));
+    }
 
     @Test
     void inputThreeElemNestedArray_outputThreeElemNestedArray() {
