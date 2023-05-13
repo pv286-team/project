@@ -7,6 +7,7 @@ import cz.muni.fi.pv286.parser.output.PanbyteOutput;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,6 +61,13 @@ public class PanbyteIntInput extends PanbyteInputBase {
         // this method could be called with no bytes parsed
         if (this.integer != null) {
             byte[] integerByteArray = this.integer.toByteArray();
+
+            // Skip leading zero bytes, inserted due to java byte and BigInteger's two's complement representation
+            int leadingZeroBytesCursor = 0;
+            while (integerByteArray[leadingZeroBytesCursor] == 0 && leadingZeroBytesCursor < integerByteArray.length - 1)
+                leadingZeroBytesCursor++;
+
+            integerByteArray = Arrays.copyOfRange(integerByteArray, leadingZeroBytesCursor, integerByteArray.length);
 
             for (byte b : integerByteArray) {
                 this.parsedBytes.add(b);
